@@ -7,7 +7,7 @@
 " Last_modify: 
 " Sections:
 "     ->General 基础设置
-"     ->Show 展示/排班等界面格式设置
+"     ->Show 展示/排版等界面格式设置
 "     ->file encode, 文件编码,格式
 "     ->others 其它基础配置
 "     ->hot key  自定义快捷键
@@ -19,7 +19,7 @@
 " General 基础设置
 "==========================================
 
-"set guifont=Monaco:h20          " 字体 && 字号
+set guifont=Monaco:h14          " 字体 && 字号
 
 " history存储长度。
 set history=2000
@@ -48,7 +48,7 @@ set backupdir=~/bak/vimbk/
 "set noswapfile
 
 " 突出显示当前行等 不喜欢这种定位可注解
-set cursorcolumn
+"set cursorcolumn
 set cursorline              " 突出显示当前行
 
 "设置 退出vim后，内容显示在终端屏幕, 可以用于查看和复制
@@ -74,7 +74,7 @@ set tm=500
 
 "显示行号：
 set number
-set nowrap                    " 取消换行。
+"set nowrap                    " 取消换行。
 
 "括号配对情况
 set showmatch
@@ -138,7 +138,7 @@ function! NumberToggle()
     set relativenumber
   endif
 endfunc
-nnoremap <C-n> :call NumberToggle()<cr>
+"nnoremap <C-n> :call NumberToggle()<cr>
 
 "create undo file
 set undolevels=1000         " How many undos
@@ -201,6 +201,7 @@ autocmd! bufwritepost .vimrc source % " vimrc文件修改之后自动加载。 l
 "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
 "set completeopt+=longest
 "set completeopt=longest,menu
+"其实不用改，这就是默认的模式了
 
 "离开插入模式后自动关闭预览窗口
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
@@ -248,8 +249,15 @@ set whichwrap+=<,>,h,l
 "==========================================
 "hot key  自定义快捷键
 "==========================================
+" 设置全局leader键
 let mapleader = ','
 let g:mapleader = ','
+" 设置局部leader键"
+let maplocalleader = '\'
+let g:maplocalleader = '\'
+
+"Quickly fold/unfold
+nnoremap Z za
 
 "Quickly edit/reload the vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -263,8 +271,8 @@ map k gk
 " better command line editing
 cnoremap <C-j> <t_kd>
 cnoremap <C-k> <t_ku>
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
+"cnoremap <C-a> <Home>
+"cnoremap <C-e> <End>
 
 "Smart way to move between windows 分屏窗口移动
 map <C-j> <C-W>j
@@ -273,15 +281,15 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Go to home and end using capitalized directions
-noremap H 0
-noremap L $
+"noremap H 0
+"noremap L $
 
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
 " Speed up scrolling of the viewport slightly
-nnoremap <C-e> 2<C-e>
-nnoremap <C-y> 2<C-y>
+nnoremap <C-e> 5<C-e>
+nnoremap <C-y> 5<C-y>
 
 ""为方便复制，用<F2>开启/关闭行号显示:
 nnoremap <F2> :set nonumber! number?<CR>
@@ -295,11 +303,11 @@ set pastetoggle=<F5>            " when in insert mode, press <F2> to go to
 " disbale paste mode when leaving insert mode
 au InsertLeave * set nopaste
 
-nnoremap <F6> :exec exists('syntax_on') ? 'syn off' : 'syn on'<CR>
+"nnoremap <F6> :exec exists('syntax_on') ? 'syn off' : 'syn on'<CR>
 
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search) no now
-"map <space> /
+"map <C-space> /
 "map <c-space> ?"
 
 map Y y$
@@ -309,8 +317,7 @@ cmap w!! w !sudo tee >/dev/null %
 noremap <silent><leader>/ :nohls<CR>
 
 inoremap kj <Esc>
-" I can type :help on my own, thanks.
-noremap <F1> <Esc>"
+noremap <F1> :help<CR>
 
 nnoremap ; :
 
@@ -323,7 +330,7 @@ vnoremap / /\v
 "Keep search pattern at the center of the screen."
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
-nnoremap <silent> * *zz
+nnoremap <silent> * *
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
 
@@ -332,11 +339,11 @@ nnoremap <silent> g* g*zz
 "noremap <right> :bn<CR>
 
 "Jump to start and end of line using the home row keys
-nmap t o<ESC>k
-nmap T O<ESC>j
+nmap @ o<ESC>k
+nmap # O<ESC>j
 
 "插入大括号的正确方式
-nmap { a{<ESC>ld$o<ESC>o<ESC>pki<TAB>
+inoremap {<CR> {<CR><CR>}<up><TAB>
 
 " ctrl +jk to move lines   经常敲错换错行...一直没想好配哪个映射
 "noremap <C-k> :m+<CR>
@@ -344,14 +351,28 @@ nmap { a{<ESC>ld$o<ESC>o<ESC>pki<TAB>
 "inoremap <C-j> <Esc>:m+<CR>
 "inoremap <C-k> <Esc>:m-2<CR>
 
+" Quickly move
+"inoremap <C-up> <C-[>10ki
+"nnoremap <C-up> 10k
+"inoremap <C-down> <C-[>10ji
+"nnoremap <C-down> 10j
+
+
 " Quickly close the current window
 nnoremap <leader>q :q<CR>
+nnoremap <leader>q! :q!<CR>
+
+" Quickly save the current file
+nnoremap <leader>w :w<CR>
+nnoremap <leader>wq :wq<CR>
+inoremap <leader>w <ESC>:w<CR>
+
 
 " Swap implementations of ` and ' jump to markers
 " By default, ' jumps to the marked line, ` jumps to the marked line and
 " column, so swap them
-nnoremap ' `
-nnoremap ` '
+"nnoremap ' `
+"nnoremap ` '
 
 " Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
 " yanked stack (also, in visual mode)
@@ -375,12 +396,12 @@ au BufWritePost .vimrc so ~/.vimrc
 "" " Close all the buffers
 "map <leader>ba :1,1000 bd!<cr>
 
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-
-" tabnext  tabpreviouse
+map <C-up> :tabnew<cr>
+"map <leader>to :tabonly<cr>
+map <C-down> :tabclose<cr>
+"map <C-up> :tabmove 
+map <C-right>  :tabnext<CR>
+map <C-left>   :tabprevious<CR>
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
@@ -393,7 +414,7 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
 " 0-bundle the plugins
 "package dependent:  ctags
-"python dependent:  pep8, pyflake
+"python dependent:  pep8, pyflake pylint
 
 filetype off " required! turn off
 set rtp+=~/.vim/bundle/vundle/
@@ -411,15 +432,15 @@ Bundle 'gmarik/vundle'
 "################### 导航 ###################"
 "目录导航
 Bundle 'scrooloose/nerdtree'
-map <leader>n :NERDTreeToggle<CR>
+map <leader>n :NERDTreeToggle<CR>/
 let NERDTreeHighlightCursorline=1
-let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$', '^\.svn$', '^\.hg$' ]
+let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$','\.egg$','\.exe$', '^\.git$', '^\.svn$', '^\.hg$' ]
 let g:netrw_home='~/bak'
 "close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
 
 "for minibufferexpl
-Bundle 'fholgado/minibufexpl.vim'
+"Bundle 'fholgado/minibufexpl.vim'
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
@@ -430,6 +451,7 @@ let g:miniBufExplorerMoreThanOne=2
 let g:miniBufExplCycleArround=1
 
 " 默认方向键左右可以切换buffer
+" 似乎有一个问题，如果在其中一个窗口使用退出命令，则所有的窗口都会退出
 "nnoremap <TAB> :MBEbn<CR>
 noremap <leader>bn :MBEbn<CR>
 noremap <leader>bp :MBEbp<CR>
@@ -485,8 +507,22 @@ let g:ctrlp_max_height=15
 let g:ctrlp_match_window_reversed=0
 let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
+"使用<ESC>退出搜索
 
 "################### 显示增强 ###################"
+"书签
+Bundle 'vim-scripts/Vim-bookmark'
+"mm 建立书签
+"mp 到达上一个书签
+"mn 到达下一个书签
+"ma 删除所有书签
+":VbookmarkGroup 当此命令不带参数时，表示列出当前所有的书签组。此命令后可
+"以接上书签组名，如果此名称存在，则打开对应的书签组，如果此名称不存在，则新建
+"一个书签组
+":VbookmarkGroupRemove 当此命令不带参数时，表示移除当前的书签组。此命令后
+"可以接上书签组名，如果此名称存在，则移除对应的书签组
+" 设置保存书签的文件
+let g:vbookmark_bookmarkSaveFile = $HOME . '/.vimbookmark'
 
 "状态栏增强展示
 Bundle 'Lokaltog/vim-powerline'
@@ -555,8 +591,11 @@ Bundle 'Valloric/YouCompleteMe'
 "具体配置内容请参考该项目的github主页
 "youcompleteme  默认tab  s-tab 和自动补全冲突
 ",gd 高亮选中的函数 仅c-family语言有效
+
+"选中第一项
 let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
+"选中最后一项
 let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
@@ -573,12 +612,19 @@ let g:ycm_filetype_blacklist = {
 Bundle 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
-"定义存放代码片段的文件夹 .vim/snippets下，使用自定义和默认的，将会的到全局，有冲突的会提示
+"定义存放代码片段的文件夹 .vim/snippets下
+"，使用自定义和默认的，将会的到全局，有冲突的会提示
 let g:UltiSnipsSnippetDirectories=["snippets", "bundle/UltiSnips/UltiSnips"]
+"let g:
+"定义使用的python版本，为2.x
+let g:UltiSnipsUsePythonVersion = 2
+"username and user_email
+let g:snips_author = "spacewander"
+let g:snips_author_email = "spacewanderlzx@gmail.com""
 
 "快速 加减注释
 ",cc 加上注释
-".cu 解开注释
+",cu 解开注释
 Bundle 'scrooloose/nerdcommenter'
 
 "  快速加入修改环绕字符
@@ -587,7 +633,7 @@ Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
 
 "在if\for等后面自动补全结构
-Bundle 'drmingdrmer/xptemplate'
+"Bundle 'drmingdrmer/xptemplate'
 
 "自动补全单引号，双引号等
 Bundle 'Raimondi/delimitMate'
@@ -623,7 +669,7 @@ let g:multi_cursor_quit_key='<Esc>'
 " 编辑时自动语法检查标红, vim-flake8目前还不支持,所以多装一个
 " 使用pyflakes,速度比pylint快
 Bundle 'scrooloose/syntastic'
-let g:syntastic_error_symbol='>>'
+let g:syntastic_error_symbol='X'
 let g:syntastic_warning_symbol='>'
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_highlighting = 0
@@ -638,10 +684,36 @@ let g:pyflakes_use_quickfix = 0
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
-Bundle 'mattn/emmet-vim'
-" 
+"Bundle 'mattn/emmet-vim'
+" for xml and html
 Bundle 'othree/xml.vim'
+" [[ to previous open tag
+" ]] to next open tag
+" [] to previous close tag
+" ][ to next close tag
+" let <localleader> = '\'
+" \c rename tag
+" \f fold tag
+" \d delete tag
+" \D delete tag and its content
+" see more :help xml-plugin.txt
+
 "################# 具体语言语法高亮及排版 ###############
+" for jumping in C/C++
+Bundle 'vim-scripts/a.vim'
+":A switches to the header file corresponding to the current file being edited (or vise versa) 
+":AS splits and switches 
+":AV vertical splits and switches 
+":AT new tab and switches 
+":AN cycles through matches 
+":IH switches to file under cursor 
+":IHS splits and switches 
+":IHV vertical splits and switches 
+":IHT new tab and switches 
+":IHN cycles through matches 
+"<Leader>ih switches to file under cursor 
+"<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp) 
+"<Leader>ihn cycles through matches 
 
 " for python.vim syntax highlight
 Bundle 'hdima/python-syntax'
