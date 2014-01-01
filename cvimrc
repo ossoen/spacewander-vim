@@ -1,4 +1,5 @@
 "==========================================
+" Notice: this vimrc is for c language
 " Author:  edited by spacewander currently 
 " Version: 7
 " Email: spacewanderlzx@gmail.com
@@ -197,44 +198,18 @@ set formatoptions+=B
 autocmd! bufwritepost _vimrc source % " vimrc文件修改之后自动加载。 windows。
 autocmd! bufwritepost .vimrc source % " vimrc文件修改之后自动加载。 linux。
 
-" 自动补全配置
-"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
-"set completeopt+=longest
-"set completeopt=longest,menu
-"其实不用改，这就是默认的模式了
-
-"离开插入模式后自动关闭预览窗口
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 "回车即选中当前项
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
  
-"上下左右键的行为 会显示其他信息
-"inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-"inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-"inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-"inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
-
 " 增强模式中的命令行自动完成操作
 set wildmenu
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc,*.class,*.obj
-
-" Python 文件的一般设置，比如不要 tab 等
-autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
-
 " if this not work ,make sure .viminfo is writable for you
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
-
-"删除多余空格
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
 
 " Remember info about open buffers on close"
 set viminfo^=%
@@ -259,10 +234,6 @@ let g:maplocalleader = '\'
 "Quickly fold/unfold
 nnoremap Z za
 
-"Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>
-
 "Treat long lines as break lines (useful when moving around in them)
 "se swap之后，同物理行上线直接跳
 map j gj
@@ -271,18 +242,12 @@ map k gk
 " better command line editing
 cnoremap <C-j> <t_kd>
 cnoremap <C-k> <t_ku>
-"cnoremap <C-a> <Home>
-"cnoremap <C-e> <End>
 
 "Smart way to move between windows 分屏窗口移动
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
-
-" Go to home and end using capitalized directions
-"noremap H 0
-"noremap L $
 
 " Remap VIM 0 to first non-blank character
 map 0 ^
@@ -303,13 +268,6 @@ set pastetoggle=<F5>            " when in insert mode, press <F2> to go to
 " disbale paste mode when leaving insert mode
 au InsertLeave * set nopaste
 
-"nnoremap <F6> :exec exists('syntax_on') ? 'syn off' : 'syn on'<CR>
-
-
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search) no now
-"map <C-space> /
-"map <c-space> ?"
-
 map Y y$
 "cmap w!! %!sudo tee > /dev/null %
 " w!! to sudo & write a file
@@ -317,16 +275,11 @@ cmap w!! w !sudo tee >/dev/null %
 noremap <silent><leader>/ :nohls<CR>
 
 inoremap kj <Esc>
-noremap <F1> :help 
-
 nnoremap ; :
-
 nnoremap <leader>v V`}
-
 "Use sane regexes"
 nnoremap / /\v
 vnoremap / /\v
-
 "Keep search pattern at the center of the screen."
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
@@ -334,46 +287,14 @@ nnoremap <silent> * *
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
 
-"Use arrow key to change buffer"
-"noremap <left> :bp<CR>
-"noremap <right> :bn<CR>
-
 "Jump to start and end of line using the home row keys
 nmap @ o<ESC>k
 nmap # O<ESC>j
 
 "插入大括号的正确方式
-inoremap {<CR> {<CR><tab><CR>}<up><End>
-inoremap <A-p> ij
+inoremap {<CR> {<CR><CR>}<up><TAB>
 
-" ctrl +jk to move lines   经常敲错换错行...一直没想好配哪个映射
-"noremap <C-k> :m+<CR>
-"noremap <C-j> :m-2<CR>
-"inoremap <C-j> <Esc>:m+<CR>
-"inoremap <C-k> <Esc>:m-2<CR>
-
-" Quickly move
-"inoremap <C-up> <C-[>10ki
-"nnoremap <C-up> 10k
-"inoremap <C-down> <C-[>10ji
-"nnoremap <C-down> 10j
-
-
-" Quickly close the current window
-nnoremap <leader>q :q<CR>
-nnoremap <leader>q! :q!<CR>
-
-" Quickly save the current file
-nnoremap <leader>w :w<CR>
-nnoremap <leader>wq :wq<CR>
 inoremap <leader>w <ESC>:w<CR>
-
-
-" Swap implementations of ` and ' jump to markers
-" By default, ' jumps to the marked line, ` jumps to the marked line and
-" column, so swap them
-"nnoremap ' `
-"nnoremap ` '
 
 " Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
 " yanked stack (also, in visual mode)
@@ -388,22 +309,10 @@ nnoremap U <C-r>
 " select all
 map <Leader>sa ggVG"
 
-" automatically reload vimrc when it's saved
-au BufWritePost .vimrc so ~/.vimrc
-
-
-" Close the current buffer
-"map <leader>bd :Bclose<cr>
-"" " Close all the buffers
-"map <leader>ba :1,1000 bd!<cr>
-
 map <C-up> :tabnew<cr>
-"map <leader>to :tabonly<cr>
 map <leader>te :tabedit 
-"map <C-up> :tabmove 
 map <C-right>  :tabnext<CR>
 map <C-left>   :tabprevious<CR>
-
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 map <c-down> :tabedit <c-r>=expand("%:p:h")<cr>/
@@ -442,21 +351,21 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 
 "for minibufferexpl
 "Bundle 'fholgado/minibufexpl.vim'
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1
-"解决FileExplorer窗口变小问题
-let g:miniBufExplForceSyntaxEnable = 1
-let g:miniBufExplorerMoreThanOne=2
-let g:miniBufExplCycleArround=1
+"let g:miniBufExplMapWindowNavVim = 1
+"let g:miniBufExplMapWindowNavArrows = 1
+"let g:miniBufExplMapCTabSwitchBufs = 1
+"let g:miniBufExplModSelTarget = 1
+""解决FileExplorer窗口变小问题
+"let g:miniBufExplForceSyntaxEnable = 1
+"let g:miniBufExplorerMoreThanOne=2
+"let g:miniBufExplCycleArround=1
 
 " 默认方向键左右可以切换buffer
 " 似乎有一个问题，如果在其中一个窗口使用退出命令，则所有的窗口都会退出
 "nnoremap <TAB> :MBEbn<CR>
-noremap <leader>bn :MBEbn<CR>
-noremap <leader>bp :MBEbp<CR>
-noremap <leader>bd :MBEbd<CR>
+"noremap <leader>bn :MBEbn<CR>
+"noremap <leader>bp :MBEbp<CR>
+"noremap <leader>bd :MBEbd<CR>
 
 "标签导航
 Bundle 'majutsushi/tagbar'
@@ -611,8 +520,6 @@ let g:ycm_filetype_blacklist = {
     \ 'unite' : 1,
     \ 'notes' : 1,
     \}
-"let g:ycm_server_use_vim_stdout = 1
-"let g:ycm_server_log_level = 'debug'
 
 "快速插入代码片段
 Bundle 'SirVer/ultisnips'
@@ -636,9 +543,9 @@ Bundle 'scrooloose/nerdcommenter'
 "imap <c-c> <Plug>NERDCommenterInsert
 
 "快速加入修改环绕字符
-Bundle 'tpope/vim-surround'
+"Bundle 'tpope/vim-surround'
 "for repeat -> enhance surround.vim, . to repeat command
-Bundle 'tpope/vim-repeat'
+"Bundle 'tpope/vim-repeat'
 
 "在if\for等后面自动补全结构
 "Bundle 'drmingdrmer/xptemplate'
@@ -646,17 +553,17 @@ Bundle 'tpope/vim-repeat'
 "自动补全单引号，双引号等
 Bundle 'Raimondi/delimitMate'
 " for python docstring ",优化输入
-au FileType python let b:delimitMate_nesting_quotes = ['"']
+"au FileType python let b:delimitMate_nesting_quotes = ['"']
 
 "for code alignment
 ",f=/:/, 按相应的符号切分格式化
-Bundle 'godlygeek/tabular'
-nmap <Leader>f= :Tabularize /=<CR>
-vmap <Leader>f= :Tabularize /=<CR>
-nmap <Leader>f, :Tabularize /,<CR>
-vmap <Leader>f, :Tabularize /,<CR>
-nmap <Leader>f: :Tabularize /:\zs<CR>
-vmap <Leader>f: :Tabularize /:\zs<CR>
+"Bundle 'godlygeek/tabular'
+"nmap <Leader>f= :Tabularize /=<CR>
+"vmap <Leader>f= :Tabularize /=<CR>
+"nmap <Leader>f, :Tabularize /,<CR>
+"vmap <Leader>f, :Tabularize /,<CR>
+"nmap <Leader>f: :Tabularize /:\zs<CR>
+"vmap <Leader>f: :Tabularize /:\zs<CR>
 
 "for visual selection
 Bundle 'terryma/vim-expand-region'
@@ -664,37 +571,37 @@ map = <Plug>(expand_region_expand)
 map - <Plug>(expand_region_shrink)
 
 "for mutil cursor
-Bundle 'terryma/vim-multiple-cursors'
-let g:multi_cursor_use_default_mapping=0
-" Default mapping
-let g:multi_cursor_next_key='<C-m>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
+"Bundle 'terryma/vim-multiple-cursors'
+"let g:multi_cursor_use_default_mapping=0
+"" Default mapping
+"let g:multi_cursor_next_key='<C-m>'
+"let g:multi_cursor_prev_key='<C-p>'
+"let g:multi_cursor_skip_key='<C-x>'
+"let g:multi_cursor_quit_key='<Esc>'
 
 "################# 具体语言语法检查 ###############
 
 " 编辑时自动语法检查标红, vim-flake8目前还不支持,所以多装一个
 " 使用pyflakes,速度比pylint快
-Bundle 'scrooloose/syntastic'
-let g:syntastic_error_symbol='X'
-let g:syntastic_warning_symbol='>'
-let g:syntastic_check_on_open=1
-let g:syntastic_enable_highlighting = 0
-let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
-let g:syntastic_python_checkers=['pyflakes']
-highlight SyntasticErrorSign guifg=white guibg=black
+"Bundle 'scrooloose/syntastic'
+"let g:syntastic_error_symbol='X'
+"let g:syntastic_warning_symbol='>'
+"let g:syntastic_check_on_open=1
+"let g:syntastic_enable_highlighting = 0
+"let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
+"let g:syntastic_python_checkers=['pyflakes']
+"highlight SyntasticErrorSign guifg=white guibg=black
 
-" python fly check, 弥补syntastic只能打开和保存才检查语法的不足
-Bundle 'kevinw/pyflakes-vim'
-let g:pyflakes_use_quickfix = 0
+"" python fly check, 弥补syntastic只能打开和保存才检查语法的不足
+"Bundle 'kevinw/pyflakes-vim'
+"let g:pyflakes_use_quickfix = 0
 
-"################# 具体语言补全 ###############
+""################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
 "Bundle 'mattn/emmet-vim'
 " for xml and html
-Bundle 'othree/xml.vim'
+"Bundle 'othree/xml.vim'
 " [[ to previous open tag
 " ]] to next open tag
 " [] to previous close tag
@@ -723,19 +630,19 @@ Bundle 'vim-scripts/a.vim'
 "<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp) 
 "<Leader>ihn cycles through matches 
 
-" for python.vim syntax highlight
-Bundle 'hdima/python-syntax'
-let python_highlight_all = 1
+" for python.vim syntax highligh"t
+"Bundle 'hdima/python-syntax'
+"let python_highlight_all = 1
 
-" for markdown
-Bundle 'plasticboy/vim-markdown'
-let g:vim_markdown_folding_disabled=1
+"" for markdown
+"Bundle 'plasticboy/vim-markdown'
+"let g:vim_markdown_folding_disabled=1
 
-" for javascript
-Bundle "pangloss/vim-javascript"
-let g:html_indent_inctags = "html,body,head,tbody"
-let g:html_indent_script1 = "inc"
-let g:html_indent_style1 = "inc"
+"" for javascript
+"Bundle "pangloss/vim-javascript"
+"let g:html_indent_inctags = "html,body,head,tbody"
+"let g:html_indent_script1 = "inc"
+"let g:html_indent_style1 = "inc"
 
 "for jquery
 "Bundle 'nono/jquery.vim'
@@ -811,3 +718,4 @@ au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+

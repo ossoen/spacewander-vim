@@ -26,6 +26,7 @@ echo "所以不要删除上述的文件夹"
 lnif $CURRENT_DIR/vimrc $HOME/.vimrc
 lnif $CURRENT_DIR/ $HOME/.vim
 
+lnif $CURRENT_DIR/lnYourVimrc.sh $HOME/lnYourVimrc.sh
 
 if [ ! -e $CURRENT_DIR/vundle ]; then
     echo "Installing Vundle"

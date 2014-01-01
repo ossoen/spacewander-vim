@@ -40,12 +40,11 @@ k-vim的说明见于K-VIM.md
     #    新起一行，上面
     U	 恢复
     ctrl + jkhl 进行上下左右窗口跳转,不需要ctrl+w+jkhl
-    ctrl + 左右 左右标签跳转
     ctrl + 上   打开新标签
-    ctrl + 下   关闭当前标签
-    
+    ctrl + 下   在当前位置打开选定的标签 
     
     <Leader> , 设置leader键为,
+    <localLeader>/ 设置localLeader键为\
     <Leader>sa   全选(select all)
     <Leader>tn  new tab
     <Leader>tc  tab close
@@ -54,13 +53,17 @@ k-vim的说明见于K-VIM.md
     <Leader>te  new tab edit
     <Leader>ev  修改.vimrc
     <Leader>sv  重新加载.vimrc
+    <Leader>cc  注释
+    <Leader>cu  反注释
+    <Leader>ci  逆转注释    
+    <Leader><Leader>w 快速跳转
 
     <Leader>y 展示历史剪贴板
     <Leader>yc 清空
     yy/dd -> p -> ctrl+p可以替换非最近一次剪贴内容
 
     <Leader>p 开启文件搜索 ctrlp
-    <Leader>f 同上
+    <Leader>f 开启最近编辑过的文件的搜索
     <Leader>/ 去除匹配高亮
     <Leader>q 离开，等同于:q
     <Leader>q! 离开，等同于:q!
@@ -70,4 +73,7 @@ k-vim的说明见于K-VIM.md
     
     <Leader>v 选择一段区域
 --------------------
-
+New feature:
+    使用lnYourVimrc.sh可以指定特别的vimrc文件
+    用法：./lnYourVimrc.sh c
+    则将会链接~/.vimrc到cvimrc
