@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # link special vimrc
-BASEDIR=$(dirname $0)
-cd $BASEDIR
-CURRENT_DIR=`pwd`
-
+#BASEDIR=$(dirname $0)
+#cd $BASEDIR
+#CURRENT_DIR=`pwd`
+CURRENT_DIR=$HOME'/github/spacewander-vim'
 lnif() {
     if [ ! -e $2 ] ; then
         ln -s $1 $2
@@ -13,6 +13,12 @@ lnif() {
         ln -sf $1 $2
     fi
 }
+
+if [ 'ls' = $1 ];then
+    # ls possible vimrc 
+    ls $CURRENT_DIR | grep 'vimrc'
+    exit
+fi
 
 VIMCONFIG=$1vimrc #set VIMCONFIG to XXvimrc
 if [ -e $CURRENT_DIR/$VIMCONFIG ];

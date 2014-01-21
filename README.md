@@ -4,7 +4,9 @@
 k-vim的说明见于K-VIM.md
 
 ### vim原生快捷键说明
-
+    
+    *   查找光标当前所在的单词
+    D   清除当前光标之后的内容
     J   连接本行和下一行
     K   :! man xx 快速查询手册
     tx  跳到下一个x前面，大写则相反
@@ -19,13 +21,12 @@ k-vim的说明见于K-VIM.md
     gd  选中同样的单词
     '' 跳转到光标上次停靠的地方, 是两个', 而不是一个"
     mx 设置书签,x只能是a-z的26个字母
-    (1左边的键)x 跳转到书签x处(“`”是1左边的键)
+    `(1左边的键)x 跳转到书签x处(“`”是1左边的键)
+    :sh 在vim中运行shell命令
+    qx-q-@x 记录操作-结束记录-重复操作(x是26个字母之一)
 
 ### 自定义快捷键说明
 
-    F1  关掉，防止跳出帮助
-    F2  set nu/nonu
-    F3  set list/nolist
     F4  set wrap/nowrap
     F5  set paste/nopaste
     F8  taglist 导航
@@ -35,9 +36,9 @@ k-vim的说明见于K-VIM.md
     Y   =y$   复制到行尾
     Z   折叠/反折叠
     w!!  以sudo的权限保存
-    kj   <Esc>，不用到角落去按esc了(或者使用ctrl + [)
-    @    新起一行，下面，不进入插入模式
-    #    新起一行，上面
+
+    #    新起一行，下面，不进入插入模式
+    ctrl + #    新起一行，上面
     U	 恢复
     ctrl + jkhl 进行上下左右窗口跳转,不需要ctrl+w+jkhl
     ctrl + 上   打开新标签
@@ -72,8 +73,11 @@ k-vim的说明见于K-VIM.md
     <Leader>f(,:=) 按照$0的符号切分格式化
     
     <Leader>v 选择一段区域
+    
 --------------------
+
 New feature:
     使用lnYourVimrc.sh可以指定特别的vimrc文件
     用法：./lnYourVimrc.sh c
     则将会链接~/.vimrc到cvimrc
+    本人正在实验这种新玩法中...

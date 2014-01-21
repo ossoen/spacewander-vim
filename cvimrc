@@ -161,8 +161,6 @@ set showmode
 " Set 15 lines to the cursor - when moving vertically using j/k 上下滚动,始终在中间
 set scrolloff=15
 
-"set winwidth=79
-
 " 命令行（在状态行下）的高度，默认为1，这里是2
 set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
 " Always show the status line
@@ -197,6 +195,10 @@ set formatoptions+=B
 "==========================================
 autocmd! bufwritepost _vimrc source % " vimrc文件修改之后自动加载。 windows。
 autocmd! bufwritepost .vimrc source % " vimrc文件修改之后自动加载。 linux。
+
+" about highlight
+set nohlsearch          " do not highlight searched-for phrases
+set incsearch           " ...but do highlight-as-I-type the search string
 
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 "回车即选中当前项
@@ -256,12 +258,9 @@ map 0 ^
 nnoremap <C-e> 5<C-e>
 nnoremap <C-y> 5<C-y>
 
-""为方便复制，用<F2>开启/关闭行号显示:
-nnoremap <F2> :set nonumber! number?<CR>
-nnoremap <F3> :set list! list?<CR>
 nnoremap <F4> :set wrap! wrap?<CR>
               "set paste
-set pastetoggle=<F5>            " when in insert mode, press <F2> to go to
+set pastetoggle=<F5>            " when in insert mode, press <F5> to go to
                                 "    paste mode, where you can paste mass data
                                 "    that won't be autoindented
 
@@ -274,7 +273,7 @@ map Y y$
 cmap w!! w !sudo tee >/dev/null %
 noremap <silent><leader>/ :nohls<CR>
 
-inoremap kj <Esc>
+noremap <c-c> <ESC><CR>
 nnoremap ; :
 nnoremap <leader>v V`}
 "Use sane regexes"
@@ -288,13 +287,16 @@ nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
 
 "Jump to start and end of line using the home row keys
-nmap @ o<ESC>k
-nmap # O<ESC>j
+nmap # o<ESC>k
+nmap <c-#> O<ESC>j
 
 "插入大括号的正确方式
 inoremap {<CR> {<CR><CR>}<up><TAB>
 
 inoremap <leader>w <ESC>:w<CR>
+inoremap <leader>q <ESC>:q<CR>
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
 
 " Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
 " yanked stack (also, in visual mode)
@@ -303,8 +305,6 @@ vnoremap <silent> <leader>d "_d
 
 " remap U to <C-r> for easier redo
 nnoremap U <C-r>
-
-"au VimResized * exe "normal! \<c-w>=""
 
 " select all
 map <Leader>sa ggVG"
@@ -349,7 +349,6 @@ let g:netrw_home='~/bak'
 "close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
 
-"for minibufferexpl
 "Bundle 'fholgado/minibufexpl.vim'
 "let g:miniBufExplMapWindowNavVim = 1
 "let g:miniBufExplMapWindowNavArrows = 1
@@ -476,7 +475,7 @@ let g:indentLine_char = '¦'
 
 
 "主题 solarized
-Bundle 'altercation/vim-colors-solarized'
+"Bundle 'altercation/vim-colors-solarized'
 "let g:solarized_termcolors=256
 "let g:solarized_termtrans=1
 "let g:solarized_contrast="normal"
@@ -496,7 +495,7 @@ hi link EasyMotionTarget ErrorMsg
 hi link EasyMotionShade  Comment
 
 "%匹配成对的标签，跳转
-Bundle 'vim-scripts/matchit.zip'
+"Bundle 'vim-scripts/matchit.zip'
 
 "################### 补全及快速编辑 ###################"
 
@@ -516,6 +515,8 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extr
 let g:ycm_complete_in_comments = 1 "default value is 0
 let g:ycm_complete_in_strings = 1 "as default
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_filetype_blacklist = {
     \ 'unite' : 1,
     \ 'notes' : 1,
@@ -534,6 +535,9 @@ let g:UltiSnipsUsePythonVersion = 2
 "username and user_email
 let g:snips_author = "spacewander"
 let g:snips_author_email = "spacewanderlzx@gmail.com""
+
+"for Doxygen
+"Bundle 'NsLib/vim-DoxygenToolkit-mod'
 
 "快速 加减注释
 "<leader>cc 加上注释
@@ -653,8 +657,8 @@ Bundle 'vim-scripts/a.vim'
 
 "################### 其他 ###################"
 " task list
-Bundle 'vim-scripts/TaskList.vim'
-map <leader>td <Plug>TaskList
+"Bundle 'vim-scripts/TaskList.vim'
+"map <leader>td <Plug>TaskList
 
 " for git 尚未用起来
 "Bundle 'tpope/vim-fugitive'

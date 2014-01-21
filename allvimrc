@@ -74,7 +74,7 @@ set tm=500
 
 "显示行号：
 set number
-set nowrap                    " 取消换行。
+"set nowrap                    " 取消换行。
 
 "括号配对情况
 set showmatch
@@ -122,9 +122,8 @@ set showcmd
 set hidden
 set wildmode=list:longest
 set ttyfast
-" 加载文件外观
-au BufWinLeave * silent mkview
-au BufWinEnter * silent loadview
+
+
 "行号变成相对，可以用 nj  nk   进行跳转 5j   5k 上下跳5行
 set relativenumber
 au FocusLost * :set number
@@ -462,32 +461,32 @@ nmap <F9> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
 
 "标签导航 要装ctags
-"Bundle 'vim-scripts/taglist.vim'
-"set tags=tags;/
-"let Tlist_Ctags_Cmd="/usr/bin/ctags"
-""nnoremap <silent> <F8> :TlistToggle<CR>
-"let Tlist_Auto_Highlight_Tag = 1
-"let Tlist_Auto_Open = 0
-"let Tlist_Auto_Update = 1
-"let Tlist_Close_On_Select = 0
-"let Tlist_Compact_Format = 0
-"let Tlist_Display_Prototype = 0
-"let Tlist_Display_Tag_Scope = 1
-"let Tlist_Enable_Fold_Column = 0
-"let Tlist_Exit_OnlyWindow = 1
-"let Tlist_File_Fold_Auto_Close = 0
-"let Tlist_GainFocus_On_ToggleOpen = 1
-"let Tlist_Hightlight_Tag_On_BufEnter = 1
-"let Tlist_Inc_Winwidth = 0
-"let Tlist_Max_Submenu_Items = 1
-"let Tlist_Max_Tag_Length = 30
-"let Tlist_Process_File_Always = 0
-"let Tlist_Show_Menu = 0
-"let Tlist_Show_One_File = 1
-"let Tlist_Sort_Type = "order"
-"let Tlist_Use_Horiz_Window = 0
-"let Tlist_Use_Right_Window = 0
-"let Tlist_WinWidth = 25
+Bundle 'vim-scripts/taglist.vim'
+set tags=tags;/
+let Tlist_Ctags_Cmd="/usr/bin/ctags"
+nnoremap <silent> <F8> :TlistToggle<CR>
+let Tlist_Auto_Highlight_Tag = 1
+let Tlist_Auto_Open = 0
+let Tlist_Auto_Update = 1
+let Tlist_Close_On_Select = 0
+let Tlist_Compact_Format = 0
+let Tlist_Display_Prototype = 0
+let Tlist_Display_Tag_Scope = 1
+let Tlist_Enable_Fold_Column = 0
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_File_Fold_Auto_Close = 0
+let Tlist_GainFocus_On_ToggleOpen = 1
+let Tlist_Hightlight_Tag_On_BufEnter = 1
+let Tlist_Inc_Winwidth = 0
+let Tlist_Max_Submenu_Items = 1
+let Tlist_Max_Tag_Length = 30
+let Tlist_Process_File_Always = 0
+let Tlist_Show_Menu = 0
+let Tlist_Show_One_File = 1
+let Tlist_Sort_Type = "order"
+let Tlist_Use_Horiz_Window = 0
+let Tlist_Use_Right_Window = 0
+let Tlist_WinWidth = 25
 
 "for file search ctrlp, 文件搜索
 Bundle 'kien/ctrlp.vim'
@@ -565,7 +564,7 @@ let g:indentLine_char = '¦'
 
 
 "主题 solarized
-"Bundle 'altercation/vim-colors-solarized'
+Bundle 'altercation/vim-colors-solarized'
 "let g:solarized_termcolors=256
 "let g:solarized_termtrans=1
 "let g:solarized_contrast="normal"
@@ -585,7 +584,7 @@ hi link EasyMotionTarget ErrorMsg
 hi link EasyMotionShade  Comment
 
 "%匹配成对的标签，跳转
-"Bundle 'vim-scripts/matchit.zip'
+Bundle 'vim-scripts/matchit.zip'
 
 "################### 补全及快速编辑 ###################"
 
@@ -627,7 +626,7 @@ let g:snips_author = "spacewander"
 let g:snips_author_email = "spacewanderlzx@gmail.com""
 
 "for Doxygen
-"Bundle 'NsLib/vim-DoxygenToolkit-mod'
+Bundle 'NsLib/vim-DoxygenToolkit-mod'
 
 "快速 加减注释
 "<leader>cc 加上注释
@@ -637,7 +636,7 @@ Bundle 'scrooloose/nerdcommenter'
 "imap <c-c> <Plug>NERDCommenterInsert
 
 "快速加入修改环绕字符
-"Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-surround'
 "for repeat -> enhance surround.vim, . to repeat command
 "Bundle 'tpope/vim-repeat'
 
@@ -651,13 +650,13 @@ au FileType python let b:delimitMate_nesting_quotes = ['"']
 
 "for code alignment
 ",f=/:/, 按相应的符号切分格式化
-"Bundle 'godlygeek/tabular'
-"nmap <Leader>f= :Tabularize /=<CR>
-"vmap <Leader>f= :Tabularize /=<CR>
-"nmap <Leader>f, :Tabularize /,<CR>
-"vmap <Leader>f, :Tabularize /,<CR>
-"nmap <Leader>f: :Tabularize /:\zs<CR>
-"vmap <Leader>f: :Tabularize /:\zs<CR>
+Bundle 'godlygeek/tabular'
+nmap <Leader>f= :Tabularize /=<CR>
+vmap <Leader>f= :Tabularize /=<CR>
+nmap <Leader>f, :Tabularize /,<CR>
+vmap <Leader>f, :Tabularize /,<CR>
+nmap <Leader>f: :Tabularize /:\zs<CR>
+vmap <Leader>f: :Tabularize /:\zs<CR>
 
 "for visual selection
 Bundle 'terryma/vim-expand-region'
@@ -665,7 +664,7 @@ map = <Plug>(expand_region_expand)
 map - <Plug>(expand_region_shrink)
 
 "for mutil cursor
-"Bundle 'terryma/vim-multiple-cursors'
+Bundle 'terryma/vim-multiple-cursors'
 let g:multi_cursor_use_default_mapping=0
 " Default mapping
 let g:multi_cursor_next_key='<C-m>'
@@ -709,7 +708,7 @@ Bundle 'othree/xml.vim'
 
 "################# 具体语言语法高亮及排版 ###############
 " for jumping in C/C++
-"Bundle 'vim-scripts/a.vim'
+Bundle 'vim-scripts/a.vim'
 ":A switches to the header file corresponding to the current file being edited (or vise versa) 
 ":AS splits and switches 
 ":AV vertical splits and switches 
@@ -732,14 +731,13 @@ Bundle 'plasticboy/vim-markdown'
 let g:vim_markdown_folding_disabled=1
 
 " for javascript
-"Bundle "pangloss/vim-javascript"
+Bundle "pangloss/vim-javascript"
 let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 
 "for jquery
 "Bundle 'nono/jquery.vim'
-
 
 "################### 其他 ###################"
 " task list
