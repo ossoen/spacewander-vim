@@ -47,8 +47,6 @@ set backupdir=~/bak/vimbk/
 "set nobackup
 "set noswapfile
 
-" 突出显示当前行等 不喜欢这种定位可注解
-"set cursorcolumn
 set cursorline              " 突出显示当前行
 
 "设置 退出vim后，内容显示在终端屏幕, 可以用于查看和复制
@@ -60,6 +58,7 @@ set t_ti= t_te=
 set selection=inclusive
 set selectmode=mouse,key
 
+set mouse=a
 " No annoying sound on errors
 " 去掉输入错误的提示声音
 set title                " change the terminal's title
@@ -74,7 +73,8 @@ set tm=500
 
 "显示行号：
 set number
-set nowrap                    " 取消换行。
+"set nowrap                    " 取消换行。
+set wrap
 
 "括号配对情况
 set showmatch
@@ -86,8 +86,6 @@ set mat=2
 set hlsearch
 " 搜索时忽略大小写
 set ignorecase
-" 随着键入即时搜索
-set incsearch
 " 有一个或以上大写字母时仍大小写敏感
 set smartcase     " ignore case if search pattern is all lowercase, case-sensitive otherwise
 
@@ -117,7 +115,6 @@ set expandtab                " 将Tab自动转化成空格    [需要输入真�
 
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 
-set showcmd
 " A buffer becomes hidden when it is abandoned
 set hidden
 set wildmode=list:longest
@@ -151,8 +148,6 @@ endif
 
 set wildignore=*.swp,*.bak,*.pyc,*.class
 
-"显示当前的行号列号：
-set ruler
 ""在状态栏显示正在输入的命令
 set showcmd
 " Show current mode
@@ -289,12 +284,11 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Go to home and end using capitalized directions
-"noremap H 0
-"noremap L $
+noremap H 0
+noremap L $
 
-" Remap VIM 0 to first non-blank character
-map 0 ^
-
+inoremap <Home> <ESC>^i
+nnoremap <Home> ^
 " Speed up scrolling of the viewport slightly
 nnoremap <C-e> 5<C-e>
 nnoremap <C-y> 5<C-y>
@@ -371,11 +365,6 @@ inoremap <leader>w <ESC>:w<CR>
 " column, so swap them
 "nnoremap ' `
 "nnoremap ` '
-
-" Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
-" yanked stack (also, in visual mode)
-nnoremap <silent> <leader>d "_d
-vnoremap <silent> <leader>d "_d
 
 " remap U to <C-r> for easier redo
 nnoremap U <C-r>
