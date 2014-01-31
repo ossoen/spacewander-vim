@@ -67,6 +67,11 @@ else
 fi
 endsnippet
 
+snippet el "else"
+else
+	${0:#statements}
+endsnippet
+
 snippet ief "elif .. (elif)"
 if [ ${1:condition} ];
 then
@@ -107,7 +112,7 @@ done
 endsnippet
 
 snippet while "while ... (done)"
-while ${2:[[ ${1:condition} ]]}; do
+while [${2:[ ${1:condition} ]}]; do
 	${0:#statements}
 done
 endsnippet

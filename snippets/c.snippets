@@ -23,12 +23,7 @@ snippet #i "#include <> (Inc)"
 endsnippet
 
 snippet mark "#pragma mark (mark)"
-#if 0
-${1:#pragma mark -
-}#pragma mark $2
-#endif
-
-$0
+#pragma mark $0
 endsnippet
 
 snippet im "main() (main)"
@@ -107,7 +102,7 @@ if (${1:/* condition */})
 }
 endsnippet
 
-snippet el "if .. else if .. else .. (else)"
+snippet ief "if .. else if .. else .. (else)"
 if (${1:/* condition */})
 {
 	${3:/*code*/}
@@ -119,6 +114,13 @@ else if (${2:/* condition */})
 else 
 {
 	${0:/*code*/}
+}
+endsnippet
+
+snippet el "else"
+else
+{
+	${0:/* code */}
 }
 endsnippet
 
@@ -137,14 +139,20 @@ snippet sw "switch"
 switch(${1:/*var*/})
 {
 case ${2:/*value*/}:
-    ${4:/*code*/};
+    ${4:/*code*/}
     break;
 case ${3:/*value*/}:
-    ${5:/*code*/};
+    ${5:/*code*/}
     break;
 default:
-    ${0:/*code*/};
+    ${0:/*code*/}
 }
+endsnippet
+
+snippet ca "case"
+case ${1:/* value */}:
+	${2:/* code */}
+	break;
 endsnippet
 
 snippet p "printf .. (printf)"

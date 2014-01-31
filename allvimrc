@@ -46,14 +46,13 @@ endfunction
 augroup myFun
     autocmd!
     autocmd BufWrite *.py :call DeleteTrailingWS()
-    autocmd BufWritePost * call Chmod()
+    autocmd BufWritePost * :call Chmod()
 augroup END
 
 "}}}
 "==========================================
 ":) General 基础设置 {{{
 "==========================================
-set guifont=Monaco:h14          " 字体 && 字号
 " history存储长度。
 set history=2000
 "检测文件类型
@@ -67,7 +66,7 @@ filetype plugin indent on
 "非兼容vi模式。去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
 set nocompatible
 set autoread          " 文件修改之后自动载入。
-set shortmess=atI       " 启动的时候不显示那个援助索马里儿童的提示
+set shortmess=astI
 set mouse=a
 " 备份,到另一个位置. 防止误删, 目前是取消备份
 set backup
@@ -85,7 +84,7 @@ set t_ti= t_te=
 " 修复ctrl+m 多光标操作选择的bug，但是改变了ctrl+v进行字符选中时将包含光标下的字符
 "set selection=exclusive
 set selection=inclusive
-set selectmode=mouse,key
+set selectmode=key
 " 去掉输入错误的提示声音
 set title                " change the terminal's title
 set novisualbell           " don't beep
@@ -99,6 +98,12 @@ set tm=500
 "显示行号：
 set number
 "set nowrap                    " 取消换行。
+augroup specialFileWrap
+    autocmd!
+    autocmd BufReadPost *.html set wrap
+    autocmd BufReadPost *.js set wrap
+augroup END
+
 "括号配对情况
 set showmatch
 " How many tenths of a second to blink when matching brackets
@@ -157,7 +162,7 @@ set wildignore=*.swp,*.bak,*.pyc,*.class
 
 "显示当前的行号列号：
 set ruler
-""在状态栏显示正在输入的命令
+"在状态栏显示正在输入的命令
 set showcmd
 " Show current mode
 set showmode
@@ -197,8 +202,10 @@ augroup END
 " 记住文件外观，如折叠等
 augroup rememberView
     autocmd!
-    au BufWinLeave * silent mkview
-    au BufWinEnter * silent loadview
+    "if filetype !=# txt:
+        au BufWinLeave * silent mkview
+        au BufWinEnter * silent loadview
+    "endif
 augroup END
 
 " about highlight
@@ -219,9 +226,7 @@ set wildignore=*.o,*~,*.pyc,*.class,*.obj
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
 
 " if this not work ,make sure .viminfo is writable for you
-if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " Remember info about open buffers on close"
 set viminfo^=%
@@ -307,10 +312,6 @@ nnoremap <silent> N Nzz
 nnoremap <silent> * *
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
-
-"Jump to start and end of line using the home row keys
-nnoremap # o<ESC>k
-nnoremap <c-#> O<ESC>j
 
 "插入大括号的正确方式
 inoremap {<CR> {<CR><tab><CR>}<up><End>
@@ -552,6 +553,8 @@ let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_complete_in_comments = 1 "default value is 0
 let g:ycm_complete_in_strings = 1 "as default
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
@@ -708,22 +711,6 @@ filetype plugin indent on
 syntax enable
 syntax on
 
-" Set extra options when running in GUI mode
-if has("gui_running")
-    set guifont=Monaco:h14
-    set guioptions-=T
-    set guioptions+=e
-    set guioptions-=r
-    set guioptions-=L
-    set guitablabel=%M\ %t
-    set showtabline=1
-    set linespace=2
-    set noimd
-    set t_Co=256
-endif
-
-
-" 修改主题和颜色展示
 "colorscheme solarized
 set background=dark
 set t_Co=256
