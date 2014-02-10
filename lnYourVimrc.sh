@@ -14,7 +14,7 @@ lnif() {
     fi
 }
 
-if [ 'ls' = $1 ];then
+if [[ 'ls' = $1 ]];then
     # ls possible vimrc 
     ls $CURRENT_DIR | grep 'vimrc'
     exit

@@ -1,4 +1,5 @@
 "==========================================
+" vim:ft=vim 
 " Author:  edited by spacewander currently 
 " Version: 7
 " Email: spacewanderlzx@gmail.com
@@ -41,6 +42,16 @@ function! Chmod()
       nmap <buffer> <S-F5> :!%:p<CR>
     endif
   endif
+endfunction
+
+function! ToggleMouse()
+    if &mouse ==# 'a'
+        set mouse=
+        echo 'no mouse mode'
+    else
+        set mouse=a
+        echo 'mouse mode'
+    endif
 endfunction
 
 augroup myFun
@@ -114,11 +125,6 @@ set ignorecase
 set smartcase     " ignore case if search pattern is all lowercase, case-sensitive otherwise
 " 代码折叠
 set foldenable
-" 为vim脚本设定特殊的折叠方法
-augroup vimFold
-    autocmd!
-    autocmd FileType vim set foldmethod=marker
-augroup END
 " 折叠方法
 " manual    手工折叠
 " indent    使用缩进表示折叠
@@ -126,8 +132,13 @@ augroup END
 " syntax    使用语法定义折叠
 " diff      对没有更改的文本进行折叠
 " marker    使用标记进行折叠, 默认标记是 {{{ 和 }}}
-set foldmethod=marker
+set foldmethod=indent
+" 为vim脚本设定特殊的折叠方法
+augroup vimFold
+    autocmd FileType vim setlocal foldmethod=marker
+augroup END
 set foldlevel=99
+"set foldlevelstart=1
 "Smart indent
 set smartindent
 set autoindent    " always set autoindenting on
@@ -157,8 +168,6 @@ set undolevels=1000         " How many undos
 set undoreload=10000        " number of lines to save for undo
 set undofile                " keep a persistent backup file
 set undodir=~/bak/vimundo/
-
-set wildignore=*.swp,*.bak,*.pyc,*.class
 
 "显示当前的行号列号：
 set ruler
@@ -200,12 +209,16 @@ augroup sourceVimrc
     autocmd! bufwritepost .vimrc source % " vimrc文件修改之后自动加载。 linux。
 augroup END
 " 记住文件外观，如折叠等
+function! StoreView()
+    if expand('%') !=# ''
+        au BufWinEnter * silent loadview
+        au BufWinLeave * silent mkview
+    endif
+endfunction
+
 augroup rememberView
     autocmd!
-    "if filetype !=# txt:
-        au BufWinLeave * silent mkview
-        au BufWinEnter * silent loadview
-    "endif
+    :call StoreView()
 augroup END
 
 " about highlight
@@ -252,7 +265,6 @@ nnoremap Z za
 
 "Quickly edit/reload the vimrc file
 nnoremap <silent> <leader>ev :vsplit $MYVIMRC<CR>
-nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 
 "Treat long lines as break lines (useful when moving around in them)
 "se swap之后，同物理行上线直接跳
@@ -278,10 +290,7 @@ noremap L $
 " Remap VIM 0 to first non-blank character
 noremap 0 ^
 
-" Speed up scrolling of the viewport slightly
-nnoremap <C-e> 5<C-e>
-nnoremap <C-y> 5<C-y>
-
+noremap <F2> :call ToggleMouse()<CR>
 nnoremap <F4> :set wrap! wrap?<CR>
               "set paste
 set pastetoggle=<F5>            " when in insert mode, press <F5> to go to
@@ -299,8 +308,10 @@ cnoremap w!! w !sudo tee >/dev/null %
 noremap <F1> :help 
 
 nnoremap ; :
-
+au FileType sh nnoremap <leader>m  :!man <cWORD><cr>
 nnoremap <leader>v V`}
+" 清扫命令行
+cnoremap <leader>d <End><c-u>
 
 "Use sane regexes"
 nnoremap / /\v
@@ -312,9 +323,8 @@ nnoremap <silent> N Nzz
 nnoremap <silent> * *
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
-
 "插入大括号的正确方式
-inoremap {<CR> {<CR><tab><CR>}<up><End>
+inoremap {<CR> {<CR><CR>}<up><tab><End>
 
 " Quickly close the current window
 nnoremap <leader>q :q<CR>
@@ -330,19 +340,10 @@ inoremap <leader>w <ESC>:w<CR>
 "nnoremap ' `
 "nnoremap ` '
 
-" Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
-" yanked stack (also, in visual mode)
-nnoremap <silent> <leader>d "_d
-vnoremap <silent> <leader>d "_d
-
 " remap U to <C-r> for easier redo
 nnoremap U <C-r>
 " select all
 nnoremap <Leader>sa ggVG"
-
-" automatically reload vimrc when it's saved
-au BufWritePost .vimrc so ~/.vimrc
-
 
 " Close the current buffer
 "noremap <leader>bd :Bclose<cr>
@@ -357,6 +358,34 @@ nnoremap <C-left>   :tabprevious<CR>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <c-down> :tabedit <c-r>=expand("%:p:h")<cr>/
+"}}}
+"==========================================
+":) 主题,及一些展示上颜色的修改 {{{
+"==========================================
+"开启语法高亮
+syntax enable
+syntax on
+
+"colorscheme solarized
+set background=dark
+set t_Co=256
+
+
+"设置标记一列的背景颜色和数字一行颜色一致
+hi! link SignColumn   LineNr
+hi! link ShowMarksHLl DiffAdd
+hi! link ShowMarksHLu DiffChange
+
+"" for error highlight，防止错误整行标红导致看不清
+highlight clear SpellBad
+highlight SpellBad term=standout ctermfg=1 term=underline cterm=underline
+highlight clear SpellCap
+highlight SpellCap term=underline cterm=underline
+highlight clear SpellRare
+highlight SpellRare term=underline cterm=underline
+highlight clear SpellLocal
+highlight SpellLocal term=underline cterm=underline
+
 "}}}
 "==========================================
 ":) bundle 插件管理和配置项 {{{
@@ -697,42 +726,14 @@ noremap <leader>td <Plug>TaskList
 
 "edit history, 可以查看回到某个历史状态
 Bundle 'sjl/gundo.vim'
-nnoremap <leader>h :GundoToggle<CR>
+nnoremap <leader>ud :GundoToggle<CR>
 
 " end turn on
 filetype plugin indent on
 
 "========================== config for plugins end ======================================
-"}}}
-"==========================================
-":) 主题,及一些展示上颜色的修改 {{{
-"==========================================
-"开启语法高亮
-syntax enable
-syntax on
-
-"colorscheme solarized
-set background=dark
-set t_Co=256
-
 colorscheme molokai
 "colorscheme desert
-
-"设置标记一列的背景颜色和数字一行颜色一致
-hi! link SignColumn   LineNr
-hi! link ShowMarksHLl DiffAdd
-hi! link ShowMarksHLu DiffChange
-
-"" for error highlight，防止错误整行标红导致看不清
-highlight clear SpellBad
-highlight SpellBad term=standout ctermfg=1 term=underline cterm=underline
-highlight clear SpellCap
-highlight SpellCap term=underline cterm=underline
-highlight clear SpellRare
-highlight SpellRare term=underline cterm=underline
-highlight clear SpellLocal
-highlight SpellLocal term=underline cterm=underline
-
 " settings for kien/rainbow_parentheses.vim
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
