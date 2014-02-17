@@ -62,18 +62,34 @@ snippet iife "Immediately-Invoked Function Expression (iife)"
 }(${2:$1}));
 endsnippet
 
+snippet ief "if...else if"
+if (${1:condition}){
+	${2://code}
+}
+else if(${3:condition}){
+	${4://code}	
+}
+endsnippet
+
+snippet el "else"
+else {
+
+}
+endsnippet
+
+
 snippet ie "if ___ else"
 if (${1:condition}) {
-  ${2://code}
+    ${2://code}
 }
 else {
-  ${3://code}
+    ${3://code}
 }
 endsnippet
 
 snippet if "if"
 if (${1:condition}) {
-  ${VISUAL}$0
+    ${VISUAL}$0
 }
 endsnippet
 
@@ -96,11 +112,14 @@ endsnippet
 snippet v "var"
 var
 endsnippet
+snippet al "alert"
+alert(${1});
+endsnippet
 
 
 snippet timeout "setTimeout function"
 setTimeout(function() {
-  ${VISUAL}$0
+    ${VISUAL}$0
 }${2:.bind(${3:this})}, ${1:10});
 endsnippet
 

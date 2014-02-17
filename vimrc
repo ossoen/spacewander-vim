@@ -13,8 +13,8 @@
 "     ->file encode, 文件编码,格式
 "     ->others 其它基础配置
 "     ->hot key  自定义快捷键
-"     ->bundle 插件管理和配置项
 "     ->colortheme 主题,及一些展示上颜色的修改
+"     ->bundle 插件管理和配置项
 "==========================================
 ":) augroup and func 命令组和函数 {{{
 " 切换绝对行号和相对行号
@@ -52,6 +52,18 @@ function! ToggleMouse()
         set mouse=a
         echo 'mouse mode'
     endif
+endfunction
+"定义函数SetTitle，自动插入文件头 可自定义文件头信息
+autocmd BufNewFile *.sh,*.py exec ":call AutoSetFileHead()"
+function! AutoSetFileHead()
+    if &filetype ==# 'sh'
+        call setline(1, "\#!/bin/sh")
+    endif
+    if &filetype ==# 'python'
+        call setline(1, "\# encoding: utf-8")
+    endif
+    normal G
+    normal o
 endfunction
 
 augroup myFun
@@ -204,16 +216,20 @@ set formatoptions+=B
 "==========================================
 ":) others 其它配置 {{{
 "==========================================
+if has("autocmd") && exists("+omnifunc")
+	autocmd Filetype *
+		    \	if &omnifunc == "" |
+		    \		setlocal omnifunc=syntaxcomplete#Complete |
+		    \	endif
+endif
 augroup sourceVimrc
-    autocmd! bufwritepost _vimrc source % " vimrc文件修改之后自动加载。 windows。
-    autocmd! bufwritepost .vimrc source % " vimrc文件修改之后自动加载。 linux。
+    autocmd! bufwritepost *.vim source % " vim文件修改之后自动加载。 windows。
+    autocmd! bufwritepost *.vim source % " vim文件修改之后自动加载。 linux。
 augroup END
 " 记住文件外观，如折叠等
 function! StoreView()
-    if expand('%') !=# ''
-        au BufWinEnter * silent loadview
-        au BufWinLeave * silent mkview
-    endif
+    au BufWinEnter * silent loadview
+    au BufWinLeave * silent mkview
 endfunction
 
 augroup rememberView
@@ -317,6 +333,9 @@ cnoremap <leader>d <End><c-u>
 nnoremap / /\v
 vnoremap / /\v
 
+" grep current word
+nnoremap <leader>jw :grep! -r <cword> *<cr>
+
 "Keep search pattern at the center of the screen."
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
@@ -324,10 +343,11 @@ nnoremap <silent> * *
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
 "插入大括号的正确方式
-inoremap {<CR> {<CR><CR>}<up><tab><End>
+inoremap {<CR> {<CR><tab><CR>}<up><End>
 
 " Quickly close the current window
 nnoremap <leader>q :q<CR>
+nnoremap <leader>qa :qa<CR>
 
 " Quickly save the current file
 nnoremap <leader>w :w<CR>
@@ -358,6 +378,20 @@ nnoremap <C-left>   :tabprevious<CR>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <c-down> :tabedit <c-r>=expand("%:p:h")<cr>/
+
+"run python script
+"au FileType python nnoremap <F12> :exec '!python' shellescape(@%, 1)<cr>
+
+nnoremap <leader>z0 :set foldlevel=0<CR>
+nnoremap <leader>z1 :set foldlevel=1<CR>
+nnoremap <leader>z2 :set foldlevel=2<CR>
+nnoremap <leader>z9 :set foldlevel=99<CR>
+
+" Change Working Directory to that of the current file
+cnoremap cwd lcd %:p:h
+" jump to the place with the same word. <bar> should be used ,otherwise the
+" expressions won't be correct.
+nnoremap <Leader>gw [I:let nr = input("Which one: ") <bar>exe "normal " . nr ."[\t"<CR>
 "}}}
 "==========================================
 ":) 主题,及一些展示上颜色的修改 {{{
@@ -536,17 +570,6 @@ let g:rbpt_colorpairs = [
 let g:rbpt_max = 40
 let g:rbpt_loadcmd_toggle = 0
 
-"代码排版缩进标识
-"Bundle 'Yggdroot/indentLine'
-let g:indentLine_noConcealCursor = 1
-let g:indentLine_color_term = 0
-let g:indentLine_char = '¦'
-
-"for show no user whitespaces
-"Bundle 'bronson/vim-trailing-whitespace'
-"map <leader><space> :FixWhitespace<cr>
-
-
 "主题 solarized
 "Bundle 'altercation/vim-colors-solarized'
 "let g:solarized_termcolors=256
@@ -577,12 +600,9 @@ Bundle 'Valloric/YouCompleteMe'
 "具体配置内容请参考该项目的github主页
 "youcompleteme  默认tab  s-tab 和自动补全冲突
 ",gd 高亮选中的函数 仅c-family语言有效
-"
-"选中第一项
 let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
-"选中最后一项
-let g:ycm_key_list_previous_completion=['<c-p>']
+let g:ycm_key_list_previous_completion=['<c-b>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -716,6 +736,7 @@ let g:vim_markdown_folding_disabled=1
 let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
+let g:javascript_enable_domhtmlcss = 1
 
 "for jquery
 "Bundle 'nono/jquery.vim'

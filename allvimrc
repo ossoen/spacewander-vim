@@ -13,8 +13,8 @@
 "     ->file encode, 文件编码,格式
 "     ->others 其它基础配置
 "     ->hot key  自定义快捷键
-"     ->bundle 插件管理和配置项
 "     ->colortheme 主题,及一些展示上颜色的修改
+"     ->bundle 插件管理和配置项
 "==========================================
 ":) augroup and func 命令组和函数 {{{
 " 切换绝对行号和相对行号
@@ -420,7 +420,7 @@ let g:netrw_home='~/bak'
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
 
 "for minibufferexpl
-"Bundle 'fholgado/minibufexpl.vim'
+Bundle 'fholgado/minibufexpl.vim'
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
@@ -488,6 +488,7 @@ let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
 "使用<ESC>退出搜索
 
+Bundle 'Shougo/unite.vim'
 "################### 显示增强 ###################"
 "书签
 Bundle 'vim-scripts/Vim-bookmark'
@@ -533,16 +534,6 @@ let g:rbpt_colorpairs = [
 let g:rbpt_max = 40
 let g:rbpt_loadcmd_toggle = 0
 
-"代码排版缩进标识
-Bundle 'Yggdroot/indentLine'
-let g:indentLine_noConcealCursor = 1
-let g:indentLine_color_term = 0
-let g:indentLine_char = '¦'
-
-"for show no user whitespaces
-"Bundle 'bronson/vim-trailing-whitespace'
-"map <leader><space> :FixWhitespace<cr>
-
 
 "主题 solarized
 Bundle 'altercation/vim-colors-solarized'
@@ -579,7 +570,7 @@ Bundle 'Valloric/YouCompleteMe'
 let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
 "选中最后一项
-let g:ycm_key_list_previous_completion=['<c-p>']
+let g:ycm_key_list_previous_completion=['<c-b>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -662,14 +653,10 @@ let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
 let g:syntastic_python_checkers=['pyflakes']
 highlight SyntasticErrorSign guifg=white guibg=black
 
-" python fly check, 弥补syntastic只能打开和保存才检查语法的不足
-Bundle 'kevinw/pyflakes-vim'
-let g:pyflakes_use_quickfix = 0
-
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
-"Bundle 'mattn/emmet-vim'
+Bundle 'mattn/emmet-vim'
 " for xml and html
 Bundle 'othree/xml.vim'
 " [[ to previous open tag
@@ -682,6 +669,8 @@ Bundle 'othree/xml.vim'
 " \d delete tag
 " \D delete tag and its content
 " see more :help xml-plugin.txt
+
+Bundle 'klen/python-mode'
 
 "################# 具体语言语法高亮及排版 ###############
 " for jumping in C/C++
@@ -713,16 +702,13 @@ let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 
-"for jquery
-"Bundle 'nono/jquery.vim'
-
 "################### 其他 ###################"
 " task list
 Bundle 'vim-scripts/TaskList.vim'
 noremap <leader>td <Plug>TaskList
 
 " for git 尚未用起来
-"Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-fugitive'
 
 "edit history, 可以查看回到某个历史状态
 Bundle 'sjl/gundo.vim'
@@ -732,36 +718,8 @@ nnoremap <leader>ud :GundoToggle<CR>
 filetype plugin indent on
 
 "========================== config for plugins end ======================================
-"}}}
-"==========================================
-":) 主题,及一些展示上颜色的修改 {{{
-"==========================================
-"开启语法高亮
-syntax enable
-syntax on
-
-"colorscheme solarized
-set background=dark
-set t_Co=256
-
-colorscheme molokai
+colorscheme molokai                                                                                                    
 "colorscheme desert
-
-"设置标记一列的背景颜色和数字一行颜色一致
-hi! link SignColumn   LineNr
-hi! link ShowMarksHLl DiffAdd
-hi! link ShowMarksHLu DiffChange
-
-"" for error highlight，防止错误整行标红导致看不清
-highlight clear SpellBad
-highlight SpellBad term=standout ctermfg=1 term=underline cterm=underline
-highlight clear SpellCap
-highlight SpellCap term=underline cterm=underline
-highlight clear SpellRare
-highlight SpellRare term=underline cterm=underline
-highlight clear SpellLocal
-highlight SpellLocal term=underline cterm=underline
-
 " settings for kien/rainbow_parentheses.vim
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
