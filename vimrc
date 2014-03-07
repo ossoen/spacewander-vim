@@ -39,7 +39,6 @@ function! Chmod()
       call system("chmod +x ".shellescape(f))
       e!
       filetype detect
-      nmap <buffer> <S-F5> :!%:p<CR>
     endif
   endif
 endfunction
@@ -47,23 +46,15 @@ endfunction
 function! ToggleMouse()
     if &mouse ==# 'a'
         set mouse=
+        set norelativenumber
+        set nonumber
         echo 'no mouse mode'
     else
         set mouse=a
+        set number
+        set relativenumber
         echo 'mouse mode'
     endif
-endfunction
-"定义函数SetTitle，自动插入文件头 可自定义文件头信息
-autocmd BufNewFile *.sh,*.py exec ":call AutoSetFileHead()"
-function! AutoSetFileHead()
-    if &filetype ==# 'sh'
-        call setline(1, "\#!/bin/sh")
-    endif
-    if &filetype ==# 'python'
-        call setline(1, "\# encoding: utf-8")
-    endif
-    normal G
-    normal o
 endfunction
 
 augroup myFun
@@ -101,6 +92,7 @@ set backupdir=~/bak/vimbk/
 " 突出显示当前行等 不喜欢这种定位可注解
 "set cursorcolumn
 set cursorline              " 突出显示当前行
+set display=lastline
 "设置 退出vim后，内容显示在终端屏幕, 可以用于查看和复制
 "好处：误删什么的，如果以前屏幕打开，可以找回
 set t_ti= t_te=
@@ -150,7 +142,6 @@ augroup vimFold
     autocmd FileType vim setlocal foldmethod=marker
 augroup END
 set foldlevel=99
-"set foldlevelstart=1
 "Smart indent
 set smartindent
 set autoindent    " always set autoindenting on
@@ -201,7 +192,6 @@ set laststatus=2
 set encoding=utf-8
 " 自动判断编码时，依次尝试以下编码：
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
-set helplang=cn
 " 下面这句只影响普通模式 (非图形界面) 下的 Vim。
 set termencoding=utf-8
 
@@ -216,25 +206,20 @@ set formatoptions+=B
 "==========================================
 ":) others 其它配置 {{{
 "==========================================
-if has("autocmd") && exists("+omnifunc")
-	autocmd Filetype *
-		    \	if &omnifunc == "" |
-		    \		setlocal omnifunc=syntaxcomplete#Complete |
-		    \	endif
-endif
 augroup sourceVimrc
     autocmd! bufwritepost *.vim source % " vim文件修改之后自动加载。 windows。
     autocmd! bufwritepost *.vim source % " vim文件修改之后自动加载。 linux。
 augroup END
 " 记住文件外观，如折叠等
 function! StoreView()
-    au BufWinEnter * silent loadview
-    au BufWinLeave * silent mkview
+    au BufWinEnter * silent! loadview
+    au BufWinLeave * silent! mkview
 endfunction
 
 augroup rememberView
     autocmd!
     :call StoreView()
+    "au FileType sql     :call StoreView()
 augroup END
 
 " about highlight
@@ -251,8 +236,9 @@ set wildmenu
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc,*.class,*.obj
 
-" Python 文件的一般设置，比如不要 tab 等
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
+autocmd FileType ruby set tabstop=2 shiftwidth=2 expandtab ai
+autocmd FileType html set tabstop=2 shiftwidth=2 expandtab ai
 
 " if this not work ,make sure .viminfo is writable for you
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -312,9 +298,23 @@ nnoremap <F4> :set wrap! wrap?<CR>
 set pastetoggle=<F5>            " when in insert mode, press <F5> to go to
                                 "    paste mode, where you can paste mass data
                                 "    that won't be autoindented
-
 " disbale paste mode when leaving insert mode
 au InsertLeave * set nopaste
+
+function! AutoRun(cmd)
+    let result = system(a:cmd .' ' . expand('%:p'))
+    vsplit __Output__
+    normal! ggdG
+    set buftype=nofile
+    set filetype=output
+    call append(0,split(result, '\v\n'))
+endfunction
+
+augroup autoRun
+    autocmd!
+    au FileType ruby nnoremap <s-F12> :call AutoRun('ruby')<cr>
+    au FileType ruby nnoremap <F12> :!ruby %:p
+augroup END
 
 noremap Y y$
 "cmap w!! %!sudo tee > /dev/null %
@@ -332,6 +332,8 @@ cnoremap <leader>d <End><c-u>
 "Use sane regexes"
 nnoremap / /\v
 vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
 
 " grep current word
 nnoremap <leader>jw :grep! -r <cword> *<cr>
@@ -343,7 +345,7 @@ nnoremap <silent> * *
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
 "插入大括号的正确方式
-inoremap {<CR> {<CR><tab><CR>}<up><End>
+inoremap {<CR> {<CR><CR>}<up><End>
 
 " Quickly close the current window
 nnoremap <leader>q :q<CR>
@@ -378,9 +380,6 @@ nnoremap <C-left>   :tabprevious<CR>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <c-down> :tabedit <c-r>=expand("%:p:h")<cr>/
-
-"run python script
-"au FileType python nnoremap <F12> :exec '!python' shellescape(@%, 1)<cr>
 
 nnoremap <leader>z0 :set foldlevel=0<CR>
 nnoremap <leader>z1 :set foldlevel=1<CR>
@@ -479,10 +478,10 @@ let g:tagbar_show_linenumbers = -1
 let g:tagbar_compact = 1
 
 "标签导航 要装ctags
-"Bundle 'vim-scripts/taglist.vim'
+Bundle 'vim-scripts/taglist.vim'
 set tags=tags;/
 let Tlist_Ctags_Cmd="/usr/bin/ctags"
-"nnoremap <silent> <F8> :TlistToggle<CR>
+nnoremap <silent> <F8> :TlistToggle<CR>
 let Tlist_Auto_Highlight_Tag = 1
 let Tlist_Auto_Open = 0
 let Tlist_Auto_Update = 1
@@ -602,7 +601,7 @@ Bundle 'Valloric/YouCompleteMe'
 ",gd 高亮选中的函数 仅c-family语言有效
 let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion=['<c-b>']
+let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -617,12 +616,13 @@ let g:ycm_filetype_blacklist = {
 "let g:ycm_server_use_vim_stdout = 1
 "let g:ycm_server_log_level = 'debug'
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+autocmd FileType python setlocal completeopt-=preview
+autocmd FileType cpp setlocal completeopt-=preview
 
 "快速插入代码片段
 Bundle 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>" 
 "定义存放代码片段的文件夹 .vim/snippets下
 "，使用自定义和默认的，将会的到全局，有冲突的会提示
 let g:UltiSnipsSnippetDirectories=["snippets", "bundle/UltiSnips/UltiSnips"]
@@ -649,7 +649,8 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'Raimondi/delimitMate'
 " for python docstring ",优化输入
 au FileType python let b:delimitMate_nesting_quotes = ['"']
-
+au FileType ruby let b:delimitMate_quotes = "\" ' ` |"
+au FileType html let b:delimitMate_matchpair = "(:),[:],{:},{%:%}"
 "for code alignment
 ",f=/:/, 按相应的符号切分格式化
 "Bundle 'godlygeek/tabular'
@@ -686,16 +687,14 @@ let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
 let g:syntastic_python_checkers=['pyflakes']
 highlight SyntasticErrorSign guifg=white guibg=black
 
-" python fly check, 弥补syntastic只能打开和保存才检查语法的不足
-"Bundle 'kevinw/pyflakes-vim'
-let g:pyflakes_use_quickfix = 0
-
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
-"Bundle 'mattn/emmet-vim'
+Bundle 'mattn/emmet-vim'
+let g:user_emmet_leader_key = '<c-z>'
+let g:use_emmet_complete_tag = 1
 " for xml and html
-"Bundle 'othree/xml.vim'
+Bundle 'othree/xml.vim'
 " [[ to previous open tag
 " ]] to next open tag
 " [] to previous close tag
@@ -705,7 +704,6 @@ let g:pyflakes_use_quickfix = 0
 " \f fold tag
 " \d delete tag
 " \D delete tag and its content
-" see more :help xml-plugin.txt
 
 "################# 具体语言语法高亮及排版 ###############
 " for jumping in C/C++
@@ -721,26 +719,29 @@ let g:pyflakes_use_quickfix = 0
 ":IHT new tab and switches 
 ":IHN cycles through matches 
 "<Leader>ih switches to file under cursor 
-"<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp) 
+"<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
 "<Leader>ihn cycles through matches 
 
 " for python.vim syntax highlight
 "Bundle 'hdima/python-syntax'
 let python_highlight_all = 1
 " for markdown
-Bundle 'plasticboy/vim-markdown'
-let g:vim_markdown_folding_disabled=1
+"Bundle 'plasticboy/vim-markdown'
+"let g:vim_markdown_folding_disabled=1
+Bundle 'hughbien/md-vim'
+autocmd BufWinEnter *.markdown set filetype=md
+autocmd BufWinEnter *.markdown set textwidth=80
+autocmd BufWinEnter *.md set filetype=md
+autocmd BufWinEnter *.md set textwidth=80
 
 " for javascript
-"Bundle "pangloss/vim-javascript"
+Bundle "pangloss/vim-javascript"
 let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 let g:javascript_enable_domhtmlcss = 1
-
-"for jquery
-"Bundle 'nono/jquery.vim'
-
+" for css
+Bundle "gorodinskiy/vim-coloresque"
 "################### 其他 ###################"
 " task list
 Bundle 'vim-scripts/TaskList.vim'
@@ -764,5 +765,4 @@ au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
-
 "}}}

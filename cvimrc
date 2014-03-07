@@ -699,7 +699,7 @@ Bundle 'vim-scripts/a.vim'
 "<Leader>ih switches to file under cursor 
 "<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp) 
 "<Leader>ihn cycles through matches 
-
+inoremap <leader>/ /*  */<ESC>hhi
 " for python.vim syntax highlight
 "Bundle 'hdima/python-syntax'
 let python_highlight_all = 1

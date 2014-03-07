@@ -696,12 +696,14 @@ let python_highlight_all = 1
 Bundle 'plasticboy/vim-markdown'
 let g:vim_markdown_folding_disabled=1
 
+Bundle 'hughbien/md-vim'
 " for javascript
 Bundle "pangloss/vim-javascript"
 let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
-
+" for css
+Bundle 'gorodinskiy/vim-coloresque'
 "################### 其他 ###################"
 " task list
 Bundle 'vim-scripts/TaskList.vim'

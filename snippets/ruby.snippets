@@ -1,0 +1,266 @@
+snippet t "true"
+true
+endsnippet
+
+snippet f "false"
+false
+endsnippet
+
+snippet n "nil"
+nil
+endsnippet
+
+snippet #! "#!/usr/bin/env ruby"
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+$0
+endsnippet
+
+snippet code "# encoding: UTF-8"
+# encoding: UTF-8
+
+$0
+endsnippet
+
+snippet If "<command> if <expression>"
+${1:command} if ${0:expression}
+endsnippet
+
+snippet Unless "<command> unless <expression>"
+${1:command} unless ${0:expression}
+endsnippet
+
+snippet if "if <condition> ... end"
+if ${1:condition}
+	${2:# TODO}
+end
+endsnippet
+
+snippet el "else"
+else
+  ${0:# TODO}
+endsnippet
+
+snippet ie "if <condition> ... else ... end"
+if ${1:condition}
+	${2:# TODO}
+else
+	${3:# TODO}
+end
+endsnippet
+
+snippet ief "if <condition> ... elseif <condition> ... else ... end"
+if ${1:condition}
+	${2:# TODO}
+elsif ${3:condition}
+	${4:# TODO}
+else
+	${0:# TODO}
+end
+endsnippet
+
+snippet unless "unless <condition> ... end"
+unless ${1:condition}
+	${0:# TODO}
+end
+endsnippet
+
+snippet unlesse "unless <condition> ... else ... end"
+unless ${1:condition}
+	${2:# TODO}
+else
+	${0:# TODO}
+end
+endsnippet
+
+snippet unlesee "unless <condition> ... elseif <condition> ... else ... end"
+unless ${1:condition}
+	${2:# TODO}
+elsif ${3:condition}
+	${4:# TODO}
+else
+	${0:# TODO}
+end
+endsnippet
+
+snippet fun "def <name>..."
+def ${1:function_name}${2: ${3:*args}}
+	${0:# TODO}
+end
+endsnippet
+
+snippet defi "def initialize ..."
+def initialize${1: ${2:*args}}
+	${0:# TODO}
+end
+endsnippet
+
+snippet defr "def <name> ... rescue ..."
+def ${1:function_name}${2: ${3:*args}}
+	${4:# TODO}
+rescue
+	${0:# TODO}
+end
+endsnippet
+
+snippet For "(<from>..<to>).each { |<i>| <block> }"
+(${1:from}..${2:to}).each { |${3:i}| ${4:# TODO} }
+endsnippet
+
+
+
+snippet for "(<from>..<to>).each do |<i>| <block> end"
+(${1:from}..${2:to}).each do |${3:i}|
+	${0:# TODO}
+end
+endsnippet
+
+snippet Each "<elements>.each { |<element>| <block> }"
+${1:elements}.each { |${2:${1/s$//}}| ${3:# TODO} }
+endsnippet
+
+snippet each "<elements>.each do |<element>| <block> end"
+${1:elements}.each do |${2:${1/s$//}}|
+	${0:# TODO}
+end
+endsnippet
+
+snippet do "do |<key>| ... end"
+do |${1:args}|
+	$0
+end
+endsnippet
+
+snippet Do "do ... end"
+do
+	$0
+end
+endsnippet
+
+
+snippet until "until <expression> ... end"
+until ${1:expression}
+	${0:# TODO}
+end
+endsnippet
+
+
+
+snippet Until "begin ... end until <expression>"
+begin
+	${0:# TODO}
+end until ${1:expression}
+endsnippet
+
+
+
+snippet while "while <expression> ... end"
+while ${1:expression}
+	${0:# TODO}
+end
+endsnippet
+
+
+
+snippet While "begin ... end while <expression>"
+begin
+	${0:# TODO}
+end while ${1:expression}
+endsnippet
+
+
+
+snippet "\b(r|attr)" "attr_reader :<attr_names>"
+attr_reader :${0:attr_names}
+endsnippet
+
+
+
+snippet "\b(w|attr)" "attr_writer :<attr_names>"
+attr_writer :${0:attr_names}
+endsnippet
+
+
+
+snippet "\b(rw|attr)" "attr_accessor :<attr_names>"
+attr_accessor :${0:attr_names}
+endsnippet
+
+
+
+snippet begin "begin ... rescue ... end"
+begin
+	${1:# TODO}
+rescue
+	${0:# TODO}
+end
+endsnippet
+
+
+
+snippet begin "begin ... rescue ... else ... ensure ... end"
+begin
+	${1:# Raise exception}
+rescue Exception => e
+	puts e.message
+	puts e.backtrace.inspect
+	${2:# Rescue}
+else
+	${3:# other exception}
+ensure
+	${0:# always excute}
+end
+endsnippet
+
+
+
+snippet rescue
+rescue Exception => e
+	puts e.message
+	puts e.backtrace.inspect
+	${0:# Rescue}
+endsnippet
+
+
+
+snippet "\b(case|sw(itch)?)" "case <variable> when <expression> ... end"
+case ${1:variable}
+when ${2:expression}
+$0
+end
+endsnippet
+
+
+
+snippet alias "alias :<new_name> :<old_name>"
+alias :${1:new_name} :${2:old_name}
+endsnippet
+
+
+
+snippet c "class <class_name> def initialize ... end end"
+class ${1:class_name}
+	def initialize ${2:*args}
+		$0
+	end
+end
+endsnippet
+
+
+
+snippet module "module"
+module ${1:module_name}
+	$0
+end
+endsnippet
+
+
+
+snippet ###
+=begin
+  $0
+=end
+endsnippet
+
+# vim: set ts=2 sw=2 expandtab:
