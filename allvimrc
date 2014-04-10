@@ -489,6 +489,7 @@ let g:ctrlp_follow_symlinks=1
 "使用<ESC>退出搜索
 
 Bundle 'Shougo/unite.vim'
+Bundle 'rking/ag.vim'
 "################### 显示增强 ###################"
 "书签
 Bundle 'vim-scripts/Vim-bookmark'

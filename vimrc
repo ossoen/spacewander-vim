@@ -142,6 +142,7 @@ augroup vimFold
     autocmd FileType vim setlocal foldmethod=marker
 augroup END
 set foldlevel=99
+set foldlevelstart=99
 "Smart indent
 set smartindent
 set autoindent    " always set autoindenting on
@@ -238,7 +239,6 @@ set wildignore=*.o,*~,*.pyc,*.class,*.obj
 
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType ruby set tabstop=2 shiftwidth=2 expandtab ai
-autocmd FileType html set tabstop=2 shiftwidth=2 expandtab ai
 
 " if this not work ,make sure .viminfo is writable for you
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -262,6 +262,8 @@ let g:mapleader = ','
 " 设置局部leader键"
 let maplocalleader = '\\'
 
+inoremap df <c-c>
+vnoremap df <c-c> 
 "Quickly fold/unfold
 nnoremap Z za
 
@@ -312,6 +314,8 @@ endfunction
 
 augroup autoRun
     autocmd!
+    au FileType sh nnoremap <s-F12> :call AutoRun('sh')<cr>
+    au FileType sh nnoremap <F12> :!sh %:p
     au FileType ruby nnoremap <s-F12> :call AutoRun('ruby')<cr>
     au FileType ruby nnoremap <F12> :!ruby %:p
 augroup END
@@ -524,6 +528,9 @@ let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
 "使用<ESC>退出搜索
 
+Bundle 'Shougo/unite.vim'
+Bundle 'rking/ag.vim'
+
 "################### 显示增强 ###################"
 "书签
 Bundle 'vim-scripts/Vim-bookmark'
@@ -685,13 +692,15 @@ let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_check_on_open=1
 let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
 let g:syntastic_python_checkers=['pyflakes']
+let g:syntastic_cpp_compiler = 'g++ '
+let g:syntastic_cpp_compiler_options = ' -std=c++11 '
 highlight SyntasticErrorSign guifg=white guibg=black
 
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
 Bundle 'mattn/emmet-vim'
-let g:user_emmet_leader_key = '<c-z>'
+let g:user_emmet_leader_key = '<leader>.'
 let g:use_emmet_complete_tag = 1
 " for xml and html
 Bundle 'othree/xml.vim'
@@ -707,7 +716,7 @@ Bundle 'othree/xml.vim'
 
 "################# 具体语言语法高亮及排版 ###############
 " for jumping in C/C++
-"Bundle 'vim-scripts/a.vim'
+Bundle 'vim-scripts/a.vim'
 ":A switches to the header file corresponding to the current file being edited (or vise versa) 
 ":AS splits and switches 
 ":AV vertical splits and switches 
@@ -730,9 +739,7 @@ let python_highlight_all = 1
 "let g:vim_markdown_folding_disabled=1
 Bundle 'hughbien/md-vim'
 autocmd BufWinEnter *.markdown set filetype=md
-autocmd BufWinEnter *.markdown set textwidth=80
 autocmd BufWinEnter *.md set filetype=md
-autocmd BufWinEnter *.md set textwidth=80
 
 " for javascript
 Bundle "pangloss/vim-javascript"
@@ -742,6 +749,9 @@ let g:html_indent_style1 = "inc"
 let g:javascript_enable_domhtmlcss = 1
 " for css
 Bundle "gorodinskiy/vim-coloresque"
+autocmd FileType html set tabstop=2 shiftwidth=2 expandtab ai
+autocmd FileType css set tabstop=2 shiftwidth=2 expandtab ai
+
 "################### 其他 ###################"
 " task list
 Bundle 'vim-scripts/TaskList.vim'

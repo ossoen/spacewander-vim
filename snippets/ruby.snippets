@@ -10,17 +10,42 @@ snippet n "nil"
 nil
 endsnippet
 
+snippet r "return"
+return
+endsnippet
+
+snippet be "begin...rescue"
+begin
+  ${1:try}
+rescue ${2:Error}
+  ${3:handle}
+endsnippet
+
+snippet res "rescue"
+rescue ${1:Error}
+  ${2:handle}
+endsnippet
+
+
+snippet re "require"
+require '${1:module}'
+endsnippet
+
+snippet {} "hash"
+{ ${1:key1} => ${2:value1}
+  ${3:key2} => ${4:value2}}
+endsnippet
+
 snippet #! "#!/usr/bin/env ruby"
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
-$0
+
 endsnippet
 
 snippet code "# encoding: UTF-8"
 # encoding: UTF-8
 
-$0
 endsnippet
 
 snippet If "<command> if <expression>"
@@ -84,8 +109,8 @@ else
 end
 endsnippet
 
-snippet fun "def <name>..."
-def ${1:function_name}${2: ${3:*args}}
+snippet d "def <name>..."
+def ${1:function_name} ${2:*args}
 	${0:# TODO}
 end
 endsnippet
@@ -241,9 +266,7 @@ endsnippet
 
 snippet c "class <class_name> def initialize ... end end"
 class ${1:class_name}
-	def initialize ${2:*args}
-		$0
-	end
+  $0 
 end
 endsnippet
 
