@@ -632,7 +632,7 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 "定义存放代码片段的文件夹 .vim/snippets下
 "，使用自定义和默认的，将会的到全局，有冲突的会提示
-let g:UltiSnipsSnippetDirectories=["snippets", "bundle/UltiSnips/UltiSnips"]
+let g:UltiSnipsSnippetDirectories=["ultisnips", "bundle/UltiSnips/UltiSnips"]
 "定义使用的python版本，为2.x
 let g:UltiSnipsUsePythonVersion = 2
 "username and user_email
@@ -692,7 +692,6 @@ let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_check_on_open=1
 let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
 let g:syntastic_python_checkers=['pyflakes']
-let g:syntastic_cpp_compiler = 'g++ '
 let g:syntastic_cpp_compiler_options = ' -std=c++11 '
 highlight SyntasticErrorSign guifg=white guibg=black
 
