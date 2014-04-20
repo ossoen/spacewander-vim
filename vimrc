@@ -212,15 +212,10 @@ augroup sourceVimrc
     autocmd! bufwritepost *.vim source % " vim文件修改之后自动加载。 linux。
 augroup END
 " 记住文件外观，如折叠等
-function! StoreView()
-    au BufWinEnter * silent! loadview
-    au BufWinLeave * silent! mkview
-endfunction
-
 augroup rememberView
     autocmd!
-    :call StoreView()
-    "au FileType sql     :call StoreView()
+    au BufWinEnter * silent! loadview
+    au BufWinLeave * silent! mkview
 augroup END
 
 " about highlight
@@ -378,7 +373,6 @@ nnoremap <Leader>sa ggVG"
 
 nnoremap <C-up> :tabnew<cr>
 nnoremap <leader>te :tabedit 
-nnoremap <C-right>  :tabnext<CR>
 nnoremap <C-left>   :tabprevious<CR>
 
 " Opens a new tab with the current buffer's path
@@ -392,6 +386,8 @@ nnoremap <leader>z9 :set foldlevel=99<CR>
 
 " Change Working Directory to that of the current file
 cnoremap cwd lcd %:p:h
+" 保存会话
+cnoremap ss mksession!
 " jump to the place with the same word. <bar> should be used ,otherwise the
 " expressions won't be correct.
 nnoremap <Leader>gw [I:let nr = input("Which one: ") <bar>exe "normal " . nr ."[\t"<CR>
@@ -530,6 +526,8 @@ let g:ctrlp_follow_symlinks=1
 
 Bundle 'Shougo/unite.vim'
 Bundle 'rking/ag.vim'
+nnoremap <leader>sc :Ag! <cWORD><cr>
+nnoremap <leader>s :Ag! 
 
 "################### 显示增强 ###################"
 "书签
@@ -622,6 +620,7 @@ let g:ycm_filetype_blacklist = {
     \}
 "let g:ycm_server_use_vim_stdout = 1
 "let g:ycm_server_log_level = 'debug'
+nnoremap <leader>bc :YcmDiags<CR>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType cpp setlocal completeopt-=preview

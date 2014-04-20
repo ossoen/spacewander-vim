@@ -209,16 +209,10 @@ augroup sourceVimrc
     autocmd! bufwritepost .vimrc source % " vimrc文件修改之后自动加载。 linux。
 augroup END
 " 记住文件外观，如折叠等
-function! StoreView()
-    if expand('%') !=# ''
-        au BufWinEnter * silent loadview
-        au BufWinLeave * silent mkview
-    endif
-endfunction
-
 augroup rememberView
     autocmd!
-    :call StoreView()
+    au BufWinEnter * silent! loadview
+    au BufWinLeave * silent! mkview
 augroup END
 
 " about highlight
@@ -703,8 +697,14 @@ Bundle "pangloss/vim-javascript"
 let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
+" for html
+Bundle 'othree/html5.vim'
+
 " for css
 Bundle 'gorodinskiy/vim-coloresque'
+Bundle 'hail2u/vim-css3-syntax'
+" for json
+Bundle 'elzr/vim-json'
 "################### 其他 ###################"
 " task list
 Bundle 'vim-scripts/TaskList.vim'
