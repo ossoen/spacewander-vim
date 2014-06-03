@@ -196,19 +196,19 @@ endsnippet
 
 
 
-snippet "\b(r|attr)" "attr_reader :<attr_names>"
+snippet  ar "attr_reader :<attr_names>"
 attr_reader :${0:attr_names}
 endsnippet
 
 
 
-snippet "\b(w|attr)" "attr_writer :<attr_names>"
+snippet wr "attr_writer :<attr_names>"
 attr_writer :${0:attr_names}
 endsnippet
 
 
 
-snippet "\b(rw|attr)" "attr_accessor :<attr_names>"
+snippet aa "attr_accessor :<attr_names>"
 attr_accessor :${0:attr_names}
 endsnippet
 
@@ -263,8 +263,13 @@ alias :${1:new_name} :${2:old_name}
 endsnippet
 
 
+snippet di "def initialize ... end end"
+def initialize ${1:params}
+  $0 
+end
+endsnippet
 
-snippet c "class <class_name> def initialize ... end end"
+snippet c "class <class_name>"
 class ${1:class_name}
   $0 
 end
@@ -272,7 +277,7 @@ endsnippet
 
 
 
-snippet module "module"
+snippet m "module"
 module ${1:module_name}
 	$0
 end
@@ -285,5 +290,19 @@ snippet ###
   $0
 =end
 endsnippet
+
+snippet # "###"
+# ${0:description}
+# 
+endsnippet
+
+snippet ## "###"
+# ${1:description}
+# 
+# @param [${3:type}] ${2:name} ${4:description}
+#
+# @api ${0:public}
+endsnippet
+
 
 # vim: set ts=2 sw=2 expandtab:

@@ -1,11 +1,11 @@
 "==========================================
-" vim:ft=vim 
-" Author:  edited by spacewander currently 
+" vim:ft=vim
+" Author:  edited by spacewander currently
 " Version: 7
 " Email: spacewanderlzx@gmail.com
 " BlogPost:
 " ReadMe: README.md
-" Last_modify: 
+" Last_modify:
 " Sections:
 "     ->augroup and func 命令组和函数
 "     ->General 基础设置
@@ -19,30 +19,32 @@
 ":) augroup and func 命令组和函数 {{{
 " 切换绝对行号和相对行号
 function! NumberToggle()
-  if(&relativenumber == 1)
-    set number
-  else
-    set relativenumber
-  endif
+    if(&relativenumber == 1)
+        set number
+    else
+        set relativenumber
+    endif
 endfunc
+
 "删除多余空格
 func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
+    exe "normal mz"
+    %s/\s\+$//ge
+    exe "normal `z"
 endfunc
 " 自动加权限
 function! Chmod()
-  if strpart(getline(1), 0, 2) == '#!'
-    let f = expand("%:p")
-    if stridx(getfperm(f), 'x') != 2
-      call system("chmod +x ".shellescape(f))
-      e!
-      filetype detect
+    if strpart(getline(1), 0, 2) == '#!'
+        let f = expand("%:p")
+        if stridx(getfperm(f), 'x') != 2
+            call system("chmod +x ".shellescape(f))
+            e!
+            filetype detect
+        endif
     endif
-  endif
 endfunction
 
+" 切换鼠标模式和无鼠标模式。方便复制
 function! ToggleMouse()
     if &mouse ==# 'a'
         set mouse=
@@ -57,12 +59,28 @@ function! ToggleMouse()
     endif
 endfunction
 
+" 更改文件工作目录为该文件当前目录
+function! ChangeWorkDir()
+    lcd %:p:h
+endfunction
+
+" 在保存时自动排版格式
+function! AutoFormat()
+    exec 'normal! 1GVG='
+endfunction
+
+"通过一些钩子来自动调用一些函数
 augroup myFun
     autocmd!
     autocmd BufWrite *.py :call DeleteTrailingWS()
+    autocmd BufWrite * :call ChangeWorkDir()
     autocmd BufWritePost * :call Chmod()
+    "autocmd BufWritePost * :call DeleteTrailingWS()
+    "autocmd BufWritePost * :call AutoFormat()
 augroup END
 
+nnoremap <S-F6> :call AutoFormat()<cr>
+nnoremap <F6> :call DeleteTrailingWS()<cr>
 "}}}
 "==========================================
 ":) General 基础设置 {{{
@@ -226,7 +244,7 @@ set incsearch           " ...but do highlight-as-I-type the search string
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 "回车即选中当前项
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
- 
+
 " 增强模式中的命令行自动完成操作
 set wildmenu
 " Ignore compiled files
@@ -257,8 +275,10 @@ let g:mapleader = ','
 " 设置局部leader键"
 let maplocalleader = '\\'
 
-inoremap df <c-c>
-vnoremap df <c-c> 
+inoremap df <c-[>
+vnoremap df <c-[>
+
+inoremap <c-v> <ESC>v
 "Quickly fold/unfold
 nnoremap Z za
 
@@ -291,10 +311,10 @@ noremap 0 ^
 
 noremap <F2> :call ToggleMouse()<CR>
 nnoremap <F4> :set wrap! wrap?<CR>
-              "set paste
+"set paste
 set pastetoggle=<F5>            " when in insert mode, press <F5> to go to
-                                "    paste mode, where you can paste mass data
-                                "    that won't be autoindented
+"    paste mode, where you can paste mass data
+"    that won't be autoindented
 " disbale paste mode when leaving insert mode
 au InsertLeave * set nopaste
 
@@ -320,7 +340,7 @@ noremap Y y$
 " w!! to sudo & write a file
 cnoremap w!! w !sudo tee >/dev/null %
 
-noremap <F1> :help 
+noremap <F1> :help
 
 nnoremap ; :
 au FileType sh nnoremap <leader>m  :!man <cWORD><cr>
@@ -372,8 +392,9 @@ nnoremap <Leader>sa ggVG"
 "noremap <leader>ba :1,1000 bd!<cr>
 
 nnoremap <C-up> :tabnew<cr>
-nnoremap <leader>te :tabedit 
+nnoremap <leader>te :tabedit
 nnoremap <C-left>   :tabprevious<CR>
+nnoremap <C-right>   :tabnext<CR>
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
@@ -387,10 +408,12 @@ nnoremap <leader>z9 :set foldlevel=99<CR>
 " Change Working Directory to that of the current file
 cnoremap cwd lcd %:p:h
 " 保存会话
-cnoremap ss mksession!
+nnoremap <leader>ks :mksession!
 " jump to the place with the same word. <bar> should be used ,otherwise the
 " expressions won't be correct.
 nnoremap <Leader>gw [I:let nr = input("Which one: ") <bar>exe "normal " . nr ."[\t"<CR>
+
+nnoremap <S-F2> a<F5>
 "}}}
 "==========================================
 ":) 主题,及一些展示上颜色的修改 {{{
@@ -509,12 +532,12 @@ let Tlist_WinWidth = 25
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
-noremap <leader>f :CtrlPMRU<CR>
+noremap <leader>ru :CtrlPMRU<CR>
 "set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux"
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
-    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz)$',
-    \ }
+            \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+            \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz)$',
+            \ }
 "\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_match_window_bottom=1
@@ -524,10 +547,10 @@ let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
 "使用<ESC>退出搜索
 
-Bundle 'Shougo/unite.vim'
+"Bundle 'Shougo/unite.vim'
 Bundle 'rking/ag.vim'
 nnoremap <leader>sc :Ag! <cWORD><cr>
-nnoremap <leader>s :Ag! 
+nnoremap <leader>f :Ag!
 
 "################### 显示增强 ###################"
 "书签
@@ -554,23 +577,23 @@ let g:Powerline_symbols = 'unicode'
 "括号显示增强
 Bundle 'kien/rainbow_parentheses.vim'
 let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
+            \ ['brown',       'RoyalBlue3'],
+            \ ['Darkblue',    'SeaGreen3'],
+            \ ['darkgray',    'DarkOrchid3'],
+            \ ['darkgreen',   'firebrick3'],
+            \ ['darkcyan',    'RoyalBlue3'],
+            \ ['darkred',     'SeaGreen3'],
+            \ ['darkmagenta', 'DarkOrchid3'],
+            \ ['brown',       'firebrick3'],
+            \ ['gray',        'RoyalBlue3'],
+            \ ['black',       'SeaGreen3'],
+            \ ['darkmagenta', 'DarkOrchid3'],
+            \ ['Darkblue',    'firebrick3'],
+            \ ['darkgreen',   'RoyalBlue3'],
+            \ ['darkcyan',    'SeaGreen3'],
+            \ ['darkred',     'DarkOrchid3'],
+            \ ['red',         'firebrick3'],
+            \ ]
 let g:rbpt_max = 40
 let g:rbpt_loadcmd_toggle = 0
 
@@ -615,15 +638,18 @@ let g:ycm_complete_in_comments = 1 "default value is 0
 let g:ycm_complete_in_strings = 1 "as default
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_filetype_blacklist = {
-    \ 'unite' : 1,
-    \ 'notes' : 1,
-    \}
+            \ 'unite' : 1,
+            \ 'notes' : 1,
+            \}
 "let g:ycm_server_use_vim_stdout = 1
 "let g:ycm_server_log_level = 'debug'
 nnoremap <leader>bc :YcmDiags<CR>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType cpp setlocal completeopt-=preview
+
+Bundle 'marijnh/tern_for_vim'
+autocmd FileType javascript setlocal completeopt-=preview
 
 "快速插入代码片段
 Bundle 'SirVer/ultisnips'
@@ -657,6 +683,8 @@ Bundle 'Raimondi/delimitMate'
 au FileType python let b:delimitMate_nesting_quotes = ['"']
 au FileType ruby let b:delimitMate_quotes = "\" ' ` |"
 au FileType html let b:delimitMate_matchpair = "(:),[:],{:},{%:%}"
+au FileType md let b:delimitMate_matchpair = "(:),[:],{:},（:）"
+
 "for code alignment
 ",f=/:/, 按相应的符号切分格式化
 "Bundle 'godlygeek/tabular'
@@ -691,6 +719,10 @@ let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_check_on_open=1
 let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
 let g:syntastic_python_checkers=['pyflakes']
+let g:syntastic_css_checkers=['csslint']
+let g:syntastic_javascript_checkers=['jshint']
+let g:syntastic_json_checkers=['jsonlint']
+let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_cpp_compiler_options = ' -std=c++11 '
 highlight SyntasticErrorSign guifg=white guibg=black
 
@@ -715,26 +747,23 @@ Bundle 'othree/xml.vim'
 "################# 具体语言语法高亮及排版 ###############
 " for jumping in C/C++
 Bundle 'vim-scripts/a.vim'
-":A switches to the header file corresponding to the current file being edited (or vise versa) 
-":AS splits and switches 
-":AV vertical splits and switches 
-":AT new tab and switches 
-":AN cycles through matches 
-":IH switches to file under cursor 
-":IHS splits and switches 
-":IHV vertical splits and switches 
-":IHT new tab and switches 
-":IHN cycles through matches 
-"<Leader>ih switches to file under cursor 
+":A switches to the header file corresponding to the current file being edited (or vise versa)
+":AS splits and switches
+":AV vertical splits and switches
+":AT new tab and switches
+":AN cycles through matches
+":IH switches to file under cursor
+":IHS splits and switches
+":IHV vertical splits and switches
+":IHT new tab and switches
+":IHN cycles through matches
+"<Leader>ih switches to file under cursor
 "<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
-"<Leader>ihn cycles through matches 
+"<Leader>ihn cycles through matches
 
-" for python.vim syntax highlight
-"Bundle 'hdima/python-syntax'
-let python_highlight_all = 1
+"Bundle 'klen/python-mode'
+
 " for markdown
-"Bundle 'plasticboy/vim-markdown'
-"let g:vim_markdown_folding_disabled=1
 Bundle 'hughbien/md-vim'
 autocmd BufWinEnter *.markdown set filetype=md
 autocmd BufWinEnter *.md set filetype=md
@@ -745,8 +774,18 @@ let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 let g:javascript_enable_domhtmlcss = 1
+Bundle "othree/javascript-libraries-syntax.vim"
+let g:used_javascript_libs = 'jquery'
+
 " for css
 Bundle "gorodinskiy/vim-coloresque"
+Bundle 'hail2u/vim-css3-syntax'
+
+" for html
+Bundle 'othree/html5.vim'
+" for json
+Bundle 'elzr/vim-json'
+
 autocmd FileType html set tabstop=2 shiftwidth=2 expandtab ai
 autocmd FileType css set tabstop=2 shiftwidth=2 expandtab ai
 
@@ -754,9 +793,6 @@ autocmd FileType css set tabstop=2 shiftwidth=2 expandtab ai
 " task list
 Bundle 'vim-scripts/TaskList.vim'
 noremap <leader>td <Plug>TaskList
-
-" for git 尚未用起来
-"Bundle 'tpope/vim-fugitive'
 
 "edit history, 可以查看回到某个历史状态
 Bundle 'sjl/gundo.vim'
@@ -774,3 +810,4 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 "}}}
+

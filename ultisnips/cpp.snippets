@@ -1,5 +1,14 @@
+snippet us "using ..."
+using ${1:std::cout};
+endsnippet
+
+snippet uns "using namespace std"
+using namespace std;
+endsnippet
+
+
 snippet #d "#define ..."
-#define  ${1:SYMBOL}
+#define ${1:SYMBOL}
 endsnippet
 
 snippet #p "#pragma"
@@ -10,12 +19,14 @@ snippet #ind "#ifndef ... #define ... #endif"
 #ifndef ${1/([A-Za-z0-9_]+).*/$1/}_H
 #define ${1:SYMBOL}_H
 
+${0:what?}
+
 #endif /* ${1/([A-Za-z0-9_]+).*/$1/}_H */
 endsnippet
 
 snippet #ie "#if #endif" !b
 #if ${1}
-    ${0};
+    ${0}
 #endif
 endsnippet
 
@@ -24,7 +35,7 @@ snippet #I "#include local header (inc)"
 endsnippet
 
 snippet #i "#include <> (Inc)"
-#include <${1}.h>
+#include <${1:iostream}>
 endsnippet
 
 snippet im "main() (main)"
@@ -44,15 +55,13 @@ int main(int argc, char *argv[])
 endsnippet
 
 snippet for "for loop (for)"
-for (${1:i} = 0; $1 < ${2:/*end*/}; ++$1)
-{
+for (int ${1:i} = 0; $1 < ${2:/*end*/}; ++$1) {
 	${0:/*code*/}
 }
 endsnippet
 
 snippet for- "for loop --"
-for (${1:i} = ${2:start}; $1 > ${3:end}; --$1)
-{
+for (int ${1:i} = ${2:start}; $1 > ${3:end}; --$1) {
 	${0:/*code*/}
 }
 endsnippet
@@ -97,41 +106,34 @@ do {
 endsnippet
 
 snippet if "if .. (if)"
-if (${1:/* condition */})
-{
+if (${1:/* condition */}) {
 	${0:/*code*/}
 }
 endsnippet
 
 snippet ief "if .. else if .. else .. (else)"
-if (${1:/* condition */})
-{
+if (${1:/* condition */}) {
 	${3:/*code*/}
 }
-else if (${2:/* condition */})
-{
+else if (${2:/* condition */}) {
 	${4:/*code*/}
 }
-else 
-{
+else {
 	${0:/*code*/}
 }
 endsnippet
 
 snippet el "else"
-else
-{
+else {
 	${0:/* code */}
 }
 endsnippet
 
 snippet ie "if .. else (ife)"
-if (${1:/* condition */})
-{
+if (${1:/* condition */}) {
 	${2:/* code */}
 }
-else
-{
+else {
 	${3:/* else */}
 }
 endsnippet
@@ -140,13 +142,13 @@ snippet sw "switch"
 switch(${1:/*var*/})
 {
 case ${2:/*value*/}:
-    ${4:/*code*/}
-    break;
+	${4:/*code*/}
+	break;
 case ${3:/*value*/}:
-    ${5:/*code*/}
-    break;
+	${5:/*code*/}
+	break;
 default:
-    ${0:/*code*/}
+	${0:/*code*/}
 }
 endsnippet
 
@@ -161,8 +163,7 @@ printf("${1:%s}\n"${2:,/*value*/});
 endsnippet
 
 snippet s "struct"
-struct ${1:`!p snip.rv = (snip.basename or "name") + "_t"`}
-{
+struct ${1:`!p snip.rv = (snip.basename or "name") + "_t"`} {
 	${0:/* data */}
 };
 endsnippet
@@ -228,14 +229,6 @@ snippet fr "free"
 free(${0:value});
 endsnippet
 
-#for Intel MKL#
-#snippet Mma "MKL_Malloc"
-#mkl_malloc(${1:value} * sizeof(${2:type}),${0:length});
-#endsnippet
-
-#snippet Mfr "MKL_Free"
-#mkl_free(${0:value});
-#endsnippet
 snippet omp "openmp"
 #pragma omp parallel for
 endsnippet
@@ -252,6 +245,15 @@ snippet /// "doxgen comment"
 /**
  * $0
  */
+endsnippet
+
+snippet new "new"
+${2:filetype} *${1:var} = new ${2:filetype}[${3:num}];
+delete []$1;
+endsnippet
+
+snippet del "delete"
+delete $1;
 endsnippet
 
 # vim:ft=snippets:
