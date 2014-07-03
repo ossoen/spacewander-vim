@@ -204,6 +204,8 @@ set scrolloff=15
 set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
 " Always show the status line
 set laststatus=2
+"高亮第80列，就像一把尺子
+set cc=80
 "}}}
 ":) file encode, 文件编码,格式 {{{
 "==========================================
@@ -250,8 +252,12 @@ set wildmenu
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc,*.class,*.obj
 
-autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
-autocmd FileType ruby set tabstop=2 shiftwidth=2 expandtab ai
+autocmd FileType python set tabstop=4 shiftwidth=4 softtabstop=4 expandtab ai
+autocmd FileType ruby set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType html set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType css set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType javascript set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType coffeescript set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 
 " if this not work ,make sure .viminfo is writable for you
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -333,6 +339,8 @@ augroup autoRun
     au FileType sh nnoremap <F12> :!sh %:p
     au FileType ruby nnoremap <s-F12> :call AutoRun('ruby')<cr>
     au FileType ruby nnoremap <F12> :!ruby %:p
+    au FileType javascript nnoremap <F12> :!node %:p
+    au FileType javascript nnoremap <s-F12> :call AutoRun('node')<cr>
 augroup END
 
 noremap Y y$
@@ -447,27 +455,22 @@ highlight SpellLocal term=underline cterm=underline
 ":) bundle 插件管理和配置项 {{{
 "==========================================
 "========================== config for plugins begin ======================================
+if has('vim_starting')
+    set nocompatible
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
 
-" 0-bundle the plugins
-"package dependent:  ctags
-"python dependent:  pep8, pyflake pylint
-
-filetype off " required! turn off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+"filetype off " required! turn off
+call neobundle#begin(expand('~/.vim/bundle'))
 
 "################### 插件管理 ###################"
 
-"使用Vundle来管理Vundle
-Bundle 'gmarik/vundle'
-" vim plugin bundle control, command model
-" :BundleInstall     install
-" :BundleInstall!    update
-" :BundleClean       remove plugin not in list
+"使用NeoBundle来管理插件
+NeoBundleFetch 'Shougo/neobundle.vim'
 
 "################### 导航 ###################"
 "目录导航
-Bundle 'scrooloose/nerdtree'
+NeoBundle 'scrooloose/nerdtree'
 noremap <leader>n :NERDTreeToggle<CR>
 let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$','\.egg$','\.exe$', '^\.git$', '^\.svn$', '^\.hg$' ]
 "let g:netrw_home='~/bak'
@@ -477,7 +480,7 @@ let NERDTreeShowLineNumbers=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
 
 "for minibufferexpl
-"Bundle 'fholgado/minibufexpl.vim'
+"NeoBundle 'fholgado/minibufexpl.vim'
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
@@ -494,14 +497,14 @@ let g:miniBufExplCycleArround=1
 "noremap <leader>bd :MBEbd<CR>
 
 "标签导航
-Bundle 'majutsushi/tagbar'
+NeoBundle 'majutsushi/tagbar'
 nnoremap <F9> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
 let g:tagbar_show_linenumbers = -1
 let g:tagbar_compact = 1
 
 "标签导航 要装ctags
-Bundle 'vim-scripts/taglist.vim'
+NeoBundle 'vim-scripts/taglist.vim'
 set tags=tags;/
 let Tlist_Ctags_Cmd="/usr/bin/ctags"
 nnoremap <silent> <F8> :TlistToggle<CR>
@@ -529,7 +532,7 @@ let Tlist_Use_Right_Window = 0
 let Tlist_WinWidth = 25
 
 "for file search ctrlp, 文件搜索
-Bundle 'kien/ctrlp.vim'
+NeoBundle 'kien/ctrlp.vim'
 let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
 noremap <leader>ru :CtrlPMRU<CR>
@@ -547,14 +550,14 @@ let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
 "使用<ESC>退出搜索
 
-"Bundle 'Shougo/unite.vim'
-Bundle 'rking/ag.vim'
+"NeoBundle 'Shougo/unite.vim'
+NeoBundle 'rking/ag.vim'
 nnoremap <leader>sc :Ag! <cWORD><cr>
 nnoremap <leader>f :Ag!
 
 "################### 显示增强 ###################"
 "书签
-Bundle 'vim-scripts/Vim-bookmark'
+NeoBundle 'vim-scripts/Vim-bookmark'
 "mm 建立书签
 "mp 到达上一个书签
 "mn 到达下一个书签
@@ -568,14 +571,14 @@ Bundle 'vim-scripts/Vim-bookmark'
 let g:vbookmark_bookmarkSaveFile = $HOME . '/.vimbookmark'
 
 "状态栏增强展示
-Bundle 'Lokaltog/vim-powerline'
+NeoBundle 'Lokaltog/vim-powerline'
 "if want to use fancy,need to add font patch -> git clone git://gist.github.com/1630581.git ~/.fonts/ttf-dejavu-powerline
 "let g:Powerline_symbols = 'fancy'
 let g:Powerline_symbols = 'unicode'
 
 
 "括号显示增强
-Bundle 'kien/rainbow_parentheses.vim'
+NeoBundle 'kien/rainbow_parentheses.vim'
 let g:rbpt_colorpairs = [
             \ ['brown',       'RoyalBlue3'],
             \ ['Darkblue',    'SeaGreen3'],
@@ -598,32 +601,32 @@ let g:rbpt_max = 40
 let g:rbpt_loadcmd_toggle = 0
 
 "主题 solarized
-"Bundle 'altercation/vim-colors-solarized'
+"NeoBundle 'altercation/vim-colors-solarized'
 "let g:solarized_termcolors=256
 "let g:solarized_termtrans=1
 "let g:solarized_contrast="normal"
 "let g:solarized_visibility="normal"
 
 "主题 molokai
-Bundle 'tomasr/molokai'
+NeoBundle 'tomasr/molokai'
 let g:molokai_original = 1
 
 "################### 快速移动 ###################"
 
 "更高效的移动 <leader><leader>+ w/fx
 ",,+w 跳转 ,,+fx 快速跳转定位到某个字符位置
-Bundle 'Lokaltog/vim-easymotion'
+NeoBundle 'Lokaltog/vim-easymotion'
 " link color for vim-easymotion
 hi link EasyMotionTarget ErrorMsg
 hi link EasyMotionShade  Comment
 
 "%匹配成对的标签，跳转
-Bundle 'vim-scripts/matchit.zip'
+NeoBundle 'vim-scripts/matchit.zip'
 
 "################### 补全及快速编辑 ###################"
 
 "迄今为止用到的最好的自动VIM自动补全插件
-Bundle 'Valloric/YouCompleteMe'
+NeoBundle 'Valloric/YouCompleteMe'
 "具体配置内容请参考该项目的github主页
 "youcompleteme  默认tab  s-tab 和自动补全冲突
 ",gd 高亮选中的函数 仅c-family语言有效
@@ -631,7 +634,7 @@ let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_complete_in_comments = 1 "default value is 0
@@ -648,11 +651,11 @@ nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType cpp setlocal completeopt-=preview
 
-Bundle 'marijnh/tern_for_vim'
+NeoBundle 'marijnh/tern_for_vim'
 autocmd FileType javascript setlocal completeopt-=preview
 
 "快速插入代码片段
-Bundle 'SirVer/ultisnips'
+NeoBundle 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 "定义存放代码片段的文件夹 .vim/snippets下
@@ -665,43 +668,27 @@ let g:snips_author = "spacewander"
 let g:snips_author_email = "spacewanderlzx@gmail.com""
 
 "for Doxygen
-"Bundle 'NsLib/vim-DoxygenToolkit-mod'
+"NeoBundle 'NsLib/vim-DoxygenToolkit-mod'
 
 "快速 加减注释
 "<leader>cc 加上注释
 "<leader>cu 解开注释
 "<leader>ci 加上/解开注释
-Bundle 'scrooloose/nerdcommenter'
-"imap <c-c> <Plug>NERDCommenterInsert
-
-"快速加入修改环绕字符
-"Bundle 'tpope/vim-surround'
+NeoBundle 'scrooloose/nerdcommenter'
 
 "自动补全单引号，双引号等
-Bundle 'Raimondi/delimitMate'
-" for python docstring ",优化输入
-au FileType python let b:delimitMate_nesting_quotes = ['"']
-au FileType ruby let b:delimitMate_quotes = "\" ' ` |"
-au FileType html let b:delimitMate_matchpair = "(:),[:],{:},{%:%}"
-au FileType md let b:delimitMate_matchpair = "(:),[:],{:},（:）"
-
-"for code alignment
-",f=/:/, 按相应的符号切分格式化
-"Bundle 'godlygeek/tabular'
-"nnoremap <Leader>f= :Tabularize /=<CR>
-"vnoremap <Leader>f= :Tabularize /=<CR>
-"nnoremap <Leader>f, :Tabularize /,<CR>
-"vnoremap <Leader>f, :Tabularize /,<CR>
-"nnoremap <Leader>f: :Tabularize /:\zs<CR>
-"vnoremap <Leader>f: :Tabularize /:\zs<CR>
+NeoBundle 'jiangmiao/auto-pairs'
+au FileType python let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
+au FileType ruby let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
+au FileType md let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '（':'）'}
 
 "for visual selection
-Bundle 'terryma/vim-expand-region'
+NeoBundle 'terryma/vim-expand-region'
 noremap <a-v> <Plug>(expand_region_expand)
 noremap - <Plug>(expand_region_shrink)
 
 "for mutil cursor
-Bundle 'terryma/vim-multiple-cursors'
+NeoBundle 'terryma/vim-multiple-cursors'
 let g:multi_cursor_use_default_mapping=0
 " Default mapping
 let g:multi_cursor_next_key='<C-m>'
@@ -713,7 +700,7 @@ let g:multi_cursor_quit_key='<Esc>'
 
 " 编辑时自动语法检查标红, vim-flake8目前还不支持,所以多装一个
 " 使用pyflakes,速度比pylint快
-Bundle 'scrooloose/syntastic'
+NeoBundle 'scrooloose/syntastic'
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_check_on_open=1
@@ -729,11 +716,11 @@ highlight SyntasticErrorSign guifg=white guibg=black
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
-Bundle 'mattn/emmet-vim'
+NeoBundle 'mattn/emmet-vim'
 let g:user_emmet_leader_key = '<leader>.'
 let g:use_emmet_complete_tag = 1
 " for xml and html
-Bundle 'othree/xml.vim'
+NeoBundle 'othree/xml.vim'
 " [[ to previous open tag
 " ]] to next open tag
 " [] to previous close tag
@@ -746,7 +733,7 @@ Bundle 'othree/xml.vim'
 
 "################# 具体语言语法高亮及排版 ###############
 " for jumping in C/C++
-Bundle 'vim-scripts/a.vim'
+NeoBundle 'vim-scripts/a.vim'
 ":A switches to the header file corresponding to the current file being edited (or vise versa)
 ":AS splits and switches
 ":AV vertical splits and switches
@@ -761,46 +748,45 @@ Bundle 'vim-scripts/a.vim'
 "<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
 "<Leader>ihn cycles through matches
 
-"Bundle 'klen/python-mode'
+"NeoBundle 'klen/python-mode'
 
 " for markdown
-Bundle 'hughbien/md-vim'
+NeoBundle 'hughbien/md-vim'
 autocmd BufWinEnter *.markdown set filetype=md
 autocmd BufWinEnter *.md set filetype=md
 
 " for javascript
-Bundle "pangloss/vim-javascript"
+NeoBundle "pangloss/vim-javascript"
 let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 let g:javascript_enable_domhtmlcss = 1
-Bundle "othree/javascript-libraries-syntax.vim"
+NeoBundle "othree/javascript-libraries-syntax.vim"
 let g:used_javascript_libs = 'jquery'
 
+NeoBundle "kchmck/vim-coffee-script"
+
 " for css
-Bundle "gorodinskiy/vim-coloresque"
-Bundle 'hail2u/vim-css3-syntax'
+NeoBundle "gorodinskiy/vim-coloresque"
+NeoBundle 'hail2u/vim-css3-syntax'
 
 " for html
-Bundle 'othree/html5.vim'
-" for json
-Bundle 'elzr/vim-json'
+NeoBundle 'othree/html5.vim'
 
-autocmd FileType html set tabstop=2 shiftwidth=2 expandtab ai
-autocmd FileType css set tabstop=2 shiftwidth=2 expandtab ai
 
 "################### 其他 ###################"
 " task list
-Bundle 'vim-scripts/TaskList.vim'
+NeoBundle 'vim-scripts/TaskList.vim'
 noremap <leader>td <Plug>TaskList
 
 "edit history, 可以查看回到某个历史状态
-Bundle 'sjl/gundo.vim'
+NeoBundle 'sjl/gundo.vim'
 nnoremap <leader>ud :GundoToggle<CR>
 
 " end turn on
+call neobundle#end()
 filetype plugin indent on
-
+NeoBundleCheck
 "========================== config for plugins end ======================================
 colorscheme molokai
 "colorscheme desert
@@ -811,3 +797,8 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 "}}}
 
+"{{{
+" 临时的帮助宏
+inoremap <leader>a <ESC>kdd:wq<cr>
+
+"}}}
