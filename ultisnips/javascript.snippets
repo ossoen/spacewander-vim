@@ -1,19 +1,29 @@
 ###########################################################################
 #                            TextMate Snippets                            #
 ###########################################################################
+snippet #! "#!"
+#! /usr/bin/env node
+
+
+endsnippet
+
+snippet re "require"
+require('${1:module}')
+endsnippet
+
 snippet get "Get Elements"
 getElement${1/(T)|.*/(?1:s)/}By${1:T}${1/(T)|(I)|.*/(?1:agName)(?2:d)/}('$2')
 endsnippet
 
 snippet '':f "object method string"
 '${1:${2:#thing}:${3:click}}': function(element) {
-    ${VISUAL}$0
+  ${VISUAL}$0
 }${10:,}
 endsnippet
 
 snippet .f "object method function_name"
 ${1:object}.${2:method} = function(${3:argument}) {
-    $0
+  $0
 };
 endsnippet
 
@@ -33,7 +43,7 @@ endsnippet
 
 snippet pro "Prototype (proto)"
 ${1:class_name}.prototype.${2:method_name} = function(${3:first_argument}) {
-    ${VISUAL}$0
+  ${VISUAL}$0
 };
 
 endsnippet
@@ -105,13 +115,13 @@ endsnippet
 
 snippet ei "elif"
 else if (${1:condition}) {
-	${2://code}
+  {2://code}
 }
 endsnippet
 
 snippet ie "if ___ else"
 if (${1:condition}) {
-	${2://code}
+  ${2://code}
 }
 else {
 	${3://code}
@@ -149,7 +159,7 @@ return
 endsnippet
 
 snippet v "var"
-var
+var ${1:value}
 endsnippet
 snippet al "alert"
 alert(${1});
@@ -165,19 +175,19 @@ endsnippet
 # Snippets for Console Debug Output
 
 snippet cl "console.log"
-console.log(${1:"${2:value}"});
+console.log(${1:value});
 endsnippet
 
 snippet cw "console.warn"
-console.warn(${1:"${2:value}"});
+console.warn(${1:value});
 endsnippet
 
 snippet ce "console.error"
-console.error(${1:"${2:value}"});
+console.error(${1:value});
 endsnippet
 
 snippet ca "console.assert"
-console.assert(${1:assertion}, ${2:"${3:message}"});
+console.assert(${1:assertion}, "${2:message}"});
 endsnippet
 
 snippet cgroup "console.group"

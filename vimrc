@@ -1,7 +1,7 @@
 "==========================================
 " vim:ft=vim
 " Author:  edited by spacewander currently
-" Version: 7
+" Version: 8
 " Email: spacewanderlzx@gmail.com
 " BlogPost:
 " ReadMe: README.md
@@ -348,6 +348,11 @@ noremap Y y$
 " w!! to sudo & write a file
 cnoremap w!! w !sudo tee >/dev/null %
 
+" expand %% to current directory in command-line mode
+cnoremap %% <C-R>=expand('%:p:h')<cr>
+" and this one for current file!
+cnoremap %c <C-R>=expand('%:p')<cr>
+
 noremap <F1> :help
 
 nnoremap ; :
@@ -634,7 +639,7 @@ let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_complete_in_comments = 1 "default value is 0
@@ -653,6 +658,8 @@ autocmd FileType cpp setlocal completeopt-=preview
 
 NeoBundle 'marijnh/tern_for_vim'
 autocmd FileType javascript setlocal completeopt-=preview
+nnoremap <leader>jd :TernDef<cr>
+nnoremap <leader>jr :TernRefs<cr>
 
 "快速插入代码片段
 NeoBundle 'SirVer/ultisnips'
@@ -660,7 +667,7 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 "定义存放代码片段的文件夹 .vim/snippets下
 "，使用自定义和默认的，将会的到全局，有冲突的会提示
-let g:UltiSnipsSnippetDirectories=["ultisnips", "bundle/UltiSnips/UltiSnips"]
+let g:UltiSnipsSnippetDirectories=["~/github/spacewander-vim/ultisnips", "bundle/UltiSnips/UltiSnips"]
 "定义使用的python版本，为2.x
 let g:UltiSnipsUsePythonVersion = 2
 "username and user_email
@@ -798,7 +805,7 @@ au Syntax * RainbowParenthesesLoadBraces
 "}}}
 
 "{{{
-" 临时的帮助宏
+" 临时的帮助宏,用于翻译commandlinefu的条目
 inoremap <leader>a <ESC>kdd:wq<cr>
 
 "}}}
