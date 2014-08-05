@@ -95,6 +95,8 @@ filetype indent on
 filetype plugin on
 "启动自动补全
 filetype plugin indent on
+
+autocmd BufReadPost *.styl set omnifunc=csscomplete#CompleteCSS
 "非兼容vi模式。去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
 set nocompatible
 set autoread          " 文件修改之后自动载入。
@@ -206,6 +208,8 @@ set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\
 set laststatus=2
 "高亮第80列，就像一把尺子
 set cc=80
+autocmd Filetype md set cc=
+autocmd Filetype text set cc=
 "}}}
 ":) file encode, 文件编码,格式 {{{
 "==========================================
@@ -252,12 +256,14 @@ set wildmenu
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc,*.class,*.obj
 
+" set tabsize here
 autocmd FileType python set tabstop=4 shiftwidth=4 softtabstop=4 expandtab ai
 autocmd FileType ruby set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType html set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType css set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType stylus set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType javascript set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-autocmd FileType coffeescript set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType coffee set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 
 " if this not work ,make sure .viminfo is writable for you
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -277,9 +283,8 @@ set whichwrap+=<,>,h,l
 "==========================================
 " 设置全局leader键
 let mapleader = ','
-let g:mapleader = ','
 " 设置局部leader键"
-let maplocalleader = '\\'
+let g:maplocalleader = '.'
 
 inoremap df <c-[>
 vnoremap df <c-[>
@@ -336,11 +341,13 @@ endfunction
 augroup autoRun
     autocmd!
     au FileType sh nnoremap <s-F12> :call AutoRun('sh')<cr>
-    au FileType sh nnoremap <F12> :!sh %:p
+    au FileType sh nnoremap <F12> :!sh <C-R>]expand('sh')<cr><cr>
     au FileType ruby nnoremap <s-F12> :call AutoRun('ruby')<cr>
-    au FileType ruby nnoremap <F12> :!ruby %:p
-    au FileType javascript nnoremap <F12> :!node %:p
+    au FileType ruby nnoremap <F12> :!ruby <C-R>=expand('%:p')<cr><cr>
+    au FileType javascript nnoremap <F12> :!node <C-R>=expand('%:p')<cr><cr>
     au FileType javascript nnoremap <s-F12> :call AutoRun('node')<cr>
+    au FileType coffee nnoremap <F12> :!coffee <C-R>=expand('%:p')<cr><cr>
+    au FileType coffee nnoremap <s-F12> :call AutoRun('coffee')<cr>
 augroup END
 
 noremap Y y$
@@ -376,8 +383,6 @@ nnoremap <silent> N Nzz
 nnoremap <silent> * *
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
-"插入大括号的正确方式
-inoremap {<CR> {<CR><CR>}<up><End>
 
 " Quickly close the current window
 nnoremap <leader>q :q<CR>
@@ -385,6 +390,14 @@ nnoremap <leader>qa :qa<CR>
 
 " Quickly save the current file
 nnoremap <leader>w :w<CR>
+function! FixSaveCoffee()
+    w
+    if expand('%:e') ==? 'coffee'
+        set ft=coffee
+    endif
+endfunction
+au Filetype conf nnoremap <buffer> <leader>w :call FixSaveCoffee()<cr>
+au BufReadPost *.coffee set ft=coffee
 nnoremap <leader>wq :wq<CR>
 inoremap <leader>w <ESC>:w<CR>
 
@@ -398,6 +411,10 @@ inoremap <leader>w <ESC>:w<CR>
 nnoremap U <C-r>
 " select all
 nnoremap <Leader>sa ggVG"
+
+" 插入新行且不离开normal模式
+nnoremap <leader>o o<ESC>
+nnoremap <leader>O O<ESC>
 
 " Close the current buffer
 "noremap <leader>bd :Bclose<cr>
@@ -455,6 +472,22 @@ highlight SpellRare term=underline cterm=underline
 highlight clear SpellLocal
 highlight SpellLocal term=underline cterm=underline
 
+" Set extra options when running in GUI mode
+if has("gui_running")
+    set guifont=Monaco:h14 "for mac user
+    if has("gui_gtk2")   "GTK2
+        set guifont=Ubuntu\ Mono
+    endif
+    set guioptions-=T
+    set guioptions+=e
+    set guioptions-=r
+    set guioptions-=L
+    set guitablabel=%M\ %t
+    set showtabline=1
+    set linespace=2
+    set noimd
+    set t_Co=256
+endif
 "}}}
 "==========================================
 ":) bundle 插件管理和配置项 {{{
@@ -474,33 +507,6 @@ call neobundle#begin(expand('~/.vim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 "################### 导航 ###################"
-"目录导航
-NeoBundle 'scrooloose/nerdtree'
-noremap <leader>n :NERDTreeToggle<CR>
-let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$','\.egg$','\.exe$', '^\.git$', '^\.svn$', '^\.hg$' ]
-"let g:netrw_home='~/bak'
-let NERDTreeShowBookmarks=1
-let NERDTreeShowLineNumbers=1
-"close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
-
-"for minibufferexpl
-"NeoBundle 'fholgado/minibufexpl.vim'
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1
-"解决FileExplorer窗口变小问题
-let g:miniBufExplForceSyntaxEnable = 1
-let g:miniBufExplorerMoreThanOne=2
-let g:miniBufExplCycleArround=1
-
-" 默认方向键左右可以切换buffer
-" 似乎有一个问题，如果在其中一个窗口使用退出命令，则所有的窗口都会退出
-"noremap <leader>bn :MBEbn<CR>
-"noremap <leader>bp :MBEbp<CR>
-"noremap <leader>bd :MBEbd<CR>
-
 "标签导航
 NeoBundle 'majutsushi/tagbar'
 nnoremap <F9> :TagbarToggle<CR>
@@ -508,73 +514,33 @@ let g:tagbar_autofocus = 1
 let g:tagbar_show_linenumbers = -1
 let g:tagbar_compact = 1
 
-"标签导航 要装ctags
-NeoBundle 'vim-scripts/taglist.vim'
-set tags=tags;/
-let Tlist_Ctags_Cmd="/usr/bin/ctags"
-nnoremap <silent> <F8> :TlistToggle<CR>
-let Tlist_Auto_Highlight_Tag = 1
-let Tlist_Auto_Open = 0
-let Tlist_Auto_Update = 1
-let Tlist_Close_On_Select = 0
-let Tlist_Compact_Format = 0
-let Tlist_Display_Prototype = 0
-let Tlist_Display_Tag_Scope = 1
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_File_Fold_Auto_Close = 0
-let Tlist_GainFocus_On_ToggleOpen = 1
-let Tlist_Hightlight_Tag_On_BufEnter = 1
-let Tlist_Inc_Winwidth = 0
-let Tlist_Max_Submenu_Items = 1
-let Tlist_Max_Tag_Length = 30
-let Tlist_Process_File_Always = 0
-let Tlist_Show_Menu = 0
-let Tlist_Show_One_File = 1
-let Tlist_Sort_Type = "order"
-let Tlist_Use_Horiz_Window = 0
-let Tlist_Use_Right_Window = 0
-let Tlist_WinWidth = 25
-
 "for file search ctrlp, 文件搜索
 NeoBundle 'kien/ctrlp.vim'
 let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_switch_buffer = 'Et'
 noremap <leader>ru :CtrlPMRU<CR>
-"set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux"
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux"
 let g:ctrlp_custom_ignore = {
             \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
-            \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz)$',
+            \ 'file': '\v(\.(exe|so|dll|zip|tar|tar.gz)|a.out)$',
             \ }
 "\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_match_window_bottom=1
+let g:ctrlp_max_files = 1000
 let g:ctrlp_max_height=15
 let g:ctrlp_match_window_reversed=0
 let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
-"使用<ESC>退出搜索
+let g:ctrlp_use_caching = 1
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
-"NeoBundle 'Shougo/unite.vim'
 NeoBundle 'rking/ag.vim'
 nnoremap <leader>sc :Ag! <cWORD><cr>
 nnoremap <leader>f :Ag!
 
 "################### 显示增强 ###################"
-"书签
-NeoBundle 'vim-scripts/Vim-bookmark'
-"mm 建立书签
-"mp 到达上一个书签
-"mn 到达下一个书签
-"ma 删除所有书签
-":VbookmarkGroup 当此命令不带参数时，表示列出当前所有的书签组。此命令后可
-"以接上书签组名，如果此名称存在，则打开对应的书签组，如果此名称不存在，则新建
-"一个书签组
-":VbookmarkGroupRemove 当此命令不带参数时，表示移除当前的书签组。此命令后
-"可以接上书签组名，如果此名称存在，则移除对应的书签组
-" 设置保存书签的文件
-let g:vbookmark_bookmarkSaveFile = $HOME . '/.vimbookmark'
-
 "状态栏增强展示
 NeoBundle 'Lokaltog/vim-powerline'
 "if want to use fancy,need to add font patch -> git clone git://gist.github.com/1630581.git ~/.fonts/ttf-dejavu-powerline
@@ -604,13 +570,6 @@ let g:rbpt_colorpairs = [
             \ ]
 let g:rbpt_max = 40
 let g:rbpt_loadcmd_toggle = 0
-
-"主题 solarized
-"NeoBundle 'altercation/vim-colors-solarized'
-"let g:solarized_termcolors=256
-"let g:solarized_termtrans=1
-"let g:solarized_contrast="normal"
-"let g:solarized_visibility="normal"
 
 "主题 molokai
 NeoBundle 'tomasr/molokai'
@@ -658,16 +617,16 @@ autocmd FileType cpp setlocal completeopt-=preview
 
 NeoBundle 'marijnh/tern_for_vim'
 autocmd FileType javascript setlocal completeopt-=preview
-nnoremap <leader>jd :TernDef<cr>
-nnoremap <leader>jr :TernRefs<cr>
+autocmd FileType javascript nnoremap <leader>jd :TernDef<cr>
+autocmd FileType javascript nnoremap <leader>jr :TernRefs<cr>
 
 "快速插入代码片段
 NeoBundle 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
-"定义存放代码片段的文件夹 .vim/snippets下
+"定义存放代码片段的文件夹 .vim/snippets下,必须在runtimepath下
 "，使用自定义和默认的，将会的到全局，有冲突的会提示
-let g:UltiSnipsSnippetDirectories=["~/github/spacewander-vim/ultisnips", "bundle/UltiSnips/UltiSnips"]
+let g:UltiSnipsSnippetDirectories=["ultisnips", "bundle/UltiSnips/UltiSnips"]
 "定义使用的python版本，为2.x
 let g:UltiSnipsUsePythonVersion = 2
 "username and user_email
@@ -686,22 +645,8 @@ NeoBundle 'scrooloose/nerdcommenter'
 "自动补全单引号，双引号等
 NeoBundle 'jiangmiao/auto-pairs'
 au FileType python let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
-au FileType ruby let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
+au FileType ruby let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '|':'|'}
 au FileType md let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '（':'）'}
-
-"for visual selection
-NeoBundle 'terryma/vim-expand-region'
-noremap <a-v> <Plug>(expand_region_expand)
-noremap - <Plug>(expand_region_shrink)
-
-"for mutil cursor
-NeoBundle 'terryma/vim-multiple-cursors'
-let g:multi_cursor_use_default_mapping=0
-" Default mapping
-let g:multi_cursor_next_key='<C-m>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
 
 "################# 具体语言语法检查 ###############
 
@@ -711,14 +656,15 @@ NeoBundle 'scrooloose/syntastic'
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_check_on_open=1
-let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
 let g:syntastic_python_checkers=['pyflakes']
-let g:syntastic_css_checkers=['csslint']
 let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_shell_checkers=['shellcheck']
+let g:syntastic_coffee_checkers=['coffeelint']
 let g:syntastic_cpp_compiler_options = ' -std=c++11 '
 highlight SyntasticErrorSign guifg=white guibg=black
+let g:syntastic_loc_list_height = 5
+autocmd BufWinEnter *.rb :let syntastic_mode_map = { 'mode':'active', 'passive_filetypes':[]}
 
 "################# 具体语言补全 ###############
 "FOR HTML
@@ -762,30 +708,16 @@ NeoBundle 'hughbien/md-vim'
 autocmd BufWinEnter *.markdown set filetype=md
 autocmd BufWinEnter *.md set filetype=md
 
-" for javascript
-NeoBundle "pangloss/vim-javascript"
-let g:html_indent_inctags = "html,body,head,tbody"
-let g:html_indent_script1 = "inc"
-let g:html_indent_style1 = "inc"
-let g:javascript_enable_domhtmlcss = 1
-NeoBundle "othree/javascript-libraries-syntax.vim"
-let g:used_javascript_libs = 'jquery'
-
 NeoBundle "kchmck/vim-coffee-script"
+autocmd BufWinEnter *.coffee set omnifunc=javascriptcomplete#CompleteJS
 
 " for css
 NeoBundle "gorodinskiy/vim-coloresque"
 NeoBundle 'hail2u/vim-css3-syntax'
-
-" for html
-NeoBundle 'othree/html5.vim'
-
+" for stylus
+NeoBundle 'wavded/vim-stylus' 
 
 "################### 其他 ###################"
-" task list
-NeoBundle 'vim-scripts/TaskList.vim'
-noremap <leader>td <Plug>TaskList
-
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'sjl/gundo.vim'
 nnoremap <leader>ud :GundoToggle<CR>
@@ -807,5 +739,5 @@ au Syntax * RainbowParenthesesLoadBraces
 "{{{
 " 临时的帮助宏,用于翻译commandlinefu的条目
 inoremap <leader>a <ESC>kdd:wq<cr>
-
+nnoremap <leader>a Go
 "}}}

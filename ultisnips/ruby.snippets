@@ -249,14 +249,28 @@ endsnippet
 
 
 
-snippet "\b(case|sw(itch)?)" "case <variable> when <expression> ... end"
+snippet "(case|sw(itch)?)" "case <variable> when <expression> ... end"
 case ${1:variable}
 when ${2:expression}
 $0
 end
 endsnippet
 
+snippet case "case <variable> when <expression> ... end"
+case ${1:variable}
+  when ${2:expression}
+  ${5:#do something...}
+  when ${3:expression}
+  ${6:#do something...}
+  when ${4:expression}
+  ${0:#do something...}
+end
+endsnippet
 
+snippet wh "when <expression>"
+when ${1:expression}
+  ${0:#do something...}
+endsnippet
 
 snippet alias "alias :<new_name> :<old_name>"
 alias :${1:new_name} :${2:old_name}
