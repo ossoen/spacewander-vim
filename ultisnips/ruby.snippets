@@ -180,7 +180,7 @@ endsnippet
 
 
 
-snippet while "while <expression> ... end"
+snippet whi "while <expression> ... end"
 while ${1:expression}
 	${0:# TODO}
 end
@@ -256,7 +256,7 @@ $0
 end
 endsnippet
 
-snippet case "case <variable> when <expression> ... end"
+snippet ca "case <variable> when <expression> ... end"
 case ${1:variable}
   when ${2:expression}
   ${5:#do something...}
@@ -318,5 +318,11 @@ snippet ## "###"
 # @api ${0:public}
 endsnippet
 
+
+snippet test "test"
+test "${1:description}" do
+  ${2:content}
+end
+endsnippet
 
 # vim: set ts=2 sw=2 expandtab:

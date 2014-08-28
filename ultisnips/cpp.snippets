@@ -129,7 +129,7 @@ if (${1:/* condition */}) {
 }
 endsnippet
 
-snippet ief "if .. else if .. else .. (else)"
+snippet ieie "if .. else if .. else .. (else)"
 if (${1:/* condition */}) {
 	${3:/*code*/}
 }
@@ -153,6 +153,21 @@ if (${1:/* condition */}) {
 }
 else {
 	${3:/* else */}
+}
+endsnippet
+
+snippet iei "if...else if"
+if (${1:/* condition */}) {
+	${3:/*code*/}
+}
+else if (${2:/* condition */}) {
+	${4:/*code*/}
+}
+endsnippet
+
+snippet ei "else if"
+else if (${1:/* condition */}) {
+	${2:/* code */}
 }
 endsnippet
 

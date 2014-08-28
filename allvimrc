@@ -709,6 +709,10 @@ NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'hail2u/vim-css3-syntax'
 " for stylus
 NeoBundle 'wavded/vim-stylus'
+
+NeoBundle 'tpope/vim-fireplace'
+NeoBundle 'tpope/vim-sexp-mappings-for-regular-people'
+NeoBundle 'tpope/vim-unimpaired'
 "################### 其他 ###################"
 " task list
 NeoBundle 'vim-scripts/TaskList.vim'

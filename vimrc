@@ -96,21 +96,15 @@ filetype plugin on
 "启动自动补全
 filetype plugin indent on
 
-autocmd BufReadPost *.styl set omnifunc=csscomplete#CompleteCSS
 "非兼容vi模式。去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
 set nocompatible
 set autoread          " 文件修改之后自动载入。
 set shortmess=astI
 set mouse=a
-" 备份,到另一个位置. 防止误删, 目前是取消备份
+" 备份,到另一个位置. 防止误删
 set backup
 set backupext=.bak
 set backupdir=~/bak/vimbk/
-" 取消备份。 视情况自己改
-"set nobackup
-"set noswapfile
-" 突出显示当前行等 不喜欢这种定位可注解
-"set cursorcolumn
 set cursorline              " 突出显示当前行
 set display=lastline
 "设置 退出vim后，内容显示在终端屏幕, 可以用于查看和复制
@@ -143,8 +137,6 @@ augroup END
 set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
-" 搜索时忽略大小写
-set ignorecase
 " 有一个或以上大写字母时仍大小写敏感
 set smartcase     " ignore case if search pattern is all lowercase, case-sensitive otherwise
 " 代码折叠
@@ -208,8 +200,8 @@ set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\
 set laststatus=2
 "高亮第80列，就像一把尺子
 set cc=80
-autocmd Filetype md set cc=
-autocmd Filetype text set cc=
+autocmd Filetype md setlocal cc=
+autocmd Filetype text setlocal cc=
 "}}}
 ":) file encode, 文件编码,格式 {{{
 "==========================================
@@ -231,10 +223,6 @@ set formatoptions+=B
 "==========================================
 ":) others 其它配置 {{{
 "==========================================
-augroup sourceVimrc
-    autocmd! bufwritepost *.vim source % " vim文件修改之后自动加载。 windows。
-    autocmd! bufwritepost *.vim source % " vim文件修改之后自动加载。 linux。
-augroup END
 " 记住文件外观，如折叠等
 augroup rememberView
     autocmd!
@@ -277,6 +265,8 @@ set magic
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
+
+autocmd BufReadPost *.styl set omnifunc=csscomplete#CompleteCSS
 "}}}
 "==========================================
 ":) hot key  自定义快捷键 {{{
@@ -540,6 +530,14 @@ NeoBundle 'rking/ag.vim'
 nnoremap <leader>sc :Ag! <cWORD><cr>
 nnoremap <leader>f :Ag!
 
+"目录导航
+NeoBundle 'scrooloose/nerdtree'
+noremap <leader>n :NERDTreeToggle<CR>
+let NERDTreeHighlightCursorline=1
+let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$','\.egg$','\.exe$', '^\.git$', '^\.svn$', '^\.hg$' ]
+let g:netrw_home='~/bak'
+"close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
 "################### 显示增强 ###################"
 "状态栏增强展示
 NeoBundle 'Lokaltog/vim-powerline'
@@ -602,7 +600,6 @@ let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_complete_in_comments = 1 "default value is 0
-let g:ycm_complete_in_strings = 1 "as default
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_filetype_blacklist = {
             \ 'unite' : 1,
@@ -614,11 +611,14 @@ nnoremap <leader>bc :YcmDiags<CR>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType cpp setlocal completeopt-=preview
+autocmd FileType clojure setlocal completeopt-=preview
 
 NeoBundle 'marijnh/tern_for_vim'
 autocmd FileType javascript setlocal completeopt-=preview
 autocmd FileType javascript nnoremap <leader>jd :TernDef<cr>
 autocmd FileType javascript nnoremap <leader>jr :TernRefs<cr>
+"NeoBundle "othree/javascript-libraries-syntax.vim"
+"let g:used_javascript_libs = 'jquery'
 
 "快速插入代码片段
 NeoBundle 'SirVer/ultisnips'
@@ -626,9 +626,11 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 "定义存放代码片段的文件夹 .vim/snippets下,必须在runtimepath下
 "，使用自定义和默认的，将会的到全局，有冲突的会提示
-let g:UltiSnipsSnippetDirectories=["ultisnips", "bundle/UltiSnips/UltiSnips"]
+let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 "定义使用的python版本，为2.x
 let g:UltiSnipsUsePythonVersion = 2
+" let :UltiSnipsEdit open the snippets in vertical split
+let g:UltiSnipsEditSplit = "vertical"
 "username and user_email
 let g:snips_author = "spacewander"
 let g:snips_author_email = "spacewanderlzx@gmail.com""
@@ -645,8 +647,12 @@ NeoBundle 'scrooloose/nerdcommenter'
 "自动补全单引号，双引号等
 NeoBundle 'jiangmiao/auto-pairs'
 au FileType python let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
+au FileType clojure let b:AutoPairs = {'(':')', '[':']', '{':'}', '"':'"'}
 au FileType ruby let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '|':'|'}
 au FileType md let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '（':'）'}
+
+"快速加入修改环绕字符
+NeoBundle 'tpope/vim-surround'
 
 "################# 具体语言语法检查 ###############
 
@@ -665,6 +671,7 @@ let g:syntastic_cpp_compiler_options = ' -std=c++11 '
 highlight SyntasticErrorSign guifg=white guibg=black
 let g:syntastic_loc_list_height = 5
 autocmd BufWinEnter *.rb :let syntastic_mode_map = { 'mode':'active', 'passive_filetypes':[]}
+autocmd BufWritePre *.rb :SyntasticCheck<cr>
 
 "################# 具体语言补全 ###############
 "FOR HTML
@@ -717,6 +724,9 @@ NeoBundle 'hail2u/vim-css3-syntax'
 " for stylus
 NeoBundle 'wavded/vim-stylus' 
 
+NeoBundle 'tpope/vim-fireplace'
+NeoBundle 'tpope/vim-sexp-mappings-for-regular-people'
+NeoBundle 'tpope/vim-unimpaired'
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'sjl/gundo.vim'
@@ -740,4 +750,12 @@ au Syntax * RainbowParenthesesLoadBraces
 " 临时的帮助宏,用于翻译commandlinefu的条目
 inoremap <leader>a <ESC>kdd:wq<cr>
 nnoremap <leader>a Go
+
+imap cpp <ESC>cpp
+imap <leader>e <ESC>:Eval<cr>
+nmap <leader>e :Eval<cr>
+nmap +( F(ys%)a
+nmap +) f)ys%)a
+inoremap -( ()<BS>
+nnoremap +" ysW"
 "}}}
