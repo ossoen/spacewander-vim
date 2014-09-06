@@ -247,6 +247,7 @@ set wildignore=*.o,*~,*.pyc,*.class,*.obj
 " set tabsize here
 autocmd FileType python set tabstop=4 shiftwidth=4 softtabstop=4 expandtab ai
 autocmd FileType ruby set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd BufWinEnter *.erb set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType html set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType css set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType stylus set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
@@ -276,6 +277,7 @@ let mapleader = ','
 " 设置局部leader键"
 let g:maplocalleader = '.'
 
+nnoremap <F1> :help 
 inoremap df <c-[>
 vnoremap df <c-[>
 
@@ -334,6 +336,8 @@ augroup autoRun
     au FileType sh nnoremap <F12> :!sh <C-R>]expand('sh')<cr><cr>
     au FileType ruby nnoremap <s-F12> :call AutoRun('ruby')<cr>
     au FileType ruby nnoremap <F12> :!ruby <C-R>=expand('%:p')<cr><cr>
+    au FileType python nnoremap <s-F12> :call AutoRun('python')<cr>
+    au FileType python nnoremap <F12> :!python <C-R>=expand('%:p')<cr><cr>
     au FileType javascript nnoremap <F12> :!node <C-R>=expand('%:p')<cr><cr>
     au FileType javascript nnoremap <s-F12> :call AutoRun('node')<cr>
     au FileType coffee nnoremap <F12> :!coffee <C-R>=expand('%:p')<cr><cr>
@@ -350,7 +354,8 @@ cnoremap %% <C-R>=expand('%:p:h')<cr>
 " and this one for current file!
 cnoremap %c <C-R>=expand('%:p')<cr>
 
-noremap <F1> :help
+" quick way to replace
+nnoremap <leader>s :s///g<left><left><left>
 
 nnoremap ; :
 au FileType sh nnoremap <leader>m  :!man <cWORD><cr>
@@ -388,6 +393,7 @@ function! FixSaveCoffee()
 endfunction
 au Filetype conf nnoremap <buffer> <leader>w :call FixSaveCoffee()<cr>
 au BufReadPost *.coffee set ft=coffee
+
 nnoremap <leader>wq :wq<CR>
 inoremap <leader>w <ESC>:w<CR>
 
@@ -401,15 +407,6 @@ inoremap <leader>w <ESC>:w<CR>
 nnoremap U <C-r>
 " select all
 nnoremap <Leader>sa ggVG"
-
-" 插入新行且不离开normal模式
-nnoremap <leader>o o<ESC>
-nnoremap <leader>O O<ESC>
-
-" Close the current buffer
-"noremap <leader>bd :Bclose<cr>
-"" " Close all the buffers
-"noremap <leader>ba :1,1000 bd!<cr>
 
 nnoremap <C-up> :tabnew<cr>
 nnoremap <leader>te :tabedit
@@ -433,7 +430,23 @@ nnoremap <leader>ks :mksession!
 " expressions won't be correct.
 nnoremap <Leader>gw [I:let nr = input("Which one: ") <bar>exe "normal " . nr ."[\t"<CR>
 
-nnoremap <S-F2> a<F5>
+" 从normal模式直接进入粘贴模式
+nnoremap <S-F5> a<F5>
+"}}}
+"==========================================
+":) 自定义命令和函数 {{{
+"==========================================
+augroup ultiEdit
+    command! UE UltiSnipsEdit
+augroup END
+
+augroup railsCommand
+    command! RTM RTmodel
+    command! RTC RTcontroller
+    command! RTV RTview
+    command! RVM RVmodel
+    command! RVC RVcontroller
+augroup END
 "}}}
 "==========================================
 ":) 主题,及一些展示上颜色的修改 {{{
@@ -727,6 +740,9 @@ NeoBundle 'wavded/vim-stylus'
 NeoBundle 'tpope/vim-fireplace'
 NeoBundle 'tpope/vim-sexp-mappings-for-regular-people'
 NeoBundle 'tpope/vim-unimpaired'
+
+" for ruby
+NeoBundle 'tpope/vim-rails'
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'sjl/gundo.vim'

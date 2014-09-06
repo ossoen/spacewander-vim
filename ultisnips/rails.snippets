@@ -1,0 +1,44 @@
+snippet doc "doc for func"
+# ${0}
+# Params:
+# +${1:param}:: +${2:type}+
+endsnippet
+
+snippet fb "find_by_"
+find_by_${1:what}(${2:value})
+endsnippet
+
+snippet va "validates"
+validates
+endsnippet
+
+snippet vaf "validates with func"
+validate :${1:function_name}
+endsnippet
+
+snippet bl "belongs"
+belongs_to
+endsnippet
+
+snippet hm "has_many"
+has_many
+endsnippet
+
+snippet habtm "has_and_belongs_to_many"
+has_and_belongs_to_many
+endsnippet
+
+snippet rdt "redirect_to"
+redirect_to
+endsnippet
+
+snippet rst "respond_to"
+respond_to do |format|
+	${1:format.html}
+end
+endsnippet
+
+snippet s "session"
+session[:${1:user_id}]
+endsnippet
+

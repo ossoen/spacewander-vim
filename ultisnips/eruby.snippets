@@ -1,0 +1,26 @@
+snippet flash "handle flash"
+<% if flash[:notice] %>
+  <p id='notice'><%= flash[:notice] %></p>
+<% end %>
+endsnippet
+
+snippet ff "form_for"
+<%= form_for ${1:class} do |f| %>
+	$0
+<% end %>
+endsnippet
+
+snippet ft "form_tag"
+<%= form_tag do %>
+  $0
+<% end %>
+endsnippet
+
+snippet tf "text_field"
+text_field
+endsnippet
+
+snippet tft "text_field_tag"
+<%= text_field_tag :${1:field}, params[:${1:field}] %>
+endsnippet
+

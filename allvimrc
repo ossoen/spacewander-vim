@@ -713,6 +713,9 @@ NeoBundle 'wavded/vim-stylus'
 NeoBundle 'tpope/vim-fireplace'
 NeoBundle 'tpope/vim-sexp-mappings-for-regular-people'
 NeoBundle 'tpope/vim-unimpaired'
+
+" for ruby
+NeoBundle 'tpope/vim-rails'
 "################### 其他 ###################"
 " task list
 NeoBundle 'vim-scripts/TaskList.vim'
