@@ -79,6 +79,7 @@ augroup myFun
     "autocmd BufWritePost * :call AutoFormat()
 augroup END
 
+noremap <F2> :call ToggleMouse()<CR>
 nnoremap <S-F6> :call AutoFormat()<cr>
 nnoremap <F6> :call DeleteTrailingWS()<cr>
 "}}}
@@ -277,7 +278,7 @@ let mapleader = ','
 " 设置局部leader键"
 let g:maplocalleader = '.'
 
-nnoremap <F1> :help 
+nnoremap <F1> :help
 inoremap df <c-[>
 vnoremap df <c-[>
 
@@ -312,7 +313,6 @@ noremap L $
 " Remap VIM 0 to first non-blank character
 noremap 0 ^
 
-noremap <F2> :call ToggleMouse()<CR>
 nnoremap <F4> :set wrap! wrap?<CR>
 "set paste
 set pastetoggle=<F5>            " when in insert mode, press <F5> to go to
@@ -355,9 +355,10 @@ cnoremap %% <C-R>=expand('%:p:h')<cr>
 cnoremap %c <C-R>=expand('%:p')<cr>
 
 " quick way to replace
-nnoremap <leader>s :s///g<left><left><left>
+nnoremap <leader>s :%s///gc<left><left><left><left>
 
 nnoremap ; :
+nnoremap : ;
 au FileType sh nnoremap <leader>m  :!man <cWORD><cr>
 nnoremap <leader>v V`}
 " 清扫命令行
@@ -515,6 +516,7 @@ NeoBundle 'majutsushi/tagbar'
 nnoremap <F9> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
 let g:tagbar_show_linenumbers = -1
+let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 
 "for file search ctrlp, 文件搜索
@@ -732,10 +734,10 @@ NeoBundle "kchmck/vim-coffee-script"
 autocmd BufWinEnter *.coffee set omnifunc=javascriptcomplete#CompleteJS
 
 " for css
-NeoBundle "gorodinskiy/vim-coloresque"
+NeoBundle "spacewander/vim-coloresque"
 NeoBundle 'hail2u/vim-css3-syntax'
 " for stylus
-NeoBundle 'wavded/vim-stylus' 
+NeoBundle 'wavded/vim-stylus'
 
 NeoBundle 'tpope/vim-fireplace'
 NeoBundle 'tpope/vim-sexp-mappings-for-regular-people'
@@ -768,10 +770,9 @@ inoremap <leader>a <ESC>kdd:wq<cr>
 nnoremap <leader>a Go
 
 imap cpp <ESC>cpp
-imap <leader>e <ESC>:Eval<cr>
-nmap <leader>e :Eval<cr>
 nmap +( F(ys%)a
 nmap +) f)ys%)a
 inoremap -( ()<BS>
 nnoremap +" ysW"
+
 "}}}
