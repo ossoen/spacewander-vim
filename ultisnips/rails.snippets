@@ -1,7 +1,15 @@
-snippet doc "doc for func"
+snippet ## "doc for func"
 # ${0}
 # Params:
 # +${1:param}:: +${2:type}+
+endsnippet
+
+snippet pa "params"
+params
+endsnippet
+
+snippet as "assigns"
+assigns(:${1:instance})
 endsnippet
 
 snippet fb "find_by_"
@@ -26,6 +34,10 @@ endsnippet
 
 snippet habtm "has_and_belongs_to_many"
 has_and_belongs_to_many
+endsnippet
+
+snippet rd "render"
+render
 endsnippet
 
 snippet rdt "redirect_to"

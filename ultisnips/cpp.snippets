@@ -196,6 +196,10 @@ printf("${1:%s}\n"${2:,/*value*/});
 endsnippet
 
 snippet st "struct"
+struct 
+endsnippet
+
+snippet struct "struct"
 struct ${1:`!p snip.rv = (snip.basename or "name") + "_t"`} {
 	${0:/* data */}
 };

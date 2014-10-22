@@ -220,19 +220,26 @@ snippet req "require an AMD module"
 require([${1:'dependencies'}], ${2:callback});
 endsnippet
 
-snippet // "///"
-// ${0}
-//
-// @param ${2:type} ${1:param}
-//		${3:description}
-endsnippet
-
 snippet try "try...catch..."
 try {
 	${1://code}
 }
 catch(e) {
 	${2://code}
+}
+endsnippet
+
+snippet /// "write jsDoc docstring"
+/*
+ * ${1:docstring}
+ *
+ * @param ${2:Argument Type} ${3:argument} - ${4:description}
+ */
+endsnippet
+
+snippet wh "while"
+while (${1:expr}) {
+	${2:body}
 }
 endsnippet
 

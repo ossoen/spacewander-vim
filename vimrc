@@ -321,6 +321,18 @@ set pastetoggle=<F5>            " when in insert mode, press <F5> to go to
 " disbale paste mode when leaving insert mode
 au InsertLeave * set nopaste
 
+" quick close Quickfix
+nnoremap <F10> :ccl<cr>
+
+function! CleanSwFile()
+    if expand('%:c')[0] == '.'
+        !rm %.sw*
+    else
+        !rm .%.sw*
+    endif
+endfunction
+nnoremap <s-F10> :call CleanSwFile()<cr>
+
 function! AutoRun(cmd)
     let result = system(a:cmd .' ' . expand('%:p'))
     vsplit __Output__
@@ -413,6 +425,8 @@ nnoremap <C-up> :tabnew<cr>
 nnoremap <leader>te :tabedit
 nnoremap <C-left>   :tabprevious<CR>
 nnoremap <C-right>   :tabnext<CR>
+" insert 'end' in current line
+inoremap <C-e> end
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
@@ -442,11 +456,19 @@ augroup ultiEdit
 augroup END
 
 augroup railsCommand
-    command! RTM RTmodel
-    command! RTC RTcontroller
-    command! RTV RTview
-    command! RVM RVmodel
-    command! RVC RVcontroller
+    command! TM RTmodel
+    command! TC RTcontroller
+    command! TV RTview
+    command! TJ RTjavascript
+    command! TS RTstylesheet
+    command! TR RTinitalizer
+    command! VM RVmodel
+    command! VC RVcontroller
+    command! VV RVview
+    command! VJ RVjavascript
+    command! VS RVstylesheet
+    command! VR RVinitalizer
+    command! RT Rake
 augroup END
 "}}}
 "==========================================
@@ -660,19 +682,6 @@ let g:snips_author_email = "spacewanderlzx@gmail.com""
 NeoBundle 'scrooloose/nerdcommenter'
 
 "自动补全单引号，双引号等
-NeoBundle 'jiangmiao/auto-pairs'
-au FileType python let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
-au FileType clojure let b:AutoPairs = {'(':')', '[':']', '{':'}', '"':'"'}
-au FileType ruby let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '|':'|'}
-au FileType md let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '（':'）'}
-
-"快速加入修改环绕字符
-NeoBundle 'tpope/vim-surround'
-
-"################# 具体语言语法检查 ###############
-
-" 编辑时自动语法检查标红, vim-flake8目前还不支持,所以多装一个
-" 使用pyflakes,速度比pylint快
 NeoBundle 'scrooloose/syntastic'
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
