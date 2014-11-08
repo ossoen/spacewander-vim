@@ -130,8 +130,8 @@ set number
 "set nowrap                    " 取消换行。
 augroup specialFileWrap
     autocmd!
-    autocmd BufReadPost *.html set wrap
-    autocmd BufReadPost *.js set wrap
+    autocmd BufReadPost *.html setlocal wrap
+    autocmd BufReadPost *.js setlocal wrap
 augroup END
 
 "括号配对情况
@@ -246,14 +246,18 @@ set wildmenu
 set wildignore=*.o,*~,*.pyc,*.class,*.obj
 
 " set tabsize here
-autocmd FileType python set tabstop=4 shiftwidth=4 softtabstop=4 expandtab ai
-autocmd FileType ruby set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-autocmd BufWinEnter *.erb set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-autocmd FileType html set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-autocmd FileType css set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-autocmd FileType stylus set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-autocmd FileType javascript set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-autocmd FileType coffee set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab ai
+autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd BufWinEnter *.erb setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType html setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType stylus setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType coffee setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+
+" set cursorcolumn line here
+autocmd FileType coffee setlocal cursorcolumn
+autocmd FileType python setlocal cursorcolumn
 
 " if this not work ,make sure .viminfo is writable for you
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -268,7 +272,7 @@ set magic
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
-autocmd BufReadPost *.styl set omnifunc=csscomplete#CompleteCSS
+autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 "}}}
 "==========================================
 ":) hot key  自定义快捷键 {{{
@@ -610,6 +614,10 @@ let g:rbpt_loadcmd_toggle = 0
 NeoBundle 'tomasr/molokai'
 let g:molokai_original = 1
 
+"自动补全单引号，双引号等
+"NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'jiangmiao/auto-pairs'
+
 "################### 快速移动 ###################"
 
 "更高效的移动 <leader><leader>+ w/fx
@@ -633,7 +641,8 @@ let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf.py'
+"let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf2.py'
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_complete_in_comments = 1 "default value is 0
@@ -697,6 +706,8 @@ let g:syntastic_loc_list_height = 5
 autocmd BufWinEnter *.rb :let syntastic_mode_map = { 'mode':'active', 'passive_filetypes':[]}
 autocmd BufWritePre *.rb :SyntasticCheck<cr>
 
+" vim映射集锦
+NeoBundle 'tpope/vim-unimpaired'
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
@@ -732,8 +743,6 @@ NeoBundle 'vim-scripts/a.vim'
 "<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
 "<Leader>ihn cycles through matches
 
-"NeoBundle 'klen/python-mode'
-
 " for markdown
 NeoBundle 'hughbien/md-vim'
 autocmd BufWinEnter *.markdown set filetype=md
@@ -747,10 +756,6 @@ NeoBundle "spacewander/vim-coloresque"
 NeoBundle 'hail2u/vim-css3-syntax'
 " for stylus
 NeoBundle 'wavded/vim-stylus'
-
-NeoBundle 'tpope/vim-fireplace'
-NeoBundle 'tpope/vim-sexp-mappings-for-regular-people'
-NeoBundle 'tpope/vim-unimpaired'
 
 " for ruby
 NeoBundle 'tpope/vim-rails'
@@ -782,6 +787,11 @@ imap cpp <ESC>cpp
 nmap +( F(ys%)a
 nmap +) f)ys%)a
 inoremap -( ()<BS>
+inoremap -' ''<BS>
+inoremap -" ""<BS>
+inoremap -{ {}<BS>
+inoremap -[ []<BS>
+inoremap +< <>
 nnoremap +" ysW"
 
 "}}}

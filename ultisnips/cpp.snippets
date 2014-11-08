@@ -205,14 +205,14 @@ struct ${1:`!p snip.rv = (snip.basename or "name") + "_t"`} {
 };
 endsnippet
 
-snippet fu "function" b
+snippet fu "function"
 ${1:void} ${2:function_name}(${3})
 {
 	${0:/*code*/}
 }
 endsnippet
 
-snippet df "function declaration" b
+snippet df "function declaration"
 ${1:void} ${2:function_name}(${3});
 endsnippet
 
@@ -232,7 +232,15 @@ snippet i " int "
 int
 endsnippet
 
-snippet f "float"
+snippet b "bool"
+bool
+endsnippet
+
+snippet t "true"
+true
+endsnippet
+
+snippet f "false"
 float
 endsnippet
 
@@ -291,6 +299,13 @@ endsnippet
 
 snippet del "delete"
 delete $1;
+endsnippet
+
+snippet cls "class"
+class ${1:ClassName}
+{
+
+};
 endsnippet
 
 # vim:ft=snippets:
