@@ -325,4 +325,20 @@ test "${1:description}" do
 end
 endsnippet
 
+snippet ae "assert_equal"
+assert_equal ${1:exp}, ${2:act}
+endsnippet
+
+snippet ara "assert_raises"
+assert_raises ${1:*exp}
+endsnippet
+
+snippet art "assert_respond_to"
+assert_respond_to ${1:obj} ${2:meth}
+endsnippet
+
+snippet aid "assert_in_delta"
+assert_in_delta ${1:exp} ${2:act} ${3:delta}
+endsnippet
+
 # vim: set ts=2 sw=2 expandtab:

@@ -793,5 +793,4 @@ inoremap -{ {}<BS>
 inoremap -[ []<BS>
 inoremap +< <>
 nnoremap +" ysW"
-
 "}}}

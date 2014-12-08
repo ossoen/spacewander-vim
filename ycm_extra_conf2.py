@@ -42,6 +42,7 @@ flags = [
 '-DQT_WIDGETS_LIB',
 '-DQT_XML_LIB',
 
+'-I', '/home/lzx/code/muduo'
 '-I', '/home/lzx/Qt5.2.1/5.2.1/gcc_64/mkspecs/linux-g++',
 '-I', '/home/lzx/Qt5.2.1/5.2.1/gcc_64/include',
 '-I', '/home/lzx/Qt5.2.1/5.2.1/gcc_64/include/QtConcurrent',
