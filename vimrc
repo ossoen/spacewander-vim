@@ -165,6 +165,7 @@ set shiftwidth=4  " number of spaces to use for autoindenting
 set softtabstop=4             " 按退格键时可以一次删掉 4 个空格
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop 按退格键时可以一次删掉 4 个空格
 set expandtab                " 将Tab自动转化成空格    [需要输入真正的Tab键时，使用 Ctrl+V + Tab]
+autocmd FileType make setlocal noexpandtab
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 " A buffer becomes hidden when it is abandoned
 set hidden
@@ -256,8 +257,9 @@ autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2 expand
 autocmd FileType coffee setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 
 " set cursorcolumn line here
-autocmd FileType coffee setlocal cursorcolumn
-autocmd FileType python setlocal cursorcolumn
+"autocmd FileType coffee setlocal cursorcolumn
+"autocmd FileType python setlocal cursorcolumn
+set cursorcolumn
 
 " if this not work ,make sure .viminfo is writable for you
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -273,6 +275,7 @@ set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
 autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
+autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
 "}}}
 "==========================================
 ":) hot key  自定义快捷键 {{{
@@ -427,8 +430,8 @@ nnoremap <Leader>sa ggVG"
 
 nnoremap <C-up> :tabnew<cr>
 nnoremap <leader>te :tabedit
-nnoremap <C-left>   :tabprevious<CR>
-nnoremap <C-right>   :tabnext<CR>
+nnoremap <C-left>   :tabfirst<CR>
+nnoremap <C-right>   :tablast<CR>
 " insert 'end' in current line
 inoremap <C-e> end
 
@@ -568,8 +571,8 @@ let g:ctrlp_use_caching = 1
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
 NeoBundle 'rking/ag.vim'
-nnoremap <leader>sc :Ag! <cWORD><cr>
-nnoremap <leader>f :Ag!
+nnoremap <leader>f :Ag! <cword> <cr>
+nnoremap <leader>sc :Ag!
 
 "目录导航
 NeoBundle 'scrooloose/nerdtree'
@@ -690,13 +693,14 @@ let g:snips_author_email = "spacewanderlzx@gmail.com""
 "<leader>ci 加上/解开注释
 NeoBundle 'scrooloose/nerdcommenter'
 
-"自动补全单引号，双引号等
 NeoBundle 'scrooloose/syntastic'
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_check_on_open=1
 let g:syntastic_python_checkers=['pyflakes']
 let g:syntastic_javascript_checkers=['jshint']
+let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
+"let g:syntastic_javascript_jshint_conf = $HOME . '/.jshintrc'
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']

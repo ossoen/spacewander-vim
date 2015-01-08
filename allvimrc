@@ -610,6 +610,10 @@ NeoBundle 'tpope/vim-surround'
 "自动补全单引号，双引号等
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'jiangmiao/auto-pairs'
+autocmd Filetype ruby let b:AutoPairs = { \
+    '(':')', '[':']', '{':'}',"'":"'",\
+    '"':'"', '`':'`', '|':'|'\
+}
 
 "for code alignment
 ",f=/:/, 按相应的符号切分格式化

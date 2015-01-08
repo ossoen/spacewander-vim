@@ -19,6 +19,7 @@ begin
   ${1:try}
 rescue ${2:Exception}
   ${3:handle}
+end
 endsnippet
 
 snippet res "rescue"
@@ -110,7 +111,7 @@ end
 endsnippet
 
 snippet d "def <name>..."
-def ${1:function_name}${2:(*args)}
+def ${1:function_name}
 	${0:# TODO}
 end
 endsnippet
@@ -202,7 +203,7 @@ endsnippet
 
 
 
-snippet wr "attr_writer :<attr_names>"
+snippet aw "attr_writer :<attr_names>"
 attr_writer :${0:attr_names}
 endsnippet
 

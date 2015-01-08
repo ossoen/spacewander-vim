@@ -66,7 +66,7 @@ endsnippet
 snippet ie
 if ${1}:
     ${2}
-else:
+else :
     ${3}
 endsnippet
 
@@ -97,6 +97,11 @@ endsnippet
 ############# define function
 snippet d "function"
 def ${1:fname}(${2:`!v indent('.') ? 'self' : ''`}):
+	${0}
+endsnippet
+
+snippet dt "def test_"
+def test_${1:fname}(${2:ary}):
 	${0}
 endsnippet
 
@@ -151,6 +156,12 @@ def __init__(self, ${1:args}):
     ${0}
 endsnippet
 
+########### quick snippet
+snippet open "with open()"
+with open(${1}) as f :
+	${0}
+endsnippet
+
 ########### docs
 snippet file
 """
@@ -169,4 +180,17 @@ endsnippet
 snippet tr
 import traceback; traceback.print_exc()
 endsnippet
+
+snippet a "assert"
+assert 
+endsnippet
+
+snippet try "try...except"
+try :
+	${0}
+except ${1:OSError} :
+	
+endsnippet
+
+
 #############
