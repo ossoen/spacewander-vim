@@ -26,24 +26,17 @@ lnif $CURRENT_DIR/ $HOME/.vim
 
 lnif $CURRENT_DIR/lnYourVimrc.sh $HOME/lnYourVimrc.sh
 
-if [ ! -e $CURRENT_DIR/vundle ]; then
-    echo "Installing Vundle"
-    git clone http://github.com/gmarik/vundle.git $CURRENT_DIR/bundle/vundle
+if [ ! -e $CURRENT_DIR/neobundle.vim ]; then
+    echo "Installing NeoBundle"
+    git clone http://github.com/shougo/neobundle.vim.git $CURRENT_DIR/bundle/neobundle.vim
 fi
 
 
-echo "update/install plugins using Vundle"
+echo "update/install plugins using Neobundle"
 system_shell=$SHELL
 export SHELL="/bin/sh"
-vim -u $CURRENT_DIR/vimrc +BundleInstall! +BundleClean +qall
+vim -u $CURRENT_DIR/vimrc +NeoBundleInstall +qall
 export SHELL=$system_shell
-
-
-
-echo "compile YouCompleteMe"
-echo "if error,you need to compile it yourself"
-cd $CURRENT_DIR/bundle/YouCompleteMe/
-bash -x install.sh --clang-completer
 
 #vim bk and undo dir
 echo "设置备份文件夹 ~/bak/vimbk 和 ~/bak/vimundo (如有必要)"
@@ -56,3 +49,15 @@ if [ ! -d ~/bak/vimundo ]
 then
     mkdir -p ~/bak/vimundo
 fi
+
+echo "compile YouCompleteMe"
+echo "if error,you need to compile it yourself"
+cd $CURRENT_DIR/bundle/YouCompleteMe/
+# YouCompleteMe 依赖的是libclang，而有clang不代表也有libclang，再解决libclang的识别之前，先注释掉有关部分
+#if [ `which clang` ]
+#then
+    #bash -x install.sh --clang-completer --system-libclang
+#else
+    bash -x install.sh --clang-completer
+#fi
+
