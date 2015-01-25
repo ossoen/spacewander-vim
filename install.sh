@@ -53,11 +53,10 @@ fi
 echo "compile YouCompleteMe"
 echo "if error,you need to compile it yourself"
 cd $CURRENT_DIR/bundle/YouCompleteMe/
-# YouCompleteMe 依赖的是libclang，而有clang不代表也有libclang，再解决libclang的识别之前，先注释掉有关部分
-#if [ `which clang` ]
-#then
-    #bash -x install.sh --clang-completer --system-libclang
-#else
+if [ -n "$(locate libclang.so)" ]
+then
+    bash -x install.sh --clang-completer --system-libclang
+else
     bash -x install.sh --clang-completer
-#fi
+fi
 
