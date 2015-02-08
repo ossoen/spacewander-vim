@@ -195,7 +195,7 @@ set showcmd
 set showmode
 
 " Set 15 lines to the cursor - when moving vertically using j/k 上下滚动,始终在中间
-set scrolloff=15
+set scrolloff=22
 " 命令行（在状态行下）的高度，默认为1，这里是2
 set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
 " Always show the status line
@@ -226,11 +226,11 @@ set formatoptions+=B
 ":) others 其它配置 {{{
 "==========================================
 " 记住文件外观，如折叠等
-augroup rememberView
-    autocmd!
-    au BufWinEnter * silent! loadview
-    au BufWinLeave * silent! mkview
-augroup END
+"augroup rememberView
+    "autocmd!
+    "au BufWinEnter * silent! loadview
+    "au BufWinLeave * silent! mkview
+"augroup END
 
 " about highlight
 set nohlsearch          " do not highlight searched-for phrases
@@ -276,6 +276,12 @@ set whichwrap+=<,>,h,l
 
 autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
+
+" automatically leave insert mode after 'updatetime' milliseconds of inaction
+au CursorHoldI * stopinsert
+" set 'updatetime' to 5 seconds when in insert mode
+au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
+au InsertLeave * let &updatetime=updaterestore
 "}}}
 "==========================================
 ":) hot key  自定义快捷键 {{{
@@ -351,8 +357,8 @@ endfunction
 
 augroup autoRun
     autocmd!
-    au FileType sh nnoremap <s-F12> :call AutoRun('sh')<cr>
-    au FileType sh nnoremap <F12> :!sh <C-R>]expand('sh')<cr><cr>
+    au FileType sh nnoremap <s-F12> :call AutoRun('bash')<cr>
+    au FileType sh nnoremap <F12> :!sh <C-R>]expand('bash')<cr><cr>
     au FileType ruby nnoremap <s-F12> :call AutoRun('ruby')<cr>
     au FileType ruby nnoremap <F12> :!ruby <C-R>=expand('%:p')<cr><cr>
     au FileType python nnoremap <s-F12> :call AutoRun('python')<cr>
@@ -556,7 +562,7 @@ let g:ctrlp_switch_buffer = 'Et'
 noremap <leader>ru :CtrlPMRU<CR>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux"
 let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+            \ 'dir':  '\v[\/](\.(git|hg|svn|rvm)|node_modules|coverage)$',
             \ 'file': '\v(\.(exe|so|dll|zip|tar|tar.gz)|a.out)$',
             \ }
 "\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
@@ -570,9 +576,13 @@ let g:ctrlp_follow_symlinks=1
 let g:ctrlp_use_caching = 1
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
-NeoBundle 'rking/ag.vim'
-nnoremap <leader>f :Ag! <cword> <cr>
-nnoremap <leader>sc :Ag!
+NeoBundle 'dyng/ctrlsf.vim'
+nmap     <C-F>f <Plug>CtrlSFPrompt
+vmap     <C-F>f <Plug>CtrlSFVwordPath
+vmap     <C-F>F <Plug>CtrlSFVwordExec
+nmap     <C-F>n <Plug>CtrlSFCwordPath
+nmap     <C-F>p <Plug>CtrlSFPwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
 
 "目录导航
 NeoBundle 'scrooloose/nerdtree'
@@ -584,10 +594,17 @@ let g:netrw_home='~/bak'
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
 "################### 显示增强 ###################"
 "状态栏增强展示
-NeoBundle 'Lokaltog/vim-powerline'
-"if want to use fancy,need to add font patch -> git clone git://gist.github.com/1630581.git ~/.fonts/ttf-dejavu-powerline
-"let g:Powerline_symbols = 'fancy'
+NeoBundle 'bling/vim-airline'
 let g:Powerline_symbols = 'unicode'
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_left_sep = '▶'
+let g:airline_left_alt_sep = '❯'
+let g:airline_right_sep = '◀'
+let g:airline_right_alt_sep = '❮'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
 
 
 "括号显示增强
@@ -634,6 +651,21 @@ hi link EasyMotionShade  Comment
 NeoBundle 'vim-scripts/matchit.zip'
 
 "################### 补全及快速编辑 ###################"
+"快速插入代码片段
+NeoBundle 'SirVer/ultisnips'
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+"定义存放代码片段的文件夹 .vim/snippets下,必须在runtimepath下
+"，使用自定义和默认的，将会的到全局，有冲突的会提示
+let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+"定义使用的python版本，为2.x
+let g:UltiSnipsUsePythonVersion = 2
+" let :UltiSnipsEdit open the snippets in vertical split
+let g:UltiSnipsEditSplit = "vertical"
+"username and user_email
+let g:snips_author = "spacewander"
+let g:snips_author_email = "spacewanderlzx@gmail.com""
+
 
 "迄今为止用到的最好的自动VIM自动补全插件
 NeoBundle 'Valloric/YouCompleteMe'
@@ -654,6 +686,7 @@ let g:ycm_filetype_blacklist = {
             \ 'unite' : 1,
             \ 'notes' : 1,
             \}
+let g:ycm_use_ultisnips_completer = 1
 "let g:ycm_server_use_vim_stdout = 1
 "let g:ycm_server_log_level = 'debug'
 nnoremap <leader>bc :YcmDiags<CR>
@@ -668,21 +701,6 @@ autocmd FileType javascript nnoremap <leader>jd :TernDef<cr>
 autocmd FileType javascript nnoremap <leader>jr :TernRefs<cr>
 "NeoBundle "othree/javascript-libraries-syntax.vim"
 "let g:used_javascript_libs = 'jquery'
-
-"快速插入代码片段
-NeoBundle 'SirVer/ultisnips'
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-"定义存放代码片段的文件夹 .vim/snippets下,必须在runtimepath下
-"，使用自定义和默认的，将会的到全局，有冲突的会提示
-let g:UltiSnipsSnippetDirectories=["UltiSnips"]
-"定义使用的python版本，为2.x
-let g:UltiSnipsUsePythonVersion = 2
-" let :UltiSnipsEdit open the snippets in vertical split
-let g:UltiSnipsEditSplit = "vertical"
-"username and user_email
-let g:snips_author = "spacewander"
-let g:snips_author_email = "spacewanderlzx@gmail.com""
 
 "for Doxygen
 "NeoBundle 'NsLib/vim-DoxygenToolkit-mod'

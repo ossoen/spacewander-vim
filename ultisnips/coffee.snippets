@@ -94,3 +94,34 @@ snippet f "false"
 false
 endsnippet
 
+# Node
+snippet exp "module.exports"
+module.exports =
+  ${1:func}: $1
+endsnippet
+
+# mocha
+snippet des "describe"
+describe '${1:what}', ->
+  ${0}
+endsnippet
+
+snippet it "it"
+it '${1:what}', ->
+  ${0}
+endsnippet
+
+snippet sbe "should.be.equal"
+.should.be.equal
+endsnippet
+
+snippet re "require"
+require '${1:module}'
+endsnippet
+
+snippet : "func: func"
+${1:func}: $1
+endsnippet
+
+
+
