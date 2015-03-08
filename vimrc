@@ -156,10 +156,9 @@ augroup vimFold
 augroup END
 set foldlevel=99
 set foldlevelstart=99
-"Smart indent
-set smartindent
-set autoindent    " always set autoindenting on
-" never add copyindent, case error   " copy the previous indentation on autoindenting
+
+set cindent
+
 set tabstop=4                " 设置Tab键的宽度        [等同的空格个数]
 set shiftwidth=4  " number of spaces to use for autoindenting
 set softtabstop=4             " 按退格键时可以一次删掉 4 个空格
@@ -453,7 +452,8 @@ nnoremap <leader>z9 :set foldlevel=99<CR>
 " Change Working Directory to that of the current file
 cnoremap cwd lcd %:p:h
 " 保存会话
-nnoremap <leader>ks :mksession!
+command! Mk mksession! ~/Session.vim
+command! So so ~/Session.vim
 " jump to the place with the same word. <bar> should be used ,otherwise the
 " expressions won't be correct.
 nnoremap <Leader>gw [I:let nr = input("Which one: ") <bar>exe "normal " . nr ."[\t"<CR>
@@ -566,14 +566,13 @@ let g:ctrlp_custom_ignore = {
             \ 'file': '\v(\.(exe|so|dll|zip|tar|tar.gz)|a.out)$',
             \ }
 "\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-let g:ctrlp_working_path_mode=0
-let g:ctrlp_match_window_bottom=1
 let g:ctrlp_max_files = 1000
 let g:ctrlp_max_height=15
 let g:ctrlp_match_window_reversed=0
 let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
 let g:ctrlp_use_caching = 1
+let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
 NeoBundle 'dyng/ctrlsf.vim'
@@ -687,12 +686,11 @@ let g:ycm_filetype_blacklist = {
             \ 'notes' : 1,
             \}
 let g:ycm_use_ultisnips_completer = 1
-"let g:ycm_server_use_vim_stdout = 1
-"let g:ycm_server_log_level = 'debug'
 nnoremap <leader>bc :YcmDiags<CR>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType cpp setlocal completeopt-=preview
+autocmd FileType c setlocal completeopt-=preview
 autocmd FileType clojure setlocal completeopt-=preview
 
 NeoBundle 'marijnh/tern_for_vim'

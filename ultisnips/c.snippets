@@ -95,41 +95,34 @@ do {
 endsnippet
 
 snippet if "if .. (if)"
-if (${1:/* condition */})
-{
+if (${1:/* condition */}) {
 	${0:/*code*/}
 }
 endsnippet
 
 snippet ief "if .. else if .. else .. (else)"
-if (${1:/* condition */})
-{
+if (${1:/* condition */}) {
 	${3:/*code*/}
 }
-else if (${2:/* condition */})
-{
+else if (${2:/* condition */}) {
 	${4:/*code*/}
 }
-else 
-{
+else {
 	${0:/*code*/}
 }
 endsnippet
 
 snippet el "else"
-else
-{
+else {
 	${0:/* code */}
 }
 endsnippet
 
 snippet ie "if .. else (ife)"
-if (${1:/* condition */})
-{
+if (${1:/* condition */}) {
 	${2:/* code */}
 }
-else
-{
+else {
 	${3:/* else */}
 }
 endsnippet
@@ -184,7 +177,7 @@ snippet r "return"
 return ${1:/*something*/};
 endsnippet
 
-snippet d "double"
+snippet d "double" 
 double
 endsnippet
 
@@ -192,11 +185,15 @@ snippet i " int "
 int
 endsnippet
 
-snippet f "float"
+snippet l "long" 
+long
+endsnippet
+
+snippet f "float" 
 float
 endsnippet
 
-snippet c "char"
+snippet c "char" 
 char
 endsnippet
 
@@ -208,7 +205,7 @@ snippet N "NULL"
 NULL
 endsnippet
 
-snippet u "unsigned"
+snippet u "unsigned" w
 unsigned
 endsnippet
 
