@@ -1,9 +1,7 @@
 snippet pa
 package main
 
-func main(){
-    ${1}
-}
+$0
 endsnippet
 
 snippet fu
@@ -12,14 +10,32 @@ func ${1}(${2}) ${3} {
 }
 endsnippet
 
-snippet pr
+snippet P
 println(${1})
 endsnippet
+
+snippet pr "fmt.Println"
+fmt.Println(${1:sth})
+endsnippet
+
 
 snippet ty
 type ${1} struct {
     ${2}
 }
+endsnippet
+
+snippet b "bool"
+bool
+endsnippet
+
+snippet c "chan"
+chan
+endsnippet
+
+
+snippet I "int" w
+int
 endsnippet
 
 snippet t
@@ -35,5 +51,140 @@ return ${1}
 endsnippet
 
 snippet s
-string${1}
+string
 endsnippet
+
+snippet E "error" w
+error
+endsnippet
+
+snippet im "import"
+import "${1}"
+endsnippet
+
+snippet imp "import"
+import (
+	"${1}"
+)
+endsnippet
+
+snippet fr "for...range"
+for ${2:arg} := range ${1:container} {
+	$0
+}
+endsnippet
+
+snippet fre "for...range, element only"
+for _, ${2:arg} := range ${1:container} {
+	$0
+}
+endsnippet
+
+snippet if "if"
+if ${1:exp} {
+	$0
+}
+endsnippet
+
+snippet m "make"
+make(${1:ty}, ${2:l})
+endsnippet
+
+snippet A "append" w
+append(${1:con}, ${2:v})
+endsnippet
+
+snippet main "main"
+func main() {
+	$0
+}
+endsnippet
+
+snippet V "var" w
+var ${1:v} ${2:t}
+endsnippet
+
+snippet sel "select"
+select {
+case $1:
+	$3
+case $2:
+	$4
+}
+endsnippet
+
+snippet sw "switch"
+switch ${1:exp} {
+case ${2:type}:
+	$0
+}
+endsnippet
+
+snippet ca "case"
+case $1:
+	$2
+endsnippet
+
+snippet ie "if...else"
+if ${1:exp} {
+	${2:do}
+} else {
+	$0
+}
+endsnippet
+
+snippet ief "if...else if...else"
+if ${1:exp} {
+	${3:do}
+} else if ${2:exp2} {
+	$0
+} else {
+	
+}
+endsnippet
+
+snippet br "break"
+break
+endsnippet
+
+snippet for "for"
+for ${1:i} := 0; $1 < ${2:max}; $1++ {
+	$0
+}
+endsnippet
+
+snippet en "err != nil"
+err != nil
+endsnippet
+
+# test with ginkgo
+snippet De "Describe"
+Describe("${1:what}", func() {
+	$0
+})
+endsnippet
+
+snippet BE "BeforeEach"
+BeforeEach(func() {
+	$0
+})
+endsnippet
+
+snippet Context "Context"
+Context("${1:what}", func() {
+	It("${2:first}", func() {
+		$0
+	})
+})
+endsnippet
+
+snippet It 
+It("${1:what}", func() {
+	$0
+})
+endsnippet
+
+snippet Ex "Expect"
+Expect(${1:this}).To(Equal(${2:that}))
+endsnippet
+

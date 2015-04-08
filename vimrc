@@ -254,6 +254,8 @@ autocmd FileType css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType stylus setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType coffee setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+"autocmd FileType c setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+"autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 
 " set cursorcolumn line here
 "autocmd FileType coffee setlocal cursorcolumn
@@ -277,10 +279,10 @@ autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
 
 " automatically leave insert mode after 'updatetime' milliseconds of inaction
-au CursorHoldI * stopinsert
+"au CursorHoldI * stopinsert
 " set 'updatetime' to 5 seconds when in insert mode
-au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
-au InsertLeave * let &updatetime=updaterestore
+"au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
+"au InsertLeave * let &updatetime=updaterestore
 "}}}
 "==========================================
 ":) hot key  自定义快捷键 {{{
@@ -345,7 +347,8 @@ function! CleanSwFile()
 endfunction
 nnoremap <s-F10> :call CleanSwFile()<cr>
 
-function! AutoRun(cmd)
+function! AutoRunInBuf(cmd)
+    :w
     let result = system(a:cmd .' ' . expand('%:p'))
     vsplit __Output__
     normal! ggdG
@@ -354,18 +357,25 @@ function! AutoRun(cmd)
     call append(0,split(result, '\v\n'))
 endfunction
 
+function! AutoRun(cmd)
+    :w
+    execute '!'.a:cmd.' '.expand('%:p')
+endfunction
+
 augroup autoRun
     autocmd!
-    au FileType sh nnoremap <s-F12> :call AutoRun('bash')<cr>
-    au FileType sh nnoremap <F12> :!sh <C-R>]expand('bash')<cr><cr>
-    au FileType ruby nnoremap <s-F12> :call AutoRun('ruby')<cr>
+    au FileType sh nnoremap <s-F12> :call AutoRunInBuf('bash')<cr>
+    au FileType sh nnoremap <F12> :!sh <C-R>=expand('%:p')<cr><cr>
+    au FileType ruby nnoremap <s-F12> :call AutoRunInBuf('ruby')<cr>
     au FileType ruby nnoremap <F12> :!ruby <C-R>=expand('%:p')<cr><cr>
-    au FileType python nnoremap <s-F12> :call AutoRun('python')<cr>
+    au FileType python nnoremap <s-F12> :call AutoRunInBuf('python')<cr>
     au FileType python nnoremap <F12> :!python <C-R>=expand('%:p')<cr><cr>
     au FileType javascript nnoremap <F12> :!node <C-R>=expand('%:p')<cr><cr>
-    au FileType javascript nnoremap <s-F12> :call AutoRun('node')<cr>
+    au FileType javascript nnoremap <s-F12> :call AutoRunInBuf('node')<cr>
     au FileType coffee nnoremap <F12> :!coffee <C-R>=expand('%:p')<cr><cr>
-    au FileType coffee nnoremap <s-F12> :call AutoRun('coffee')<cr>
+    au FileType coffee nnoremap <s-F12> :call AutoRunInBuf('coffee')<cr>
+    au FileType go noremap <F12> :call AutoRun('go run')<cr>
+    au FileType go noremap <s-F12> :call AutoRunInBuf('go run')<cr>
 augroup END
 
 noremap Y y$
@@ -380,6 +390,7 @@ cnoremap %c <C-R>=expand('%:p')<cr>
 
 " quick way to replace
 nnoremap <leader>s :%s///gc<left><left><left><left>
+nnoremap <localleader>s :s///g<left><left><left>
 
 nnoremap ; :
 nnoremap : ;
@@ -692,6 +703,7 @@ autocmd FileType python setlocal completeopt-=preview
 autocmd FileType cpp setlocal completeopt-=preview
 autocmd FileType c setlocal completeopt-=preview
 autocmd FileType clojure setlocal completeopt-=preview
+autocmd FileType go setlocal completeopt-=preview
 
 NeoBundle 'marijnh/tern_for_vim'
 autocmd FileType javascript setlocal completeopt-=preview
@@ -779,6 +791,16 @@ NeoBundle 'wavded/vim-stylus'
 
 " for ruby
 NeoBundle 'tpope/vim-rails'
+" for Julia
+NeoBundle 'JuliaLang/julia-vim'
+" for Go
+" polyglot 仅提供语法高亮和缩进，因为还需要补全等其他特性，所以额外装个vim-go
+NeoBundle 'fatih/vim-go'
+autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
+autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
+autocmd BufWinEnter *.go nnoremap <leader>jd :GoDef<cr>
+" for others
+NeoBundle 'sheerun/vim-polyglot'
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'sjl/gundo.vim'
