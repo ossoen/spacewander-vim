@@ -53,10 +53,5 @@ fi
 echo "compile YouCompleteMe"
 echo "if error,you need to compile it yourself"
 cd $CURRENT_DIR/bundle/YouCompleteMe/
-if [ -n "$(locate libclang.so)" ]
-then
-    bash -x install.sh --clang-completer --system-libclang
-else
-    bash -x install.sh --clang-completer
-fi
+install.sh --clang-completer
 

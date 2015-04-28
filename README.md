@@ -1,4 +1,16 @@
-使用lnYourVimrc.sh可以指定特别的vimrc文件
-用法：./lnYourVimrc.sh all
-则将会链接~/.vimrc到allvimrc
-本人正在实验这种新玩法中...
+## dependency
+
+Vim 7.4+, with python support
+
+### system
+
+sudo [apt-get] install ctags build-essential cmake python-dev
+
+### python
+
+sudo pip install pyflakes pylint pep8(or simply pip install -r vim-requirements.txt)
+
+### javascript
+
+sudo npm install -g jshint
+cd ~/.vim/bundle/tern_for_vim && npm install

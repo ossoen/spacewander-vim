@@ -24,15 +24,15 @@ from ${1:sys} import ${2}
 endsnippet
 
 ########### single char
-snippet T
+snippet T "" w
 True
 endsnippet
 
-snippet F
+snippet F "" w
 False
 endsnippet
 
-snippet N
+snippet N "" w
 None
 endsnippet
 
@@ -96,12 +96,17 @@ endsnippet
 
 ############# define function
 snippet d "function"
-def ${1:fname}(${2:`!v indent('.') ? 'self' : ''`}):
+def ${1:fname}(${2:self}):
+	${0}
+endsnippet
+
+snippet ds "function"
+def ${1:fname}(self, ${2:others}):
 	${0}
 endsnippet
 
 snippet dt "def test_"
-def test_${1:fname}(${2:ary}):
+def test_${1:fname}(self):
 	${0}
 endsnippet
 
@@ -109,6 +114,10 @@ endsnippet
 snippet c "class"
 class ${1:classname}${2:(object)}:
 	${0}
+endsnippet
+
+snippet se "self" w
+self
 endsnippet
 
 snippet m "method"
