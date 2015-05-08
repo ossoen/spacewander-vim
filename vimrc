@@ -405,9 +405,6 @@ vnoremap / /\v
 nnoremap ? ?\v
 vnoremap ? ?\v
 
-" grep current word
-nnoremap <leader>jw :grep! -r <cword> *<cr>
-
 "Keep search pattern at the center of the screen."
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
@@ -453,6 +450,7 @@ inoremap <C-e> end
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
+nnoremap <c-up> :e <c-r>=expand("%:p:h")<cr>/
 nnoremap <c-down> :tabedit <c-r>=expand("%:p:h")<cr>/
 
 nnoremap <leader>z0 :set foldlevel=0<CR>
@@ -648,6 +646,9 @@ let g:molokai_original = 1
 "NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'jiangmiao/auto-pairs'
 
+" new startup
+NeoBundle 'mhinz/vim-startify'
+
 "################### 快速移动 ###################"
 
 "更高效的移动 <leader><leader>+ w/fx
@@ -709,11 +710,6 @@ NeoBundle 'marijnh/tern_for_vim'
 autocmd FileType javascript setlocal completeopt-=preview
 autocmd FileType javascript nnoremap <leader>jd :TernDef<cr>
 autocmd FileType javascript nnoremap <leader>jr :TernRefs<cr>
-"NeoBundle "othree/javascript-libraries-syntax.vim"
-"let g:used_javascript_libs = 'jquery'
-
-"for Doxygen
-"NeoBundle 'NsLib/vim-DoxygenToolkit-mod'
 
 "快速 加减注释
 "<leader>cc 加上注释
