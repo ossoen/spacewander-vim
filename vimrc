@@ -5,7 +5,8 @@
 " Email: spacewanderlzx@gmail.com
 " BlogPost:
 " ReadMe: README.md
-" Last_modify:
+" StartAt: 2013-11-25
+" LatestVersion: 2014-07-05(3c90f83, 以后每隔一年升一个版本)
 " Sections:
 "     ->augroup and func 命令组和函数
 "     ->General 基础设置
@@ -460,9 +461,7 @@ nnoremap <leader>z9 :set foldlevel=99<CR>
 
 " Change Working Directory to that of the current file
 cnoremap cwd lcd %:p:h
-" 保存会话
-command! Mk mksession! ~/Session.vim
-command! So so ~/Session.vim
+
 " jump to the place with the same word. <bar> should be used ,otherwise the
 " expressions won't be correct.
 nnoremap <Leader>gw [I:let nr = input("Which one: ") <bar>exe "normal " . nr ."[\t"<CR>
@@ -594,7 +593,8 @@ nnoremap <C-F>o :CtrlSFOpen<CR>
 
 "目录导航
 NeoBundle 'scrooloose/nerdtree'
-noremap <leader>n :NERDTreeToggle<CR>
+NeoBundle 'jistr/vim-nerdtree-tabs'
+nmap <leader>n <plug>NERDTreeTabsToggle<CR>
 let NERDTreeHighlightCursorline=1
 let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$','\.egg$','\.exe$', '^\.git$', '^\.svn$', '^\.hg$' ]
 let g:netrw_home='~/bak'
@@ -643,11 +643,17 @@ NeoBundle 'tomasr/molokai'
 let g:molokai_original = 1
 
 "自动补全单引号，双引号等
-"NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'jiangmiao/auto-pairs'
+" 仅当同一行有闭合符号时才自动跳到闭合符号处
+let g:AutoPairsMultilineClose = 0
 
 " new startup
 NeoBundle 'mhinz/vim-startify'
+" 保存会话
+"command! Mk mksession! ~/Session.vim
+"command! So so ~/Session.vim
+command! Mk SSave
+command! So SLoad
 
 "################### 快速移动 ###################"
 
@@ -677,6 +683,7 @@ let g:UltiSnipsEditSplit = "vertical"
 let g:snips_author = "spacewander"
 let g:snips_author_email = "spacewanderlzx@gmail.com""
 
+NeoBundle 'drmingdrmer/xptemplate'
 
 "迄今为止用到的最好的自动VIM自动补全插件
 NeoBundle 'Valloric/YouCompleteMe'
