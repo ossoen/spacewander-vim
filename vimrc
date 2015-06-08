@@ -731,11 +731,9 @@ let g:syntastic_check_on_open=1
 let g:syntastic_python_checkers=['pyflakes']
 let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
-"let g:syntastic_javascript_jshint_conf = $HOME . '/.jshintrc'
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']
-let g:syntastic_cpp_compiler_options = ' -std=c++11 '
 highlight SyntasticErrorSign guifg=white guibg=black
 let g:syntastic_loc_list_height = 5
 autocmd BufWinEnter *.rb :let syntastic_mode_map = { 'mode':'active', 'passive_filetypes':[]}
@@ -794,16 +792,12 @@ NeoBundle 'wavded/vim-stylus'
 
 " for ruby
 NeoBundle 'tpope/vim-rails'
-" for Julia
-NeoBundle 'JuliaLang/julia-vim'
 " for Go
 " polyglot 仅提供语法高亮和缩进，因为还需要补全等其他特性，所以额外装个vim-go
 NeoBundle 'fatih/vim-go'
 autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go nnoremap <leader>jd :GoDef<cr>
-" for others
-NeoBundle 'sheerun/vim-polyglot'
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'sjl/gundo.vim'

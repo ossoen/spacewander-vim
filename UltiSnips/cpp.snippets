@@ -217,8 +217,9 @@ ${1:void} ${2:function_name}(${3});
 endsnippet
 
 snippet v "void"
-void
+void $0
 endsnippet
+
 
 snippet r "return"
 return ${1:/*something*/};
@@ -256,7 +257,7 @@ snippet c "char"
 char
 endsnippet
 
-snippet C "const"
+snippet C "const" w
 const
 endsnippet
 
@@ -312,7 +313,7 @@ endsnippet
 snippet cls "class"
 class ${1:ClassName}
 {
-
+	$0
 };
 endsnippet
 
@@ -320,5 +321,12 @@ snippet te "template"
 template<typename ${1:T}>
 endsnippet
 
+snippet vi "virtual"
+virtual $0
+endsnippet
+
+snippet op "operator"
+operator ${1:*}(${2:params})
+endsnippet
 
 # vim:ft=snippets:
