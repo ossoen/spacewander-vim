@@ -8,11 +8,11 @@ endsnippet
 
 
 snippet #d "#define ..."
-#define ${1:SYMBOL}
+#define $0
 endsnippet
 
 snippet #p "#pragma"
-#pragma ${1:SYMBOL}
+#pragma $0
 endsnippet
 
 snippet #ind "#ifndef ... #define ... #endif"
@@ -195,6 +195,10 @@ snippet p "printf .. (printf)"
 printf("${1:%s}\n"${2:,/*value*/});
 endsnippet
 
+snippet fp "fprintf .. (fprintf)"
+fprintf(${1:stderr}, "${2:%s}\n"${3:,/*value*/});
+endsnippet
+
 snippet st "struct"
 struct 
 endsnippet
@@ -302,7 +306,7 @@ snippet /** "doxgen comment"
 endsnippet
 
 snippet new "new"
-${2:filetype} *${1:var} = new ${2:filetype}[${3:num}];
+$2 *${1:var} = new ${2:filetype}[${3:num}];
 delete []$1;
 endsnippet
 
@@ -313,7 +317,7 @@ endsnippet
 snippet cls "class"
 class ${1:ClassName}
 {
-	$0
+$0
 };
 endsnippet
 

@@ -15,7 +15,7 @@ def getShell():
                 if shell == "kornshell":
                     return "ksh"
                 if shell == "posix":
-                    return "sh"
+                    return "bash"
                 return shell
     return "sh"
 endglobal
@@ -24,10 +24,6 @@ endglobal
 #                            TextMate Snippets                            #
 ###########################################################################
 snippet #!
-`!p snip.rv = '#!/bin/' + getShell() + "\n\n" `
-endsnippet
-
-snippet !env "#!/usr/bin/env (!env)"
 `!p snip.rv = '#!/usr/bin/env ' + getShell() + "\n\n" `
 endsnippet
 
@@ -39,7 +35,7 @@ ${3:${4/(.+)/trap "/}${4:rm -f '$${1/.*\s//}'}${4/(.+)/" 0               # EXIT\
 
 endsnippet
 
-snippet r "read -p"
+snippet re "read -p"
 read -p "${1:what?}"
 endsnippet
 
@@ -53,8 +49,8 @@ endsnippet
 
 snippet ca "case .. esac (case)"
 case ${1:word} in
-	${2:pattern} )
-		$0;;
+${2:pattern} )
+	$0;;
 esac
 endsnippet
 
@@ -120,12 +116,37 @@ endsnippet
 # vim:ft=snippets:
 # for function#
 snippet fun "function"
-${1:fname}()
-{
+${1:fname}() {
 	${0:#code}
 }
 endsnippet
 
 snippet r "return"
-return ${1};
+return ${1}
 endsnippet
+
+snippet argc "test argc"
+if [[ $# -gt 0 ]]
+then
+	${1}
+else
+	$0
+fi
+endsnippet
+
+snippet getopt "get options"
+while [ "\$1" != "" ]; do
+	case \$1 in
+		-h | --help )
+			exit 1
+			;;
+		${1} )
+			;;
+		* )
+			$0
+			;;
+	esac
+	shift
+done
+endsnippet
+

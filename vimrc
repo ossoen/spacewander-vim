@@ -293,7 +293,7 @@ let mapleader = ','
 " 设置局部leader键"
 let g:maplocalleader = '.'
 
-nnoremap <F1> :help
+nnoremap <F1> :vert help
 inoremap df <c-[>
 vnoremap df <c-[>
 
@@ -366,7 +366,7 @@ endfunction
 augroup autoRun
     autocmd!
     au FileType sh nnoremap <s-F12> :call AutoRunInBuf('bash')<cr>
-    au FileType sh nnoremap <F12> :!sh <C-R>=expand('%:p')<cr><cr>
+    au FileType sh nnoremap <F12> :!bash <C-R>=expand('%:p')<cr><cr>
     au FileType ruby nnoremap <s-F12> :call AutoRunInBuf('ruby')<cr>
     au FileType ruby nnoremap <F12> :!ruby <C-R>=expand('%:p')<cr><cr>
     au FileType python nnoremap <s-F12> :call AutoRunInBuf('python')<cr>
@@ -465,6 +465,7 @@ cnoremap cwd lcd %:p:h
 " jump to the place with the same word. <bar> should be used ,otherwise the
 " expressions won't be correct.
 nnoremap <Leader>gw [I:let nr = input("Which one: ") <bar>exe "normal " . nr ."[\t"<CR>
+nnoremap <Leader>fw ]I:let nr = input("Which one: ") <bar>exe "normal " . nr ."[\t"<CR>
 
 " 从normal模式直接进入粘贴模式
 nnoremap <S-F5> a<F5>
@@ -682,7 +683,9 @@ let g:UltiSnipsEditSplit = "vertical"
 "username and user_email
 let g:snips_author = "spacewander"
 let g:snips_author_email = "spacewanderlzx@gmail.com""
-
+"NeoBundle 'MarcWeber/vim-addon-mw-utils'
+"NeoBundle 'tomtom/tlib_vim'
+"NeoBundle 'garbas/vim-snipmate'
 NeoBundle 'drmingdrmer/xptemplate'
 
 "迄今为止用到的最好的自动VIM自动补全插件
@@ -780,6 +783,10 @@ NeoBundle 'vim-scripts/a.vim'
 NeoBundle 'hughbien/md-vim'
 autocmd BufWinEnter *.markdown set filetype=md
 autocmd BufWinEnter *.md set filetype=md
+
+" for asciidoc
+NeoBundle 'dagwieers/asciidoc-vim'
+autocmd BufWinEnter *.asc set filetype=asciidoc
 
 NeoBundle "kchmck/vim-coffee-script"
 autocmd BufWinEnter *.coffee set omnifunc=javascriptcomplete#CompleteJS
