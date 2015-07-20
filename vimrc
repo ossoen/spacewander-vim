@@ -594,8 +594,9 @@ nnoremap <C-F>o :CtrlSFOpen<CR>
 
 "目录导航
 NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'jistr/vim-nerdtree-tabs'
-nmap <leader>n <plug>NERDTreeTabsToggle<CR>
+"NeoBundle 'jistr/vim-nerdtree-tabs'
+"nmap <leader>n <plug>NERDTreeTabsToggle<CR>
+nnoremap <leader>n :NERDTreeToggle<cr>
 let NERDTreeHighlightCursorline=1
 let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$','\.egg$','\.exe$', '^\.git$', '^\.svn$', '^\.hg$' ]
 let g:netrw_home='~/bak'
@@ -699,6 +700,7 @@ let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 "let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf.py'
 let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf2.py'
+nnoremap <leader>ey :execute ':vs '.g:ycm_global_ycm_extra_conf
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_complete_in_comments = 1 "default value is 0
@@ -800,7 +802,6 @@ NeoBundle 'wavded/vim-stylus'
 " for ruby
 NeoBundle 'tpope/vim-rails'
 " for Go
-" polyglot 仅提供语法高亮和缩进，因为还需要补全等其他特性，所以额外装个vim-go
 NeoBundle 'fatih/vim-go'
 autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
