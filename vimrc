@@ -429,6 +429,7 @@ au Filetype conf nnoremap <buffer> <leader>w :call FixSaveCoffee()<cr>
 au BufReadPost *.coffee set ft=coffee
 
 nnoremap <leader>wq :wq<CR>
+nnoremap <C-q> :wq<cr>
 inoremap <leader>w <ESC>:w<CR>
 
 " Swap implementations of ` and ' jump to markers
@@ -461,6 +462,7 @@ nnoremap <leader>z9 :set foldlevel=99<CR>
 
 " Change Working Directory to that of the current file
 cnoremap cwd lcd %:p:h
+nnoremap <C-x> :lcd %:p:h<cr>
 
 " jump to the place with the same word. <bar> should be used ,otherwise the
 " expressions won't be correct.
@@ -591,17 +593,6 @@ vmap     <C-F>F <Plug>CtrlSFVwordExec
 nmap     <C-F>n <Plug>CtrlSFCwordPath
 nmap     <C-F>p <Plug>CtrlSFPwordPath
 nnoremap <C-F>o :CtrlSFOpen<CR>
-
-"目录导航
-NeoBundle 'scrooloose/nerdtree'
-"NeoBundle 'jistr/vim-nerdtree-tabs'
-"nmap <leader>n <plug>NERDTreeTabsToggle<CR>
-nnoremap <leader>n :NERDTreeToggle<cr>
-let NERDTreeHighlightCursorline=1
-let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$','\.egg$','\.exe$', '^\.git$', '^\.svn$', '^\.hg$' ]
-let g:netrw_home='~/bak'
-"close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
 "################### 显示增强 ###################"
 "状态栏增强展示
 NeoBundle 'bling/vim-airline'
@@ -684,10 +675,6 @@ let g:UltiSnipsEditSplit = "vertical"
 "username and user_email
 let g:snips_author = "spacewander"
 let g:snips_author_email = "spacewanderlzx@gmail.com""
-"NeoBundle 'MarcWeber/vim-addon-mw-utils'
-"NeoBundle 'tomtom/tlib_vim'
-"NeoBundle 'garbas/vim-snipmate'
-NeoBundle 'drmingdrmer/xptemplate'
 
 "迄今为止用到的最好的自动VIM自动补全插件
 NeoBundle 'Valloric/YouCompleteMe'
@@ -785,10 +772,6 @@ NeoBundle 'vim-scripts/a.vim'
 NeoBundle 'hughbien/md-vim'
 autocmd BufWinEnter *.markdown set filetype=md
 autocmd BufWinEnter *.md set filetype=md
-
-" for asciidoc
-NeoBundle 'dagwieers/asciidoc-vim'
-autocmd BufWinEnter *.asc set filetype=asciidoc
 
 NeoBundle "kchmck/vim-coffee-script"
 autocmd BufWinEnter *.coffee set omnifunc=javascriptcomplete#CompleteJS
