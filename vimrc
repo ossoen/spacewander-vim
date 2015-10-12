@@ -380,9 +380,7 @@ augroup autoRun
 augroup END
 
 noremap Y y$
-"cmap w!! %!sudo tee > /dev/null %
-" w!! to sudo & write a file
-cnoremap w!! w !sudo tee >/dev/null %
+command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 
 " expand %% to current directory in command-line mode
 cnoremap %% <C-R>=expand('%:p:h')<cr>
@@ -428,8 +426,7 @@ endfunction
 au Filetype conf nnoremap <buffer> <leader>w :call FixSaveCoffee()<cr>
 au BufReadPost *.coffee set ft=coffee
 
-nnoremap <leader>wq :wq<CR>
-nnoremap <C-q> :wq<cr>
+nnoremap <leader>x :x<CR>
 inoremap <leader>w <ESC>:w<CR>
 
 " Swap implementations of ` and ' jump to markers
