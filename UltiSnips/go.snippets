@@ -1,5 +1,5 @@
 snippet pa
-package main
+package ${1:main}
 
 $0
 endsnippet
@@ -19,22 +19,27 @@ fmt.Println(${1:sth})
 endsnippet
 
 
-snippet ty
+snippet ts
 type ${1} struct {
     ${2}
 }
 endsnippet
 
-snippet b "bool"
+snippet ti
+type ${1} interface {
+    ${2}
+}
+endsnippet
+
+snippet b "bool" w
 bool
 endsnippet
 
-snippet c "chan"
+snippet c "chan" w
 chan
 endsnippet
 
-
-snippet I "int" w
+snippet i "int" w
 int
 endsnippet
 
@@ -50,8 +55,12 @@ snippet r
 return ${1}
 endsnippet
 
-snippet s
+snippet s "string" w
 string
+endsnippet
+
+snippet by "byte" w
+byte
 endsnippet
 
 snippet E "error" w
@@ -59,13 +68,13 @@ error
 endsnippet
 
 snippet im "import"
-import "${1}"
-endsnippet
-
-snippet imp "import"
 import (
 	"${1}"
 )
+endsnippet
+
+snippet ra "range"
+range $0
 endsnippet
 
 snippet fr "for...range"
@@ -87,7 +96,7 @@ if ${1:exp} {
 endsnippet
 
 snippet m "make"
-make(${1:ty}, ${2:l})
+make(${1:ty})
 endsnippet
 
 snippet A "append" w
@@ -100,7 +109,7 @@ func main() {
 }
 endsnippet
 
-snippet V "var" w
+snippet v "var" w
 var ${1:v} ${2:t}
 endsnippet
 
@@ -145,6 +154,23 @@ endsnippet
 
 snippet br "break"
 break
+endsnippet
+
+snippet co "continue"
+continue
+endsnippet
+
+snippet d "defer"
+defer $0
+endsnippet
+
+snippet n "nil"
+nil
+endsnippet
+
+
+snippet in "interface"
+interface
 endsnippet
 
 snippet for "for"

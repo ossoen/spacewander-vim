@@ -6,7 +6,6 @@
 " BlogPost:
 " ReadMe: README.md
 " StartAt: 2013-11-25
-" LatestVersion: 2014-07-05(3c90f83, 以后每隔一年升一个版本)
 " Sections:
 "     ->augroup and func 命令组和函数
 "     ->General 基础设置
@@ -380,7 +379,7 @@ augroup autoRun
 augroup END
 
 noremap Y y$
-command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 
 " expand %% to current directory in command-line mode
 cnoremap %% <C-R>=expand('%:p:h')<cr>
@@ -389,11 +388,11 @@ cnoremap %c <C-R>=expand('%:p')<cr>
 
 " quick way to replace
 nnoremap <leader>s :%s///gc<left><left><left><left>
-nnoremap <localleader>s :s///g<left><left><left>
+" insert cword in commandline mode with Ctrl-r Ctrl-w
+nnoremap <localleader>s :%s/<C-R><C-W>//gc<left><left><left><left>
 
 nnoremap ; :
 nnoremap : ;
-au FileType sh nnoremap <leader>m  :!man <cWORD><cr>
 nnoremap <leader>v V`}
 " 清扫命令行
 cnoremap <leader>d <End><c-u>
@@ -636,6 +635,10 @@ let g:molokai_original = 1
 NeoBundle 'jiangmiao/auto-pairs'
 " 仅当同一行有闭合符号时才自动跳到闭合符号处
 let g:AutoPairsMultilineClose = 0
+autocmd Filetype ruby let b:AutoPairs = {
+            \ '(':')', '[':']', '{':'}',
+            \ "'":"'",'"':'"', '`':'`', 
+            \ '|':'|'}
 
 " new startup
 NeoBundle 'mhinz/vim-startify'
@@ -733,11 +736,11 @@ NeoBundle 'tpope/vim-unimpaired'
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
-NeoBundle 'mattn/emmet-vim'
-let g:user_emmet_leader_key = '<leader>.'
-let g:use_emmet_complete_tag = 1
+"NeoBundle 'mattn/emmet-vim'
+"let g:user_emmet_leader_key = '<leader>.'
+"let g:use_emmet_complete_tag = 1
 " for xml and html
-NeoBundle 'othree/xml.vim'
+"NeoBundle 'othree/xml.vim'
 " [[ to previous open tag
 " ]] to next open tag
 " [] to previous close tag
@@ -803,21 +806,4 @@ au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
-"}}}
-
-"{{{
-" 临时的帮助宏,用于翻译commandlinefu的条目
-inoremap <leader>a <ESC>kdd:wq<cr>
-nnoremap <leader>a Go
-
-imap cpp <ESC>cpp
-nmap +( F(ys%)a
-nmap +) f)ys%)a
-inoremap -( ()<BS>
-inoremap -' ''<BS>
-inoremap -" ""<BS>
-inoremap -{ {}<BS>
-inoremap -[ []<BS>
-inoremap +< <>
-nnoremap +" ysW"
 "}}}
