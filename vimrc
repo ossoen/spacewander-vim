@@ -364,18 +364,23 @@ endfunction
 
 augroup autoRun
     autocmd!
+    noremap <F12> :call AutoRun('')<cr>
+    noremap <s-F12> :call AutoRunInBuf('')<cr>
+
     au FileType sh nnoremap <s-F12> :call AutoRunInBuf('bash')<cr>
-    au FileType sh nnoremap <F12> :!bash <C-R>=expand('%:p')<cr><cr>
+    au FileType sh nnoremap <F12> :call AutoRun('bash')<cr>
     au FileType ruby nnoremap <s-F12> :call AutoRunInBuf('ruby')<cr>
-    au FileType ruby nnoremap <F12> :!ruby <C-R>=expand('%:p')<cr><cr>
+    au FileType ruby nnoremap <F12> :call AutoRun('ruby')<cr>
     au FileType python nnoremap <s-F12> :call AutoRunInBuf('python')<cr>
-    au FileType python nnoremap <F12> :!python <C-R>=expand('%:p')<cr><cr>
-    au FileType javascript nnoremap <F12> :!node <C-R>=expand('%:p')<cr><cr>
+    au FileType python nnoremap <F12> :call AutoRun('python')<cr>
     au FileType javascript nnoremap <s-F12> :call AutoRunInBuf('node')<cr>
-    au FileType coffee nnoremap <F12> :!coffee <C-R>=expand('%:p')<cr><cr>
+    au FileType javascript nnoremap <F12> :call AutoRun('node')<cr>
     au FileType coffee nnoremap <s-F12> :call AutoRunInBuf('coffee')<cr>
+    au FileType coffee nnoremap <F12> :call AutoRun('coffee')<cr>
     au FileType go noremap <F12> :call AutoRun('go run')<cr>
     au FileType go noremap <s-F12> :call AutoRunInBuf('go run')<cr>
+    au FileType lua noremap <F12> :call AutoRun('luajit')<cr>
+    au FileType lua noremap <s-F12> :call AutoRunInBuf('luajit')<cr>
 augroup END
 
 noremap Y y$
@@ -389,7 +394,7 @@ cnoremap %c <C-R>=expand('%:p')<cr>
 " quick way to replace
 nnoremap <leader>s :%s///gc<left><left><left><left>
 " insert cword in commandline mode with Ctrl-r Ctrl-w
-nnoremap <localleader>s :%s/<C-R><C-W>//gc<left><left><left><left>
+nnoremap <localleader>s :%s/<C-R><C-W>//gc<left><left><left>
 
 nnoremap ; :
 nnoremap : ;
@@ -467,6 +472,12 @@ nnoremap <Leader>fw ]I:let nr = input("Which one: ") <bar>exe "normal " . nr ."[
 
 " 从normal模式直接进入粘贴模式
 nnoremap <S-F5> a<F5>
+
+inoremap -( (
+inoremap -{ {
+inoremap -[ [
+inoremap -' '
+inoremap -" "
 "}}}
 "==========================================
 ":) 自定义命令和函数 {{{
@@ -726,6 +737,7 @@ let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']
+let g:syntastic_go_checkers=['govet']
 highlight SyntasticErrorSign guifg=white guibg=black
 let g:syntastic_loc_list_height = 5
 autocmd BufWinEnter *.rb :let syntastic_mode_map = { 'mode':'active', 'passive_filetypes':[]}
@@ -753,7 +765,7 @@ NeoBundle 'tpope/vim-unimpaired'
 
 "################# 具体语言语法高亮及排版 ###############
 " for jumping in C/C++
-NeoBundle 'vim-scripts/a.vim'
+"NeoBundle 'vim-scripts/a.vim'
 ":A switches to the header file corresponding to the current file being edited (or vise versa)
 ":AS splits and switches
 ":AV vertical splits and switches
@@ -789,6 +801,11 @@ NeoBundle 'fatih/vim-go'
 autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go nnoremap <leader>jd :GoDef<cr>
+
+" for lua
+NeoBundle 'xolox/vim-misc'
+NeoBundle 'xolox/vim-lua-ftplugin'
+let g:lua_complete_omni = 0
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'sjl/gundo.vim'

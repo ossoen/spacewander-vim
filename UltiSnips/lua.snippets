@@ -1,0 +1,174 @@
+# shortcut
+snippet #! "luajit"
+#!/usr/bin/luajit
+
+$0
+endsnippet
+
+snippet p "print"
+print($0)
+endsnippet
+
+snippet set "setmetatable"
+setmetatable(${1:var}, ${2:table})
+endsnippet
+
+snippet get "getmetatable"
+getmetatable(${1:var})
+endsnippet
+
+snippet re "require"
+require($0)
+endsnippet
+
+snippet cy "yield"
+coroutine.yield($0)
+endsnippet
+
+snippet cc "create"
+coroutine.create($0)
+endsnippet
+
+snippet cr "resume"
+coroutine.resume($0)
+endsnippet
+
+# type
+snippet l "local"
+local $0
+endsnippet
+
+snippet e "end"
+end
+endsnippet
+
+snippet f "false"
+false
+endsnippet
+
+snippet t "true"
+true
+endsnippet
+
+snippet n "nil"
+nil
+endsnippet
+
+snippet s "self"
+self
+endsnippet
+
+# conditions
+snippet br "break"
+break
+endsnippet
+
+snippet wh "while"
+while ${1:expr} do
+	$0
+end
+endsnippet
+
+snippet for "for"
+for ${1:expr} do
+	$0
+end
+endsnippet
+
+snippet fori "iter numeric entry in table"
+for ${1:i} = ${2:range} do
+	$0
+end
+endsnippet
+
+snippet forl "iter entry in table"
+for ${1:k, v} in pairs(${2}) do
+	$0
+end
+endsnippet
+
+snippet repeat "repeat"
+repeat
+	$0
+until ${1:expr}
+endsnippet
+
+snippet if "if then"
+if ${1:expr} then
+	$0
+end
+endsnippet
+
+snippet If "if then end"
+if ${1:expr} then $0 end
+endsnippet
+
+snippet ie "if else"
+if ${1:expr} then
+	${2:sth}
+else
+	$0
+end
+endsnippet
+
+snippet ief "if elseif"
+if ${1:expr} then
+	${3:sth}
+elseif ${2:expr} then
+	$0
+end
+endsnippet
+
+snippet iee "if elseif else"
+if ${1:expr} then
+	${3:sth}
+elseif ${2:expr} then
+	${4:sth}
+else
+	$0
+end
+endsnippet
+
+# function
+snippet r "return"
+return
+endsnippet
+
+snippet fu "function"
+function ${1}(${2:args})
+	$0
+end
+endsnippet
+
+snippet fun "function"
+function
+endsnippet
+
+# test
+snippet des "describe"
+describe('${1:topic}', function()
+	it('${2:feature}', function()
+		$0
+	end)
+end)
+endsnippet
+
+snippet it "it does sth..."
+it('${1:feature}', function()
+	$0
+end)
+endsnippet
+
+snippet at "assert true"
+assert.is_true($0)
+endsnippet
+
+snippet af "assert false"
+assert.is_false($0)
+endsnippet
+
+snippet ae "assert equal"
+assert.are.same($0)
+endsnippet
+
+
