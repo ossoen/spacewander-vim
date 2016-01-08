@@ -1,20 +1,12 @@
 "==========================================
 " vim:ft=vim
 " Author:  edited by spacewander currently
-" Version: 8
+" Version: 8.1
 " Email: spacewanderlzx@gmail.com
 " BlogPost:
 " ReadMe: README.md
 " StartAt: 2013-11-25
-" Sections:
-"     ->augroup and func 命令组和函数
-"     ->General 基础设置
-"     ->Show 展示/排版等界面格式设置
-"     ->file encode, 文件编码,格式
-"     ->others 其它基础配置
-"     ->hot key  自定义快捷键
-"     ->colortheme 主题,及一些展示上颜色的修改
-"     ->bundle 插件管理和配置项
+" 每年11月8日升一次大版本，每月8日升一次小版本
 "==========================================
 ":) augroup and func 命令组和函数 {{{
 " 切换绝对行号和相对行号
@@ -43,6 +35,7 @@ function! Chmod()
         endif
     endif
 endfunction
+nnoremap <leader>ns :call DeleteTrailingWS()<cr>
 
 " 切换鼠标模式和无鼠标模式。方便复制
 function! ToggleMouse()
@@ -72,9 +65,11 @@ endfunction
 "通过一些钩子来自动调用一些函数
 augroup myFun
     autocmd!
-    autocmd BufWrite *.py :call DeleteTrailingWS()
+    autocmd BufWrite FileType python :call DeleteTrailingWS()
     autocmd BufWrite * :call ChangeWorkDir()
     autocmd BufWritePost * :call Chmod()
+    autocmd BufWrite FileType vim source %
+    autocmd BufWrite .vimrc source %
     "autocmd BufWritePost * :call DeleteTrailingWS()
     "autocmd BufWritePost * :call AutoFormat()
 augroup END
@@ -225,6 +220,7 @@ set formatoptions+=B
 ":) others 其它配置 {{{
 "==========================================
 " 记住文件外观，如折叠等
+" 当前记住的不仅仅是外观，还有各种配置，由于会起冲突，所以暂时停用
 "augroup rememberView
     "autocmd!
     "au BufWinEnter * silent! loadview
@@ -308,6 +304,10 @@ nnoremap <silent> <leader>ev :vsplit $MYVIMRC<CR>
 noremap j gj
 noremap k gk
 
+" 在我的67键键盘上，HOME和END不容易敲，使用Ctrl+a和Ctrl+z代替
+inoremap <C-a> <Home>
+inoremap <C-z> <End>
+
 " better command line editing
 cnoremap <C-j> <t_kd>
 cnoremap <C-k> <t_ku>
@@ -377,10 +377,10 @@ augroup autoRun
     au FileType javascript nnoremap <F12> :call AutoRun('node')<cr>
     au FileType coffee nnoremap <s-F12> :call AutoRunInBuf('coffee')<cr>
     au FileType coffee nnoremap <F12> :call AutoRun('coffee')<cr>
-    au FileType go noremap <F12> :call AutoRun('go run')<cr>
-    au FileType go noremap <s-F12> :call AutoRunInBuf('go run')<cr>
-    au FileType lua noremap <F12> :call AutoRun('luajit')<cr>
-    au FileType lua noremap <s-F12> :call AutoRunInBuf('luajit')<cr>
+    au FileType go nnoremap <F12> :call AutoRun('go run')<cr>
+    au FileType go nnoremap <s-F12> :call AutoRunInBuf('go run')<cr>
+    au FileType lua nnoremap <F12> :call AutoRun('luajit')<cr>
+    au FileType lua nnoremap <s-F12> :call AutoRunInBuf('luajit')<cr>
 augroup END
 
 noremap Y y$
@@ -394,7 +394,7 @@ cnoremap %c <C-R>=expand('%:p')<cr>
 " quick way to replace
 nnoremap <leader>s :%s///gc<left><left><left><left>
 " insert cword in commandline mode with Ctrl-r Ctrl-w
-nnoremap <localleader>s :%s/<C-R><C-W>//gc<left><left><left>
+nnoremap <localLeader>s :%s/<C-R><C-W>/<C-R><C-W>/gc<left><left><left>
 
 nnoremap ; :
 nnoremap : ;
@@ -473,11 +473,13 @@ nnoremap <Leader>fw ]I:let nr = input("Which one: ") <bar>exe "normal " . nr ."[
 " 从normal模式直接进入粘贴模式
 nnoremap <S-F5> a<F5>
 
+" don't trigger pair completition
 inoremap -( (
 inoremap -{ {
 inoremap -[ [
 inoremap -' '
 inoremap -" "
+
 "}}}
 "==========================================
 ":) 自定义命令和函数 {{{
@@ -600,6 +602,11 @@ vmap     <C-F>F <Plug>CtrlSFVwordExec
 nmap     <C-F>n <Plug>CtrlSFCwordPath
 nmap     <C-F>p <Plug>CtrlSFPwordPath
 nnoremap <C-F>o :CtrlSFOpen<CR>
+
+NeoBundle 'szw/vim-ctrlspace'
+NeoBundle 'unblevable/quick-scope'
+" 仅在按下下列键后才触发高亮，否则眼睛都要花了@_@
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 "################### 显示增强 ###################"
 "状态栏增强展示
 NeoBundle 'bling/vim-airline'
@@ -648,7 +655,7 @@ NeoBundle 'jiangmiao/auto-pairs'
 let g:AutoPairsMultilineClose = 0
 autocmd Filetype ruby let b:AutoPairs = {
             \ '(':')', '[':']', '{':'}',
-            \ "'":"'",'"':'"', '`':'`', 
+            \ "'":"'",'"':'"', '`':'`',
             \ '|':'|'}
 
 " new startup
@@ -730,7 +737,6 @@ NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/syntastic'
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_check_on_open=1
 let g:syntastic_python_checkers=['pyflakes']
 let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
@@ -740,11 +746,12 @@ let g:syntastic_coffee_checkers=['coffeelint']
 let g:syntastic_go_checkers=['govet']
 highlight SyntasticErrorSign guifg=white guibg=black
 let g:syntastic_loc_list_height = 5
-autocmd BufWinEnter *.rb :let syntastic_mode_map = { 'mode':'active', 'passive_filetypes':[]}
-autocmd BufWritePre *.rb :SyntasticCheck<cr>
+ "禁java检查。因为检查java时需要编译。
+let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['java'] }
 
 " vim映射集锦
 NeoBundle 'tpope/vim-unimpaired'
+" TODO introduce Unite.vim
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
@@ -789,6 +796,7 @@ NeoBundle "kchmck/vim-coffee-script"
 autocmd BufWinEnter *.coffee set omnifunc=javascriptcomplete#CompleteJS
 
 " for css
+" 原作者不更新了。所以我自己fork了一份，改掉了bug
 NeoBundle "spacewander/vim-coloresque"
 NeoBundle 'hail2u/vim-css3-syntax'
 " for stylus
@@ -803,19 +811,36 @@ autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go nnoremap <leader>jd :GoDef<cr>
 
 " for lua
-NeoBundle 'xolox/vim-misc'
+NeoBundle 'xolox/vim-misc' " required by vim-lua-ftplugin
 NeoBundle 'xolox/vim-lua-ftplugin'
-let g:lua_complete_omni = 0
+
+" for erlang
+NeoBundle 'jimenezrick/vimerl'
+
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
-NeoBundle 'sjl/gundo.vim'
+NeoBundle 'sjl/gundo.vim' " TODO replace with vim-mundo
 nnoremap <leader>ud :GundoToggle<CR>
+
+" for git diff/status in the editor
+NeoBundle 'airblade/vim-gitgutter'
+let g:gitgutter_circular_hunk = 1
+"To change the hunk-jumping maps (defaults shown):
+  "nmap [c <Plug>GitGutterPrevHunk
+  "nmap ]c <Plug>GitGutterNextHunk
+"To change the hunk-staging/reverting/previewing maps (defaults shown):
+  "nmap <Leader>hs <Plug>GitGutterStageHunk
+  "nmap <Leader>hr <Plug>GitGutterRevertHunk
+
+" do not display the modify status
+let g:airline#extensions#hunks#enabled = 0
 
 " end turn on
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
 "========================== config for plugins end ======================================
+" settings for color schema
 colorscheme molokai
 "colorscheme desert
 " settings for kien/rainbow_parentheses.vim
@@ -823,4 +848,7 @@ au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+"}}}
+"{{{ 临时区
+autocmd FileType stp nnoremap <F12> :call AutoRun('sudo stap -v ')<cr>
 "}}}

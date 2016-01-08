@@ -1,0 +1,78 @@
+# keyword
+snippet t "true"
+true
+endsnippet
+
+snippet f "false"
+false
+endsnippet
+
+snippet c "catch"
+catch $0
+endsnippet
+
+snippet wh "when"
+when $0
+endsnippet
+
+# function
+snippet -d "-define"
+-define($0).
+endsnippet
+
+snippet -e "-export()."
+-export([$0]).
+endsnippet
+
+snippet -il "-include_lib"
+-include_lib("$0").
+endsnippet
+
+snippet -m "-module()."
+-module(${1:`!p snip.rv =snip.basename`}).
+endsnippet
+
+snippet th "throw"
+throw
+endsnippet
+
+snippet ex "exit"
+exit
+endsnippet
+
+snippet er "error"
+error
+endsnippet
+
+# construct
+snippet ca "case"
+case ${1} of
+	${2:pattern1} -> ${4:expr};
+	${3:pattern2} -> $0
+end
+endsnippet
+
+snippet if "if"
+if
+	${1:pattern1} -> ${3:expr};
+	${2:pattern2} -> $0
+end
+endsnippet
+
+snippet tc "try catch"
+try $1 of
+	${0:sth}
+catch
+	${2:pattern} -> ${3:handler}
+end.
+endsnippet
+
+snippet tca "try catch after"
+try $1 of
+	${0:sth}
+catch
+	${2:pattern} -> ${3:handler}
+after
+	${4:after all}
+endsnippet
+

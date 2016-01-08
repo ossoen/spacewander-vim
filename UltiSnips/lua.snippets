@@ -81,6 +81,12 @@ for ${1:i} = ${2:range} do
 end
 endsnippet
 
+snippet foriw "iter whole numeric entry in table"
+for ${1:i} = 1, #${2:seq} do
+	$0
+end
+endsnippet
+
 snippet forl "iter entry in table"
 for ${1:k, v} in pairs(${2}) do
 	$0
@@ -171,4 +177,20 @@ snippet ae "assert equal"
 assert.are.same($0)
 endsnippet
 
+# table
+snippet ti "insert"
+table.insert($0)
+endsnippet
+
+snippet tr "remove"
+table.remove($0)
+endsnippet
+
+snippet ts "sort"
+table.sort($0)
+endsnippet
+
+snippet tc "concat"
+table.concat($0)
+endsnippet
 

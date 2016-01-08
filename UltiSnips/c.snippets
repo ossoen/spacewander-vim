@@ -151,6 +151,10 @@ snippet p "printf .. (printf)"
 printf("${1:%s}\n"${2:,/*value*/});
 endsnippet
 
+snippet st "struct"
+struct
+endsnippet
+
 snippet struct "struct"
 struct ${1:`!p snip.rv = (snip.basename or "name") + "_t"`}
 {
@@ -170,7 +174,7 @@ ${1:void} ${2:function_name}(${3});
 endsnippet
 
 snippet v "void"
-void
+void $0
 endsnippet
 
 snippet r "return"
@@ -178,27 +182,27 @@ return ${1:/*something*/};
 endsnippet
 
 snippet d "double" 
-double
+double $0
 endsnippet
 
 snippet i " int " 
-int
+int $0
 endsnippet
 
 snippet l "long" 
-long
+long $0
 endsnippet
 
 snippet f "float" 
-float
+float $0
 endsnippet
 
 snippet c "char" 
-char
+char $0
 endsnippet
 
 snippet C "const"
-const
+const $0
 endsnippet
 
 snippet N "NULL"
@@ -206,11 +210,11 @@ NULL
 endsnippet
 
 snippet u "unsigned" w
-unsigned
+unsigned $0
 endsnippet
 
 snippet so "sizeof"
-sizeof( ${1:type} )
+sizeof(${1:type})
 endsnippet
 
 snippet ma "malloc"

@@ -1,0 +1,54 @@
+snippet #! "#!"
+#!/usr/bin/env stap
+
+$0
+endsnippet
+
+snippet r "return"
+return
+endsnippet
+
+snippet g "global"
+global $0
+endsnippet
+
+snippet d "delete"
+delete $0
+endsnippet
+
+snippet f "function"
+function ${1:name}(${2:args}) {
+	$0
+}
+endsnippet
+
+snippet pr "probe"
+probe ${1:event} {
+	$0
+}
+endsnippet
+
+snippet if "if()"
+if (${1:expr}) {
+	$0
+}
+endsnippet
+
+snippet foreach "foreach"
+foreach ($1 in $2) {
+	$0
+}
+endsnippet
+
+snippet p "printf"
+printf($0)
+endsnippet
+
+snippet kf "kernel function"
+kernel.function("$0")
+endsnippet
+
+snippet t "timer"
+timer.$0
+endsnippet
+
