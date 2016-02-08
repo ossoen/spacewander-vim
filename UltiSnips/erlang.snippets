@@ -1,10 +1,22 @@
-# keyword
+#keyword
+snippet e "end"
+end
+endsnippet
+
 snippet t "true"
 true
 endsnippet
 
 snippet f "false"
 false
+endsnippet
+
+snippet v "void"
+void
+endsnippet
+
+snippet s "self" w
+self()
 endsnippet
 
 snippet c "catch"
@@ -15,22 +27,67 @@ snippet wh "when"
 when $0
 endsnippet
 
+snippet af "after"
+after
+endsnippet
+
 # function
 snippet -d "-define"
--define($0).
+-define($1).
+$0
 endsnippet
 
 snippet -e "-export()."
--export([$0]).
+-export([$1]).
+$0
+endsnippet
+
+snippet -i "-import()"
+-import(${1:Module}, [${2:Functions}]).
+$0
 endsnippet
 
 snippet -il "-include_lib"
--include_lib("$0").
+-include_lib("$1").
+$0
+endsnippet
+
+snippet -b "-behaviour"
+-behaviour(${1:gen_server}).
+$0
 endsnippet
 
 snippet -m "-module()."
 -module(${1:`!p snip.rv =snip.basename`}).
+$0
 endsnippet
+
+snippet -r "-record()"
+-record(${1:name}, {${2:fileds}}).
+$0
+endsnippet
+
+snippet sp "spawn"
+spawn($0)
+endsnippet
+
+snippet sl "spawn_link"
+spawn_link($0)
+endsnippet
+
+snippet reg "register"
+register(${1:name}, ${2:pidOrPort})
+endsnippet
+
+snippet mo "monitor"
+monitor(${1:process}, ${2:Pid})
+endsnippet
+
+snippet pf "process_flag"
+process_flag(trap_exit, ${1:true})
+endsnippet
+
+## conditions
 
 snippet th "throw"
 throw
@@ -74,5 +131,26 @@ catch
 	${2:pattern} -> ${3:handler}
 after
 	${4:after all}
+endsnippet
+
+snippet fu "fun" w
+fun(${1:args}) -> $2 end$0
+endsnippet
+
+snippet re "receive"
+receive
+	$0
+end
+endsnippet
+
+# debug
+snippet p "erlang style print debug"
+io:format("${1:~p}~n"${2:, Value})
+endsnippet
+
+## others
+## need to use i option to trigger it after keyword
+snippet ?M "?MODULE" i
+?MODULE
 endsnippet
 

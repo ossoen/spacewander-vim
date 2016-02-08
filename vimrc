@@ -35,7 +35,6 @@ function! Chmod()
         endif
     endif
 endfunction
-nnoremap <leader>ns :call DeleteTrailingWS()<cr>
 
 " 切换鼠标模式和无鼠标模式。方便复制
 function! ToggleMouse()
@@ -74,7 +73,19 @@ augroup myFun
     "autocmd BufWritePost * :call AutoFormat()
 augroup END
 
-noremap <F2> :call ToggleMouse()<CR>
+function! RunYapf()
+    let current_line = line('.')
+    normal! ggdG
+    exec "read! " . "yapf " . expand('%:p')
+    " delete the remained first line
+    0,1d
+    echo current_line
+    exec 'normal ' . current_line . 'gg'
+    w
+endfunction
+
+autocmd FileType python nnoremap <F3> :call RunYapf()<cr>
+nnoremap <F2> :call ToggleMouse()<cr>
 nnoremap <S-F6> :call AutoFormat()<cr>
 nnoremap <F6> :call DeleteTrailingWS()<cr>
 "}}}
@@ -328,12 +339,15 @@ noremap L $
 noremap 0 ^
 
 nnoremap <F4> :set wrap! wrap?<CR>
-"set paste
-set pastetoggle=<F5>            " when in insert mode, press <F5> to go to
-"    paste mode, where you can paste mass data
-"    that won't be autoindented
-" disbale paste mode when leaving insert mode
-au InsertLeave * set nopaste
+"auto paste
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
 
 " quick close Quickfix
 nnoremap <F10> :ccl<cr>
@@ -348,7 +362,7 @@ endfunction
 nnoremap <s-F10> :call CleanSwFile()<cr>
 
 function! AutoRunInBuf(cmd)
-    :w
+    w
     let result = system(a:cmd .' ' . expand('%:p'))
     vsplit __Output__
     normal! ggdG
@@ -358,7 +372,7 @@ function! AutoRunInBuf(cmd)
 endfunction
 
 function! AutoRun(cmd)
-    :w
+    w
     execute '!'.a:cmd.' '.expand('%:p')
 endfunction
 
@@ -383,7 +397,8 @@ augroup autoRun
     au FileType lua nnoremap <s-F12> :call AutoRunInBuf('luajit')<cr>
 augroup END
 
-noremap Y y$
+nnoremap Y y$
+nnoremap D ddO<ESC>
 command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 
 " expand %% to current directory in command-line mode
@@ -737,7 +752,6 @@ NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/syntastic'
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_python_checkers=['pyflakes']
 let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
 let g:syntastic_json_checkers=['jsonlint']
@@ -746,18 +760,18 @@ let g:syntastic_coffee_checkers=['coffeelint']
 let g:syntastic_go_checkers=['govet']
 highlight SyntasticErrorSign guifg=white guibg=black
 let g:syntastic_loc_list_height = 5
- "禁java检查。因为检查java时需要编译。
-let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['java'] }
+"禁java检查。因为检查java时需要编译。
+"python检查交给其他插件完成
+let g:syntastic_mode_map = {'mode': 'active','passive_filetypes': ['java', 'python'] }
 
 " vim映射集锦
 NeoBundle 'tpope/vim-unimpaired'
-" TODO introduce Unite.vim
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
-"NeoBundle 'mattn/emmet-vim'
-"let g:user_emmet_leader_key = '<leader>.'
-"let g:use_emmet_complete_tag = 1
+NeoBundle 'mattn/emmet-vim'
+let g:user_emmet_leader_key = '<leader>.'
+let g:use_emmet_complete_tag = 1
 " for xml and html
 "NeoBundle 'othree/xml.vim'
 " [[ to previous open tag
@@ -772,7 +786,7 @@ NeoBundle 'tpope/vim-unimpaired'
 
 "################# 具体语言语法高亮及排版 ###############
 " for jumping in C/C++
-"NeoBundle 'vim-scripts/a.vim'
+NeoBundle 'vim-scripts/a.vim'
 ":A switches to the header file corresponding to the current file being edited (or vise versa)
 ":AS splits and switches
 ":AV vertical splits and switches
@@ -816,10 +830,14 @@ NeoBundle 'xolox/vim-lua-ftplugin'
 
 " for erlang
 NeoBundle 'jimenezrick/vimerl'
-
+" for python
+NeoBundle 'andviro/flake8-vim'
+let g:PyFlakeOnWrite = 1
+" make thing simple is really complex
+let g:PyFlakeDefaultComplexity = 99
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
-NeoBundle 'sjl/gundo.vim' " TODO replace with vim-mundo
+NeoBundle 'simnalamburt/vim-mundo'
 nnoremap <leader>ud :GundoToggle<CR>
 
 " for git diff/status in the editor

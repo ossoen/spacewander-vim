@@ -58,6 +58,14 @@ print "${1}" % ${2}
 endsnippet
 
 ############# 逻辑控制
+snippet br "break"
+break
+endsnippet
+
+snippet con "continue"
+continue
+endsnippet
+
 snippet if "if"
 if ${1}:
 	${0}
@@ -98,16 +106,19 @@ endsnippet
 snippet d "function"
 def ${1:fname}(${2:self}):
 	${0}
+
 endsnippet
 
 snippet ds "function"
 def ${1:fname}(self, ${2:others}):
 	${0}
+
 endsnippet
 
 snippet dt "def test_"
 def test_${1:fname}():
 	${0}
+
 endsnippet
 
 snippet l "lambda"
@@ -170,11 +181,15 @@ def __init__(self, ${1:args}):
 endsnippet
 
 ########### quick snippet
-snippet open "with open()"
-with open(${1}) as f:
+snippet wi "with"
+with ${1} as f:
 	${0}
 endsnippet
 
+snippet wo "with open()"
+with open(${1}) as f:
+	${0}
+endsnippet
 ########### docs
 snippet file
 """
@@ -195,14 +210,14 @@ import traceback; traceback.print_exc()
 endsnippet
 
 snippet a "assert"
-assert 
+assert
 endsnippet
 
 snippet try "try...except"
-try :
+try:
 	${0}
-except ${1:OSError} :
-	
+except ${1:OSError}:
+
 endsnippet
 
 

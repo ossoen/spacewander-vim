@@ -8,7 +8,7 @@ endsnippet
 
 snippet #ind "#ifndef ... #define ... #endif"
 #ifndef ${1/([A-Za-z0-9_]+).*/$1/}_H
-#define ${1:SYMBOL}_H
+#define ${1/([A-Za-z0-9_]+).*/$1/}_H
 
 #endif /* ${1/([A-Za-z0-9_]+).*/$1/}_H */
 endsnippet
@@ -91,7 +91,7 @@ endsnippet
 snippet do "do...while loop (do)"
 do {
 	${0:/*code*/}
-} while(${1:/* condition */})
+} while(${1:/* condition */});
 endsnippet
 
 snippet if "if .. (if)"
