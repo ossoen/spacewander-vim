@@ -1,0 +1,244 @@
+snippet <? "php tag"
+<?php
+$0
+?>
+endsnippet
+
+# keyword
+snippet ab "abstract"
+abstract $0
+endsnippet
+
+snippet b "break;"
+break;
+endsnippet
+
+snippet c "continue"
+continue;
+endsnippet
+
+snippet C "const"
+const $0
+endsnippet
+
+snippet ex "extends"
+extends ${1:Parent}
+endsnippet
+
+snippet im "implements"
+implements ${1:Interface}
+endsnippet
+
+snippet t "true" w
+true
+endsnippet
+
+snippet f "false" w
+false
+endsnippet
+
+snippet F "final"
+final $0
+endsnippet
+
+snippet n "null"
+null
+endsnippet
+
+snippet new "new"
+$${3:variable} = new ${1:ClassName}(${2:args});
+endsnippet
+
+snippet r "return"
+return $0;
+endsnippet
+
+snippet pu "public"
+public $0
+endsnippet
+
+snippet p "private"
+private $0
+endsnippet
+
+snippet pr "protected"
+protected $0
+endsnippet
+
+snippet s "static"
+static
+endsnippet
+
+snippet thr "throw new"
+throw new ${1:Exception}($0);
+endsnippet
+
+# block
+snippet cl "class"
+class ${1:ClassName}
+{
+	$0
+}
+endsnippet
+
+snippet __ "__construct"
+public function __construct(${1:args}) {
+	$0
+}
+endsnippet
+
+snippet in "interface"
+interface ${1:Interface}
+{
+	public function ${2:funcname}(${3:args});
+}
+endsnippet
+
+snippet tr "trait"
+trait ${1:MyTrait}
+{
+	public  function ${2:funcname}(${3:args})
+	{
+		$0
+	}
+}
+endsnippet
+
+snippet fu "function"
+function ${1:func}(${2:args}) {
+	${3:block}
+}
+endsnippet
+
+snippet if "if"
+if (${1:statement}) {
+	$0
+}
+endsnippet
+
+snippet ie "if else"
+if (${1:statement}) {
+	${2:block}
+} else {
+	$0
+}
+endsnippet
+
+snippet ief "if elseif"
+if (${1:statement1}) {
+	${2:block}
+} elseif (${3:statement2}) {
+	$0
+}
+endsnippet
+
+snippet iei "if elseif else"
+if (${1:statement1}) {
+	${2:block}
+} elseif (${3:statement2}) {
+	${4:block}
+} else {
+	$0
+}
+endsnippet
+
+snippet sw "switch"
+switch (${1:statement}) {
+	case ${2:case1}:
+		${4:block}
+	case ${3:case2}:
+		${5:block}
+	default:
+		$0
+}
+endsnippet
+
+snippet ca "case"
+case ${1:statement}:
+	$0
+	break;
+endsnippet
+
+snippet wh "while"
+while (${1:statement}) {
+	$0
+}
+endsnippet
+
+snippet do "do... while"
+do {
+	$0
+} while (${1:statement});
+endsnippet
+
+snippet for "for"
+for ($${1:i} = 0; $$1 < ${2:end}; $$1++) {
+	$0
+}
+endsnippet
+
+snippet fe "foreach"
+foreach ($${1:array} as $${2:e}) {
+	$0
+}
+endsnippet
+
+snippet fek "foreach iterate keys"
+foreach ($${1:array} as $${2:k} => $${3:v}) {
+	$0
+}
+endsnippet
+
+snippet tc "try...catch"
+try {
+	$0
+} catch (${1:Exception $e}) {
+	${2:print_r($e);}
+}
+endsnippet
+
+# function
+snippet a "assert"
+assert(${1:expr});
+endsnippet
+
+snippet apush "push an element to array"
+array_push($${1:ary}, ${2:element});
+endsnippet
+
+snippet apop "pop an element out of array"
+array_push($${1:ary});
+endsnippet
+snippet d "define"
+define("${1:CONSTANT}", ${2:value});
+endsnippet
+
+snippet e "echo"
+echo $0;
+endsnippet
+
+snippet pp "pretty print newline"
+print_r($${1:variable});
+endsnippet
+
+snippet u "unset"
+unset($${1:ary}[${2:idx}]);
+endsnippet
+
+# Others
+snippet pa "parent"
+parent::${1:prop}
+endsnippet
+
+snippet th "this"
+$this->${1:prop}
+endsnippet
+
+snippet se "self"
+self::
+endsnippet
+
+snippet ns "namespace"
+namespace ${1:name};
+endsnippet
+

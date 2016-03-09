@@ -385,6 +385,8 @@ augroup autoRun
     au FileType sh nnoremap <F12> :call AutoRun('bash')<cr>
     au FileType ruby nnoremap <s-F12> :call AutoRunInBuf('ruby')<cr>
     au FileType ruby nnoremap <F12> :call AutoRun('ruby')<cr>
+    au FileType php nnoremap <s-F12> :call AutoRunInBuf('php -f')<cr>
+    au FileType php nnoremap <F12> :call AutoRun('php -f')<cr>
     au FileType python nnoremap <s-F12> :call AutoRunInBuf('python')<cr>
     au FileType python nnoremap <F12> :call AutoRun('python')<cr>
     au FileType javascript nnoremap <s-F12> :call AutoRunInBuf('node')<cr>
@@ -737,6 +739,7 @@ autocmd FileType cpp setlocal completeopt-=preview
 autocmd FileType c setlocal completeopt-=preview
 autocmd FileType clojure setlocal completeopt-=preview
 autocmd FileType go setlocal completeopt-=preview
+autocmd FileType php setlocal completeopt-=preview
 
 NeoBundle 'marijnh/tern_for_vim'
 autocmd FileType javascript setlocal completeopt-=preview
@@ -835,6 +838,7 @@ NeoBundle 'andviro/flake8-vim'
 let g:PyFlakeOnWrite = 1
 " make thing simple is really complex
 let g:PyFlakeDefaultComplexity = 99
+
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'simnalamburt/vim-mundo'

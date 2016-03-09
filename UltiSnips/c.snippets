@@ -7,8 +7,10 @@ snippet #p "#pragma"
 endsnippet
 
 snippet #ind "#ifndef ... #define ... #endif"
-#ifndef ${1/([A-Za-z0-9_]+).*/$1/}_H
+#ifndef ${1:`!p snip.rv = snip.basename.upper()`}_H
 #define ${1/([A-Za-z0-9_]+).*/$1/}_H
+
+$0
 
 #endif /* ${1/([A-Za-z0-9_]+).*/$1/}_H */
 endsnippet

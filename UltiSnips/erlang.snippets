@@ -33,7 +33,7 @@ endsnippet
 
 # function
 snippet -d "-define"
--define($1).
+-define(${1:SERVER}, ${2:?MODULE}).
 $0
 endsnippet
 
@@ -65,6 +65,11 @@ endsnippet
 snippet -r "-record()"
 -record(${1:name}, {${2:fileds}}).
 $0
+endsnippet
+
+# Functions
+snippet l "length"
+length($0)
 endsnippet
 
 snippet sp "spawn"
@@ -117,7 +122,7 @@ end
 endsnippet
 
 snippet tc "try catch"
-try $1 of
+try
 	${0:sth}
 catch
 	${2:pattern} -> ${3:handler}
@@ -152,5 +157,18 @@ endsnippet
 ## need to use i option to trigger it after keyword
 snippet ?M "?MODULE" i
 ?MODULE
+endsnippet
+
+## Eunit
+snippet ?a "?assert"
+?assert($0)
+endsnippet
+
+snippet ?ae "?assert equal"
+?assert(${1:expr} =:= ${2:value})
+endsnippet
+
+snippet ?ane "?assert not equal"
+?assert(${1:expr} =/= ${2:value})
 endsnippet
 
