@@ -54,7 +54,11 @@ snippet n "nil"
 nil
 endsnippet
 
-snippet s "self"
+snippet s "string"
+string.
+endsnippet
+
+snippet S "self"
 self
 endsnippet
 
@@ -187,18 +191,18 @@ endsnippet
 
 # table
 snippet ti "insert"
-table.insert($0)
+table.insert(${1:table}, $0)
 endsnippet
 
 snippet tr "remove"
-table.remove($0)
+table.remove(${1:table}, $0)
 endsnippet
 
 snippet ts "sort"
-table.sort($0)
+table.sort(${1:table})
 endsnippet
 
 snippet tc "concat"
-table.concat($0)
+table.concat(${1:table}, $0)
 endsnippet
 

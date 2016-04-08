@@ -198,17 +198,16 @@ snippet con "continue"
 continue;
 endsnippet
 
-
-snippet p "printf .. (printf)"
-printf("${1:%s}\n"${2:,/*value*/});
-endsnippet
+#snippet p "printf .. (printf)"
+#printf("${1:%s}\n"${2:,/*value*/});
+#endsnippet
 
 snippet fp "fprintf .. (fprintf)"
 fprintf(${1:stderr}, "${2:%s}\n"${3:,/*value*/});
 endsnippet
 
 snippet st "struct"
-struct 
+struct
 endsnippet
 
 snippet struct "struct"
@@ -322,7 +321,7 @@ snippet del "delete"
 delete $1;
 endsnippet
 
-snippet cls "class"
+snippet cl "class"
 class ${1:ClassName}
 {
 $0
@@ -339,6 +338,38 @@ endsnippet
 
 snippet op "operator"
 operator ${1:*}(${2:params})
+endsnippet
+
+snippet p "private"
+private $0
+endsnippet
+
+snippet pu "public"
+public $0
+endsnippet
+
+snippet pr "protected"
+protected
+endsnippet
+
+# gtest
+snippet ae "ASSERT_EQ"
+ASSERT_EQ(${1:expect}, ${2:actual});
+endsnippet
+
+snippet at "ASSERT_TRUE"
+ASSERT_TRUE($0);
+endsnippet
+
+snippet af "ASSERT_FALSE"
+ASSERT_FALSE($0);
+endsnippet
+
+snippet T "TEST_F"
+TEST_F(${1:`!p snip.rv = snip.basename[0].upper() + snip.basename[1:]`}, ${2:topic})
+{
+	$0
+}
 endsnippet
 
 # vim:ft=snippets:

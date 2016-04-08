@@ -395,8 +395,6 @@ augroup autoRun
     au FileType coffee nnoremap <F12> :call AutoRun('coffee')<cr>
     au FileType go nnoremap <F12> :call AutoRun('go run')<cr>
     au FileType go nnoremap <s-F12> :call AutoRunInBuf('go run')<cr>
-    au FileType lua nnoremap <F12> :call AutoRun('luajit')<cr>
-    au FileType lua nnoremap <s-F12> :call AutoRunInBuf('luajit')<cr>
 augroup END
 
 nnoremap Y y$
@@ -411,7 +409,7 @@ cnoremap %c <C-R>=expand('%:p')<cr>
 " quick way to replace
 nnoremap <leader>s :%s///gc<left><left><left><left>
 " insert cword in commandline mode with Ctrl-r Ctrl-w
-nnoremap <localLeader>s :%s/<C-R><C-W>/<C-R><C-W>/gc<left><left><left>
+nnoremap <localleader>s :%s/\<<C-R><C-W>\>/<C-R><C-W>/gc<left><left><left>
 
 nnoremap ; :
 nnoremap : ;
@@ -598,6 +596,8 @@ let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_switch_buffer = 'Et'
 noremap <leader>ru :CtrlPMRU<CR>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux"
+let g:ctrlp_user_command =
+            \ ['.git', 'cd $(git rev-parse --show-toplevel) && git ls-files . -co --exclude-standard']
 let g:ctrlp_custom_ignore = {
             \ 'dir':  '\v[\/](\.(git|hg|svn|rvm)|node_modules|coverage)$',
             \ 'file': '\v(\.(exe|so|dll|zip|tar|tar.gz)|a.out)$',
@@ -619,6 +619,11 @@ vmap     <C-F>F <Plug>CtrlSFVwordExec
 nmap     <C-F>n <Plug>CtrlSFCwordPath
 nmap     <C-F>p <Plug>CtrlSFPwordPath
 nnoremap <C-F>o :CtrlSFOpen<CR>
+function! g:CtrlSFAftermainWindowInit()
+    setl wrap
+endfunction
+let g:ctrlsf_default_root = 'project'
+let g:ctrlsf_ignore_dir = ['lib'] " Just for my graduateProject
 
 NeoBundle 'szw/vim-ctrlspace'
 NeoBundle 'unblevable/quick-scope'
@@ -711,20 +716,16 @@ let g:UltiSnipsEditSplit = "vertical"
 let g:snips_author = "spacewander"
 let g:snips_author_email = "spacewanderlzx@gmail.com""
 
-"迄今为止用到的最好的自动VIM自动补全插件
 NeoBundle 'Valloric/YouCompleteMe'
-"具体配置内容请参考该项目的github主页
-"youcompleteme  默认tab  s-tab 和自动补全冲突
-",gd 高亮选中的函数 仅c-family语言有效
 let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 "let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf.py'
 let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf2.py'
-nnoremap <leader>ey :execute ':vs '.g:ycm_global_ycm_extra_conf
+nnoremap <leader>ey :execute ':vs '.g:ycm_global_ycm_extra_conf<CR>
 let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_min_num_of_chars_for_completion = 1
+"let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_complete_in_comments = 1 "default value is 0
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_filetype_blacklist = {
@@ -761,11 +762,11 @@ let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']
 let g:syntastic_go_checkers=['govet']
+let g:syntastic_python_checkers=['pyflakes']
 highlight SyntasticErrorSign guifg=white guibg=black
 let g:syntastic_loc_list_height = 5
 "禁java检查。因为检查java时需要编译。
-"python检查交给其他插件完成
-let g:syntastic_mode_map = {'mode': 'active','passive_filetypes': ['java', 'python'] }
+let g:syntastic_mode_map = {'mode': 'active','passive_filetypes': ['java'] }
 
 " vim映射集锦
 NeoBundle 'tpope/vim-unimpaired'
@@ -804,11 +805,6 @@ NeoBundle 'vim-scripts/a.vim'
 "<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
 "<Leader>ihn cycles through matches
 
-" for markdown
-NeoBundle 'hughbien/md-vim'
-autocmd BufWinEnter *.markdown set filetype=md
-autocmd BufWinEnter *.md set filetype=md
-
 NeoBundle "kchmck/vim-coffee-script"
 autocmd BufWinEnter *.coffee set omnifunc=javascriptcomplete#CompleteJS
 
@@ -833,16 +829,13 @@ NeoBundle 'xolox/vim-lua-ftplugin'
 
 " for erlang
 NeoBundle 'jimenezrick/vimerl'
-" for python
-NeoBundle 'andviro/flake8-vim'
-let g:PyFlakeOnWrite = 1
-" make thing simple is really complex
-let g:PyFlakeDefaultComplexity = 99
 
+" for PHP
+NeoBundle 'StanAngeloff/php.vim'
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'simnalamburt/vim-mundo'
-nnoremap <leader>ud :GundoToggle<CR>
+nnoremap <leader>ud :MundoToggle<CR>
 
 " for git diff/status in the editor
 NeoBundle 'airblade/vim-gitgutter'

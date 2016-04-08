@@ -15,7 +15,6 @@ flags = [
 '-Wall',
 '-Wextra',
 '-Werror',
-#'-Wnoc++98-compat',
 '-Wno-long-long',
 '-Wno-variadic-macros',
 '-fexceptions',
@@ -46,14 +45,14 @@ flags = [
 '-I', '/home/lzx/Qt5.2.1/5.2.1/gcc_64/mkspecs/linux-g++',
 '-I', '/home/lzx/Qt5.2.1/5.2.1/gcc_64/include',
 '-I', '.',
-'-I', '/home/lzx/github/parallel-join/serial_nested_loop',
+'-I', '/home/lzx/graduateProject/graduateProject/lib',
 '-isystem',
 '/usr/include',
 '-isystem', '/usr/lib/gcc/x86_64-linux-gnu/4.8/include',
 '-isystem',
 '/usr/local/include',
 '-isystem', '/usr/include/c++/5.1.0/',
-'-isystem', '/home/lzx/doc/folly/'
+'-isystem', '/home/lzx/doc/folly/',
 ]
 
 if compilation_database_folder:

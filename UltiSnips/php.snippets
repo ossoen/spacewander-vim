@@ -45,10 +45,6 @@ snippet n "null"
 null
 endsnippet
 
-snippet new "new"
-$${3:variable} = new ${1:ClassName}(${2:args});
-endsnippet
-
 snippet r "return"
 return $0;
 endsnippet
@@ -81,8 +77,14 @@ class ${1:ClassName}
 }
 endsnippet
 
-snippet __ "__construct"
+snippet _c "__construct"
 public function __construct(${1:args}) {
+	$0
+}
+endsnippet
+
+snippet __ "magic method"
+public function __${1:name}(${2:args}) {
 	$0
 }
 endsnippet
@@ -177,6 +179,18 @@ for ($${1:i} = 0; $$1 < ${2:end}; $$1++) {
 }
 endsnippet
 
+snippet for+ "for"
+for ($${1:i} = ${2:start}; $$1 < ${3:end}; $$1++) {
+	$0
+}
+endsnippet
+
+snippet for- "for"
+for ($${1:i} = ${2:end}; $$1 >= ${3:start}; $$1--) {
+	$0
+}
+endsnippet
+
 snippet fe "foreach"
 foreach ($${1:array} as $${2:e}) {
 	$0
@@ -221,6 +235,10 @@ snippet pp "pretty print newline"
 print_r($${1:variable});
 endsnippet
 
+snippet re "require"
+require '$0';
+endsnippet
+
 snippet u "unset"
 unset($${1:ary}[${2:idx}]);
 endsnippet
@@ -230,7 +248,7 @@ snippet pa "parent"
 parent::${1:prop}
 endsnippet
 
-snippet th "this"
+snippet th "this" w
 $this->${1:prop}
 endsnippet
 
@@ -240,5 +258,46 @@ endsnippet
 
 snippet ns "namespace"
 namespace ${1:name};
+endsnippet
+
+snippet TEST "generate a PHPUnit Test Class"
+<?php
+class ${1:`!p snip.rv = snip.basename`} extends \PHPUnit_Framework_TestCase
+{
+	public function test${2:Name}()
+	{
+		$0
+	}
+}
+?>
+endsnippet
+
+snippet test "test case"
+public function test${1:Name}()
+{
+	$0
+}
+endsnippet
+
+snippet ae "assertEquals"
+$this->assertEquals(${1:expect}, ${2:actual});
+endsnippet
+
+snippet at "assertTrue"
+$this->assertTrue($0);
+endsnippet
+
+snippet af "assertFalse"
+$this->assertFalse($0);
+endsnippet
+
+snippet an "assertNul"
+$this->assertNull($0);
+endsnippet
+
+snippet /* "comment allow annotations"
+/*
+ * $0
+ */
 endsnippet
 
