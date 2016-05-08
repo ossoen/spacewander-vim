@@ -52,7 +52,8 @@ flags = [
 '-isystem',
 '/usr/local/include',
 '-isystem', '/usr/include/c++/5.1.0/',
-'-isystem', '/home/lzx/doc/folly/',
+'-isystem', '/home/lzx/doc/nginx-release-1.9.11/src/core',
+'-isystem', '/home/lzx/doc/nginx-release-1.9.11/src/event',
 ]
 
 if compilation_database_folder:

@@ -285,6 +285,7 @@ set whichwrap+=<,>,h,l
 autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
 
+autocmd BufReadPost *.md setlocal filetype=txt
 " automatically leave insert mode after 'updatetime' milliseconds of inaction
 "au CursorHoldI * stopinsert
 " set 'updatetime' to 5 seconds when in insert mode
@@ -408,8 +409,10 @@ cnoremap %c <C-R>=expand('%:p')<cr>
 
 " quick way to replace
 nnoremap <leader>s :%s///gc<left><left><left><left>
+vnoremap <leader>s :s///gc<left><left><left><left>
 " insert cword in commandline mode with Ctrl-r Ctrl-w
 nnoremap <localleader>s :%s/\<<C-R><C-W>\>/<C-R><C-W>/gc<left><left><left>
+vnoremap <localleader>s :s/\<<C-R><C-W>\>/<C-R><C-W>/gc<left><left><left>
 
 nnoremap ; :
 nnoremap : ;
@@ -495,6 +498,7 @@ inoremap -[ [
 inoremap -' '
 inoremap -" "
 
+autocmd Filetype help nnoremap <buffer> q :q<cr>
 "}}}
 "==========================================
 ":) 自定义命令和函数 {{{
@@ -622,7 +626,7 @@ nnoremap <C-F>o :CtrlSFOpen<CR>
 function! g:CtrlSFAftermainWindowInit()
     setl wrap
 endfunction
-let g:ctrlsf_default_root = 'project'
+"let g:ctrlsf_default_root = 'project'
 let g:ctrlsf_ignore_dir = ['lib'] " Just for my graduateProject
 
 NeoBundle 'szw/vim-ctrlspace'
@@ -721,7 +725,6 @@ let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
-"let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf.py'
 let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf2.py'
 nnoremap <leader>ey :execute ':vs '.g:ycm_global_ycm_extra_conf<CR>
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -731,10 +734,12 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_filetype_blacklist = {
             \ 'unite' : 1,
             \ 'notes' : 1,
+            \ 'gitcommit' : 1,
+            \ 'markdown' : 1,
             \}
 let g:ycm_use_ultisnips_completer = 1
 nnoremap <leader>bc :YcmDiags<CR>
-nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType cpp setlocal completeopt-=preview
 autocmd FileType c setlocal completeopt-=preview
@@ -752,6 +757,9 @@ autocmd FileType javascript nnoremap <leader>jr :TernRefs<cr>
 "<leader>cu 解开注释
 "<leader>ci 加上/解开注释
 NeoBundle 'scrooloose/nerdcommenter'
+
+" define your textobj
+NeoBundle 'kana/vim-textobj-user'
 
 NeoBundle 'scrooloose/syntastic'
 let g:syntastic_error_symbol = '✗'
@@ -777,7 +785,7 @@ NeoBundle 'mattn/emmet-vim'
 let g:user_emmet_leader_key = '<leader>.'
 let g:use_emmet_complete_tag = 1
 " for xml and html
-"NeoBundle 'othree/xml.vim'
+NeoBundle 'othree/xml.vim'
 " [[ to previous open tag
 " ]] to next open tag
 " [] to previous close tag
