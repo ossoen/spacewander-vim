@@ -54,6 +54,12 @@ flags = [
 '-isystem', '/usr/include/c++/5.1.0/',
 '-isystem', '/home/lzx/doc/nginx-release-1.9.11/src/core',
 '-isystem', '/home/lzx/doc/nginx-release-1.9.11/src/event',
+'-isystem', '/home/lzx/doc/nginx-release-1.9.11/src/os',
+'-isystem', '/home/lzx/doc/nginx-release-1.9.11/src/stream',
+'-isystem', '/home/lzx/doc/nginx-release-1.9.11/src/mysql',
+'-isystem', '/home/lzx/doc/nginx-release-1.9.11/src/mail',
+'-isystem', '/home/lzx/doc/nginx-release-1.9.11/src/misc',
+'-isystem', '/home/lzx/doc/nginx-release-1.9.11/src/http',
 ]
 
 if compilation_database_folder:

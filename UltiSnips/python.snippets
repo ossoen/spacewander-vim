@@ -106,19 +106,16 @@ endsnippet
 snippet d "function"
 def ${1:fname}(${2:self}):
 	${0}
-
 endsnippet
 
 snippet ds "function"
 def ${1:fname}(self, ${2:others}):
 	${0}
-
 endsnippet
 
 snippet dt "def test_"
-def test_${1:fname}():
+def test_${1:fname}(self):
 	${0}
-
 endsnippet
 
 snippet l "lambda"
@@ -210,12 +207,12 @@ import traceback; traceback.print_exc()
 endsnippet
 
 snippet a "assert"
-assert
+assert $0
 endsnippet
 
 snippet try "try...except"
 try:
-	${0}
+	${0:pass}
 except ${1:OSError}:
 
 endsnippet
@@ -230,5 +227,15 @@ endsnippet
 
 snippet ae "assert =="
 assert $1 == $0
+endsnippet
+
+##### flask
+
+snippet rqf "request.form"
+request.form['$0']
+endsnippet
+
+snippet rdt "render_template"
+render_template('$1.html', $0)
 endsnippet
 

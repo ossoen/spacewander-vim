@@ -286,6 +286,8 @@ autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
 
 autocmd BufReadPost *.md setlocal filetype=txt
+
+autocmd BufReadPost nginx.conf setlocal filetype=nginx
 " automatically leave insert mode after 'updatetime' milliseconds of inaction
 "au CursorHoldI * stopinsert
 " set 'updatetime' to 5 seconds when in insert mode
@@ -497,6 +499,7 @@ inoremap -{ {
 inoremap -[ [
 inoremap -' '
 inoremap -" "
+inoremap -` `
 
 autocmd Filetype help nnoremap <buffer> q :q<cr>
 "}}}
@@ -837,7 +840,8 @@ NeoBundle 'xolox/vim-lua-ftplugin'
 
 " for erlang
 NeoBundle 'jimenezrick/vimerl'
-
+" for jinja2
+NeoBundle 'Glench/Vim-Jinja2-Syntax'
 " for PHP
 NeoBundle 'StanAngeloff/php.vim'
 "################### 其他 ###################"
