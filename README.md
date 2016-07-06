@@ -1,6 +1,7 @@
 ## dependency
 
 Vim 7.4+, with python support
+Or run `apt_install_vim.sh` to build vim from source.(Only for Debian/Ubuntu)
 
 ### system
 
