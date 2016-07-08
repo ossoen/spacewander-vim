@@ -649,6 +649,8 @@ let g:airline_right_sep = '◀'
 let g:airline_right_alt_sep = '❮'
 let g:airline_symbols.linenr = '¶'
 let g:airline_symbols.branch = '⎇'
+" For tmux
+NeoBundle 'edkolev/tmuxline.vim'
 
 
 "括号显示增强
@@ -750,10 +752,10 @@ autocmd FileType clojure setlocal completeopt-=preview
 autocmd FileType go setlocal completeopt-=preview
 autocmd FileType php setlocal completeopt-=preview
 
-NeoBundle 'marijnh/tern_for_vim'
-autocmd FileType javascript setlocal completeopt-=preview
-autocmd FileType javascript nnoremap <leader>jd :TernDef<cr>
-autocmd FileType javascript nnoremap <leader>jr :TernRefs<cr>
+"NeoBundle 'marijnh/tern_for_vim'
+"autocmd FileType javascript setlocal completeopt-=preview
+"autocmd FileType javascript nnoremap <leader>jd :TernDef<cr>
+"autocmd FileType javascript nnoremap <leader>jr :TernRefs<cr>
 
 "快速 加减注释
 "<leader>cc 加上注释
@@ -770,6 +772,8 @@ let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
 let g:syntastic_json_checkers=['jsonlint']
+let g:syntastic_lua_checkers=['luacheck']
+let g:syntastic_lua_luacheck_args='--std ngx_lua'
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']
 let g:syntastic_go_checkers=['govet']
@@ -784,11 +788,10 @@ NeoBundle 'tpope/vim-unimpaired'
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
-NeoBundle 'mattn/emmet-vim'
-let g:user_emmet_leader_key = '<leader>.'
-let g:use_emmet_complete_tag = 1
-" for xml and html
-NeoBundle 'othree/xml.vim'
+"NeoBundle 'mattn/emmet-vim'
+"let g:user_emmet_leader_key = '<leader>.'
+"let g:use_emmet_complete_tag = 1
+"NeoBundle 'othree/xml.vim'
 " [[ to previous open tag
 " ]] to next open tag
 " [] to previous close tag
@@ -801,7 +804,7 @@ NeoBundle 'othree/xml.vim'
 
 "################# 具体语言语法高亮及排版 ###############
 " for jumping in C/C++
-NeoBundle 'vim-scripts/a.vim'
+"NeoBundle 'vim-scripts/a.vim'
 ":A switches to the header file corresponding to the current file being edited (or vise versa)
 ":AS splits and switches
 ":AV vertical splits and switches
@@ -816,34 +819,34 @@ NeoBundle 'vim-scripts/a.vim'
 "<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
 "<Leader>ihn cycles through matches
 
-NeoBundle "kchmck/vim-coffee-script"
-autocmd BufWinEnter *.coffee set omnifunc=javascriptcomplete#CompleteJS
+"NeoBundle "kchmck/vim-coffee-script"
+"autocmd BufWinEnter *.coffee set omnifunc=javascriptcomplete#CompleteJS
 
 " for css
 " 原作者不更新了。所以我自己fork了一份，改掉了bug
-NeoBundle "spacewander/vim-coloresque"
-NeoBundle 'hail2u/vim-css3-syntax'
+"NeoBundle "spacewander/vim-coloresque"
+"NeoBundle 'hail2u/vim-css3-syntax'
 " for stylus
-NeoBundle 'wavded/vim-stylus'
+"NeoBundle 'wavded/vim-stylus'
 
 " for ruby
-NeoBundle 'tpope/vim-rails'
+"NeoBundle 'tpope/vim-rails'
 " for Go
-NeoBundle 'fatih/vim-go'
-autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
-autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
-autocmd BufWinEnter *.go nnoremap <leader>jd :GoDef<cr>
+"NeoBundle 'fatih/vim-go'
+"autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
+"autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
+"autocmd BufWinEnter *.go nnoremap <leader>jd :GoDef<cr>
 
 " for lua
 NeoBundle 'xolox/vim-misc' " required by vim-lua-ftplugin
 NeoBundle 'xolox/vim-lua-ftplugin'
 
 " for erlang
-NeoBundle 'jimenezrick/vimerl'
+"NeoBundle 'jimenezrick/vimerl'
 " for jinja2
-NeoBundle 'Glench/Vim-Jinja2-Syntax'
+"NeoBundle 'Glench/Vim-Jinja2-Syntax'
 " for PHP
-NeoBundle 'StanAngeloff/php.vim'
+"NeoBundle 'StanAngeloff/php.vim'
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'simnalamburt/vim-mundo'
