@@ -53,5 +53,5 @@ fi
 echo "compile YouCompleteMe"
 echo "if error,you need to compile it yourself"
 cd "$CURRENT_DIR"/bundle/YouCompleteMe/
-./install.py --clang-completer
+./install.py --clang-completer --gocode-completer
 

@@ -31,6 +31,10 @@ type ${1} interface {
 }
 endsnippet
 
+snippet e "error"
+error
+endsnippet
+
 snippet b "bool" w
 bool
 endsnippet
@@ -183,40 +187,31 @@ snippet en "err != nil"
 err != nil
 endsnippet
 
-snippet ife "if err != nil"
+snippet ien "if err != nil"
 if err != nil {
 	$0
 }
 endsnippet
 
-# test with ginkgo
-snippet De "Describe"
-Describe("${1:what}", func() {
+# use testify to test
+snippet ae "assert equal"
+assert.Equal(t, ${1:expected}, ${2:actual})
+endsnippet
+
+snippet ane "assert not equal"
+assert.NotEqual(t, ${1:expected}, ${2:actual})
+endsnippet
+
+snippet at "assert true"
+assert.True(t, $0)
+endsnippet
+
+snippet af "assert false"
+assert.False(t, $0)
+endsnippet
+
+snippet T "func Test"
+func Test${1:Func}(t *testing.T) {
 	$0
-})
+}
 endsnippet
-
-snippet BE "BeforeEach"
-BeforeEach(func() {
-	$0
-})
-endsnippet
-
-snippet Context "Context"
-Context("${1:what}", func() {
-	It("${2:first}", func() {
-		$0
-	})
-})
-endsnippet
-
-snippet It 
-It("${1:what}", func() {
-	$0
-})
-endsnippet
-
-snippet Ex "Expect"
-Expect(${1:this}).To(Equal(${2:that}))
-endsnippet
-

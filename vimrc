@@ -384,20 +384,20 @@ augroup autoRun
     noremap <F12> :call AutoRun('')<cr>
     noremap <s-F12> :call AutoRunInBuf('')<cr>
 
-    au FileType sh nnoremap <s-F12> :call AutoRunInBuf('bash')<cr>
-    au FileType sh nnoremap <F12> :call AutoRun('bash')<cr>
-    au FileType ruby nnoremap <s-F12> :call AutoRunInBuf('ruby')<cr>
-    au FileType ruby nnoremap <F12> :call AutoRun('ruby')<cr>
-    au FileType php nnoremap <s-F12> :call AutoRunInBuf('php -f')<cr>
-    au FileType php nnoremap <F12> :call AutoRun('php -f')<cr>
-    au FileType python nnoremap <s-F12> :call AutoRunInBuf('python')<cr>
-    au FileType python nnoremap <F12> :call AutoRun('python')<cr>
-    au FileType javascript nnoremap <s-F12> :call AutoRunInBuf('node')<cr>
-    au FileType javascript nnoremap <F12> :call AutoRun('node')<cr>
-    au FileType coffee nnoremap <s-F12> :call AutoRunInBuf('coffee')<cr>
-    au FileType coffee nnoremap <F12> :call AutoRun('coffee')<cr>
-    au FileType go nnoremap <F12> :call AutoRun('go run')<cr>
-    au FileType go nnoremap <s-F12> :call AutoRunInBuf('go run')<cr>
+    au FileType sh nnoremap <buffer> <s-F12> :call AutoRunInBuf('bash')<cr>
+    au FileType sh nnoremap <buffer> <F12> :call AutoRun('bash')<cr>
+    au FileType ruby nnoremap <buffer> <s-F12> :call AutoRunInBuf('ruby')<cr>
+    au FileType ruby nnoremap <buffer> <F12> :call AutoRun('ruby')<cr>
+    au FileType php nnoremap <buffer> <s-F12> :call AutoRunInBuf('php -f')<cr>
+    au FileType php nnoremap <buffer> <F12> :call AutoRun('php -f')<cr>
+    au FileType python nnoremap <buffer> <s-F12> :call AutoRunInBuf('python')<cr>
+    au FileType python nnoremap <buffer> <F12> :call AutoRun('python')<cr>
+    au FileType javascript nnoremap <buffer> <s-F12> :call AutoRunInBuf('node')<cr>
+    au FileType javascript nnoremap <buffer> <F12> :call AutoRun('node')<cr>
+    au FileType coffee nnoremap <buffer> <s-F12> :call AutoRunInBuf('coffee')<cr>
+    au FileType coffee nnoremap <buffer> <F12> :call AutoRun('coffee')<cr>
+    au FileType go nnoremap <buffer> <F12> :call AutoRun('go run')<cr>
+    au FileType go nnoremap <buffer> <s-F12> :call AutoRunInBuf('go run')<cr>
 augroup END
 
 nnoremap Y y$
@@ -465,7 +465,7 @@ nnoremap U <C-r>
 nnoremap <Leader>sa ggVG"
 
 nnoremap <C-up> :tabnew<cr>
-nnoremap <leader>te :tabedit
+nnoremap <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 nnoremap <C-left>   :tabfirst<CR>
 nnoremap <C-right>   :tablast<CR>
 " insert 'end' in current line
@@ -603,8 +603,8 @@ let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_switch_buffer = 'Et'
 noremap <leader>ru :CtrlPMRU<CR>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux"
-let g:ctrlp_user_command =
-            \ ['.git', 'cd $(git rev-parse --show-toplevel) && git ls-files . -co --exclude-standard']
+"let g:ctrlp_user_command =
+            "\ ['.git', 'cd $(git rev-parse --show-toplevel) && git ls-files . -co --exclude-standard']
 let g:ctrlp_custom_ignore = {
             \ 'dir':  '\v[\/](\.(git|hg|svn|rvm)|node_modules|coverage)$',
             \ 'file': '\v(\.(exe|so|dll|zip|tar|tar.gz)|a.out)$',
@@ -832,10 +832,10 @@ NeoBundle 'tpope/vim-unimpaired'
 " for ruby
 "NeoBundle 'tpope/vim-rails'
 " for Go
-"NeoBundle 'fatih/vim-go'
-"autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
-"autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
-"autocmd BufWinEnter *.go nnoremap <leader>jd :GoDef<cr>
+NeoBundle 'fatih/vim-go'
+autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:GoTest<cr>
+autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:GoTest<cr>
+autocmd BufWinEnter *.go nnoremap <buffer>  <leader>jd :GoDef<cr>
 
 " for lua
 NeoBundle 'xolox/vim-misc' " required by vim-lua-ftplugin
@@ -880,5 +880,5 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 "}}}
 "{{{ 临时区
-autocmd FileType stp nnoremap <F12> :call AutoRun('sudo stap -v ')<cr>
+autocmd FileType stp nnoremap <buffer> <F12> :call AutoRun('sudo stap -v ')<cr>
 "}}}
