@@ -1,6 +1,6 @@
 # shortcut
 snippet #! "luajit"
-#!/usr/bin/luajit
+#!/usr/bin/env lua
 
 $0
 endsnippet
@@ -54,17 +54,21 @@ snippet n "nil"
 nil
 endsnippet
 
-snippet s "self."
-self.
+snippet s "self"
+self
 endsnippet
 
-snippet S "self:"
-self:
+snippet S "self."
+self.
 endsnippet
 
 # conditions
 snippet br "break"
 break
+endsnippet
+
+snippet co "continue"
+continue
 endsnippet
 
 snippet wh "while"
@@ -79,25 +83,31 @@ for ${1:expr} do
 end
 endsnippet
 
-snippet fori "iter numeric entry in table"
+snippet fi "iter numeric entry in table"
 for ${1:i} = ${2:range} do
 	$0
 end
 endsnippet
 
-snippet foriw "iter whole numeric entry in table"
+snippet fiw "iter whole numeric entry in table"
 for ${1:i} = 1, #${2:seq} do
 	$0
 end
 endsnippet
 
-snippet forl "iter entry in table"
+snippet fe "iter entry in table"
 for ${1:k, v} in pairs(${2}) do
 	$0
 end
 endsnippet
 
-snippet repeat "repeat"
+snippet fei "iter numeric entry in table"
+for ${1:i} in ipairs(${2}) do
+	$0
+end
+endsnippet
+
+snippet rp "repeat"
 repeat
 	$0
 until ${1:expr}
@@ -145,7 +155,7 @@ return
 endsnippet
 
 snippet fu "function" w
-function _M${1}(${2:args})
+function ${1}(${2:args})
 	$0
 end
 endsnippet
@@ -154,8 +164,12 @@ snippet lf "local function"
 local function ${1}(${2:args})
 	$0
 end
+endsnippet
 
-
+snippet M "method"
+function _M${1}(${2:args})
+	$0
+end
 endsnippet
 
 snippet fun "function"
@@ -250,3 +264,9 @@ endsnippet
 snippet tc "concat" w
 table.concat(${1:table}, $0)
 endsnippet
+
+# openresty
+snippet log "ngx.log"
+ngx.log(${1:ngx.ERR}, $0)
+endsnippet
+

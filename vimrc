@@ -629,8 +629,6 @@ nnoremap <C-F>o :CtrlSFOpen<CR>
 function! g:CtrlSFAftermainWindowInit()
     setl wrap
 endfunction
-"let g:ctrlsf_default_root = 'project'
-let g:ctrlsf_ignore_dir = ['lib'] " Just for my graduateProject
 
 NeoBundle 'szw/vim-ctrlspace'
 NeoBundle 'unblevable/quick-scope'
@@ -716,6 +714,7 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 "定义存放代码片段的文件夹 .vim/snippets下,必须在runtimepath下
 "，使用自定义和默认的，将会的到全局，有冲突的会提示
+let g:UltiSnipsSnippetsDir = "~/.vim"
 let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 "定义使用的python版本，为2.x
 let g:UltiSnipsUsePythonVersion = 2
@@ -733,7 +732,7 @@ let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf2.py'
 nnoremap <leader>ey :execute ':vs '.g:ycm_global_ycm_extra_conf<CR>
 let g:ycm_autoclose_preview_window_after_completion = 1
-"let g:ycm_min_num_of_chars_for_completion = 1
+let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_complete_in_comments = 1 "default value is 0
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_filetype_blacklist = {
