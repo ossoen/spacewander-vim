@@ -88,6 +88,7 @@ autocmd FileType python nnoremap <F3> :call RunYapf()<cr>
 nnoremap <F2> :call ToggleMouse()<cr>
 nnoremap <S-F6> :call AutoFormat()<cr>
 nnoremap <F6> :call DeleteTrailingWS()<cr>
+
 "}}}
 "==========================================
 ":) General 基础设置 {{{
@@ -306,7 +307,7 @@ nnoremap <F1> :vert help
 inoremap df <c-[>
 vnoremap df <c-[>
 
-inoremap <c-v> <ESC>v
+"inoremap <c-v> <ESC>v
 "Quickly fold/unfold
 nnoremap Z za
 
@@ -427,7 +428,6 @@ nnoremap / /\v
 vnoremap / /\v
 nnoremap ? ?\v
 vnoremap ? ?\v
-
 "Keep search pattern at the center of the screen."
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
@@ -468,13 +468,12 @@ nnoremap <C-up> :tabnew<cr>
 nnoremap <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 nnoremap <C-left>   :tabfirst<CR>
 nnoremap <C-right>   :tablast<CR>
+nnoremap <C-Down> :tabedit
 " insert 'end' in current line
 inoremap <C-e> end
 
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-nnoremap <c-up> :e <c-r>=expand("%:p:h")<cr>/
-nnoremap <c-down> :tabedit <c-r>=expand("%:p:h")<cr>/
+nnoremap ec :e <c-r>=expand("%:p:h")<cr>/
+nnoremap et :tabedit <c-r>=expand("%:p:h")<cr>/
 
 nnoremap <leader>z0 :set foldlevel=0<CR>
 nnoremap <leader>z1 :set foldlevel=1<CR>
@@ -648,8 +647,9 @@ let g:airline_right_alt_sep = '❮'
 let g:airline_symbols.linenr = '¶'
 let g:airline_symbols.branch = '⎇'
 " For tmux
-NeoBundle 'edkolev/tmuxline.vim'
+"NeoBundle 'edkolev/tmuxline.vim'
 
+NeoBundle 'MattesGroeger/vim-bookmarks'
 
 "括号显示增强
 NeoBundle 'kien/rainbow_parentheses.vim'
@@ -772,7 +772,7 @@ let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_lua_checkers=['luacheck']
-let g:syntastic_lua_luacheck_args='--std ngx_lua'
+"let g:syntastic_lua_luacheck_args='--std ngx_lua,busted'
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']
 let g:syntastic_go_checkers=['govet']
@@ -836,10 +836,6 @@ autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:GoTest<cr>
 autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:GoTest<cr>
 autocmd BufWinEnter *.go nnoremap <buffer>  <leader>jd :GoDef<cr>
 
-" for lua
-NeoBundle 'xolox/vim-misc' " required by vim-lua-ftplugin
-NeoBundle 'xolox/vim-lua-ftplugin'
-
 " for erlang
 "NeoBundle 'jimenezrick/vimerl'
 " for jinja2
@@ -880,4 +876,5 @@ au Syntax * RainbowParenthesesLoadBraces
 "}}}
 "{{{ 临时区
 autocmd FileType stp nnoremap <buffer> <F12> :call AutoRun('sudo stap -v ')<cr>
+nnoremap <localleader>ca :!cat %<cr>
 "}}}

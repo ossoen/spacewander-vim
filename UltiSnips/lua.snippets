@@ -18,7 +18,7 @@ getmetatable(${1:var})
 endsnippet
 
 snippet re "require"
-require '$0'
+require('$0')
 endsnippet
 
 snippet cy "yield"
@@ -97,6 +97,12 @@ endsnippet
 
 snippet fe "iter entry in table"
 for ${1:k, v} in pairs(${2}) do
+	$0
+end
+endsnippet
+
+snippet fek "iter key in table"
+for ${1:k}, _ in pairs(${2}) do
 	$0
 end
 endsnippet
@@ -191,6 +197,10 @@ it('${1:feature}', function()
 end)
 endsnippet
 
+snippet a "assert"
+assert
+endsnippet
+
 snippet at "assert true"
 assert.is_true($0)
 endsnippet
@@ -199,8 +209,16 @@ snippet af "assert false"
 assert.is_false($0)
 endsnippet
 
+snippet ai "assert is equal"
+assert.is.equal($0)
+endsnippet
+
 snippet ae "assert equal"
 assert.are.same($0)
+endsnippet
+
+snippet an "assert nil"
+assert.is_nil($0)
 endsnippet
 
 # string
@@ -268,5 +286,10 @@ endsnippet
 # openresty
 snippet log "ngx.log"
 ngx.log(${1:ngx.ERR}, $0)
+endsnippet
+
+# others
+snippet dump "dump table"
+local dump = require('pl.pretty').dump; dump($0)
 endsnippet
 
