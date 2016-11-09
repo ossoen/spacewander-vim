@@ -65,7 +65,6 @@ endfunction
 augroup myFun
     autocmd!
     autocmd BufWrite FileType python :call DeleteTrailingWS()
-    autocmd BufWrite * :call ChangeWorkDir()
     autocmd BufWritePost * :call Chmod()
     autocmd BufWrite FileType vim source %
     autocmd BufWrite .vimrc source %
