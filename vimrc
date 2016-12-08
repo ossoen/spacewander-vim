@@ -127,6 +127,9 @@ set novisualbell           " don't beep
 set noerrorbells         " don't beep
 set t_vb=
 set tm=500
+
+" 在切换buffer时自动写入
+set autowriteall
 "}}}
 "==========================================
 ":) Show 展示/排版等界面格式设置 {{{
@@ -261,6 +264,7 @@ autocmd FileType css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType stylus setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType coffee setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType yaml  setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 "autocmd FileType c setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 "autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 
@@ -284,8 +288,6 @@ set whichwrap+=<,>,h,l
 
 autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
-
-autocmd BufReadPost *.md setlocal filetype=txt
 
 autocmd BufReadPost nginx.conf setlocal filetype=nginx
 " automatically leave insert mode after 'updatetime' milliseconds of inaction
@@ -312,6 +314,8 @@ nnoremap Z za
 
 "Quickly edit/reload the vimrc file
 nnoremap <silent> <leader>ev :vsplit $MYVIMRC<CR>
+" Open tag in new tab
+nnoremap <silent><Leader><C-]> <C-w><C-]><C-w>T
 
 "Treat long lines as break lines (useful when moving around in them)
 "se swap之后，同物理行上线直接跳
@@ -632,6 +636,13 @@ NeoBundle 'szw/vim-ctrlspace'
 NeoBundle 'unblevable/quick-scope'
 " 仅在按下下列键后才触发高亮，否则眼睛都要花了@_@
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+NeoBundle 'tpope/vim-fugitive'
+" BitBucket support for Gbrowse
+NeoBundle 'tommcdo/vim-fubitive'
+" Gitlab support for Gbrowse
+NeoBundle 'shumphrey/fugitive-gitlab.vim'
+let g:fugitive_gitlab_domains = ['https://git.corp.qihoo.net']
 "################### 显示增强 ###################"
 "状态栏增强展示
 NeoBundle 'bling/vim-airline'
@@ -728,7 +739,7 @@ let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_global_ycm_extra_conf = '~/github/spacewander-vim/ycm_extra_conf2.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf2.py'
 nnoremap <leader>ey :execute ':vs '.g:ycm_global_ycm_extra_conf<CR>
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_of_chars_for_completion = 1
@@ -739,6 +750,7 @@ let g:ycm_filetype_blacklist = {
             \ 'notes' : 1,
             \ 'gitcommit' : 1,
             \ 'markdown' : 1,
+            \ 'txt' : 1,
             \}
 let g:ycm_use_ultisnips_completer = 1
 nnoremap <leader>bc :YcmDiags<CR>
@@ -760,6 +772,9 @@ autocmd FileType php setlocal completeopt-=preview
 "<leader>cu 解开注释
 "<leader>ci 加上/解开注释
 NeoBundle 'scrooloose/nerdcommenter'
+let g:NERDCustomDelimiters = {
+    \ 'c': { 'left': '//' },
+\ }
 
 " define your textobj
 NeoBundle 'kana/vim-textobj-user'
@@ -802,7 +817,7 @@ NeoBundle 'tpope/vim-unimpaired'
 
 "################# 具体语言语法高亮及排版 ###############
 " for jumping in C/C++
-"NeoBundle 'vim-scripts/a.vim'
+NeoBundle 'vim-scripts/a.vim'
 ":A switches to the header file corresponding to the current file being edited (or vise versa)
 ":AS splits and switches
 ":AV vertical splits and switches
@@ -831,8 +846,8 @@ NeoBundle 'tpope/vim-unimpaired'
 "NeoBundle 'tpope/vim-rails'
 " for Go
 NeoBundle 'fatih/vim-go'
-autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:GoTest<cr>
-autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:GoTest<cr>
+autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
+autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go nnoremap <buffer>  <leader>jd :GoDef<cr>
 
 " for erlang

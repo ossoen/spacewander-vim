@@ -9,12 +9,13 @@ from clang_helpers import PrepareClangFlags
 # 'flags' list of compilation flags. Notice that YCM itself uses that approach.
 compilation_database_folder = ''
 
+HOME = '/Users/lzx/'
 # These are the compilation flags that will be used in case there's no
 # compilation database set.
 flags = [
-'-Wall',
-'-Wextra',
-'-Werror',
+# '-Wall',
+# '-Wextra',
+# '-Werror',
 '-Wno-long-long',
 '-Wno-variadic-macros',
 '-fexceptions',
@@ -52,14 +53,13 @@ flags = [
 '-isystem',
 '/usr/local/include',
 '-isystem', '/usr/include/c++/5.1.0/',
-'-isystem', '/home/lzx/doc/nginx/src/core',
-'-isystem', '/home/lzx/doc/nginx/src/event',
-'-isystem', '/home/lzx/doc/nginx/src/os',
-'-isystem', '/home/lzx/doc/nginx/src/stream',
-'-isystem', '/home/lzx/doc/nginx/src/mysql',
-'-isystem', '/home/lzx/doc/nginx/src/mail',
-'-isystem', '/home/lzx/doc/nginx/src/misc',
-'-isystem', '/home/lzx/doc/nginx/src/http',
+'-isystem', HOME + 'code/nginx-source-reading/src/core',
+'-isystem', HOME + 'code/nginx-source-reading/src/event',
+'-isystem', HOME + 'code/nginx-source-reading/src/os',
+'-isystem', HOME + 'code/nginx-source-reading/src/stream',
+'-isystem', HOME + 'code/nginx-source-reading/src/mail',
+'-isystem', HOME + 'code/nginx-source-reading/src/misc',
+'-isystem', HOME + 'code/nginx-source-reading/src/http',
 ]
 
 if compilation_database_folder:
