@@ -786,7 +786,7 @@ let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_lua_checkers=['luacheck']
-"let g:syntastic_lua_luacheck_args='--std ngx_lua,busted'
+let g:syntastic_lua_luacheck_args='--std ngx_lua+busted'
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']
 let g:syntastic_go_checkers=['govet']
@@ -874,6 +874,7 @@ let g:gitgutter_circular_hunk = 1
 " do not display the modify status
 let g:airline#extensions#hunks#enabled = 0
 
+NeoBundle 'tpope/vim-fugitive'
 " end turn on
 call neobundle#end()
 filetype plugin indent on
