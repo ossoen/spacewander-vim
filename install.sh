@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-BASEDIR=$(dirname $0)
+
+BASEDIR="$(dirname "$0")"
 cd "$BASEDIR"
 CURRENT_DIR=$(pwd)
 
@@ -22,9 +23,8 @@ for i in $HOME/.vim $HOME/.vimrc $HOME/.gvimrc; do [ -L "$i" ] && unlink "$i" ; 
 echo "setting up symlinks (设置链接，将.vim 和 .vimrc 分别链接到 spacewander-vim 和 spacewander-vim/vimrc)"
 echo "所以不要删除上述的文件夹"
 lnif "$CURRENT_DIR"/vimrc $HOME/.vimrc
+lnif "$CURRENT_DIR"/vimrc $HOME/.gvimrc
 lnif "$CURRENT_DIR"/ $HOME/.vim
-
-lnif "$CURRENT_DIR"/lnYourVimrc.sh $HOME/lnYourVimrc.sh
 
 if [ ! -e "$CURRENT_DIR"/neobundle.vim ]; then
     echo "Installing NeoBundle"

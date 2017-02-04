@@ -6,7 +6,6 @@
 " BlogPost:
 " ReadMe: README.md
 " StartAt: 2013-11-25
-" 每年11月8日升一次大版本，每月8日升一次小版本
 "==========================================
 ":) augroup and func 命令组和函数 {{{
 " 切换绝对行号和相对行号
@@ -291,10 +290,10 @@ autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
 
 autocmd BufReadPost nginx.conf setlocal filetype=nginx
 " automatically leave insert mode after 'updatetime' milliseconds of inaction
-"au CursorHoldI * stopinsert
+au CursorHoldI * stopinsert
 " set 'updatetime' to 5 seconds when in insert mode
-"au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
-"au InsertLeave * let &updatetime=updaterestore
+au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
+au InsertLeave * let &updatetime=updaterestore
 "}}}
 "==========================================
 ":) hot key  自定义快捷键 {{{
@@ -329,8 +328,6 @@ inoremap <C-z> <End>
 " better command line editing
 cnoremap <C-j> <t_kd>
 cnoremap <C-k> <t_ku>
-"cnoremap <C-a> <Home>
-"cnoremap <C-e> <End>
 
 "Smart way to move between windows 分屏窗口移动
 noremap <C-j> <C-W>j
@@ -456,12 +453,6 @@ au BufReadPost *.coffee set ft=coffee
 nnoremap <leader>x :x<CR>
 inoremap <leader>w <ESC>:w<CR>
 
-" Swap implementations of ` and ' jump to markers
-" By default, ' jumps to the marked line, ` jumps to the marked line and
-" column, so swap them
-"nnoremap ' `
-"nnoremap ` '
-
 " remap U to <C-r> for easier redo
 nnoremap U <C-r>
 " select all
@@ -477,6 +468,17 @@ inoremap <C-e> end
 
 nnoremap ec :e <c-r>=expand("%:p:h")<cr>/
 nnoremap et :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" create a temp script based on current filetype
+function! CreateTempScript(action)
+    execute a:action.tempname().expand("%:t")
+    call append(0, '#! ')
+    call cursor(1, 4)
+    call UltiSnips#ExpandSnippet()
+endfunction
+
+nnoremap tf :call CreateTempScript('vsplit')<cr>
+nnoremap tft :call CreateTempScript('tabedit')<cr>
 
 nnoremap <leader>z0 :set foldlevel=0<CR>
 nnoremap <leader>z1 :set foldlevel=1<CR>
@@ -502,6 +504,8 @@ inoremap -[ [
 inoremap -' '
 inoremap -" "
 inoremap -` `
+
+nnoremap <localleader>ca :!cat %<cr>
 
 autocmd Filetype help nnoremap <buffer> q :q<cr>
 "}}}
@@ -889,7 +893,4 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 "}}}
-"{{{ 临时区
-autocmd FileType stp nnoremap <buffer> <F12> :call AutoRun('sudo stap -v ')<cr>
-nnoremap <localleader>ca :!cat %<cr>
 "}}}
