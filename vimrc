@@ -97,6 +97,7 @@ set history=2000
 filetype on
 "针对不同的文件类型采用不同的缩进格式
 filetype indent on
+set nocin
 "允许插件
 filetype plugin on
 "启动自动补全
@@ -289,6 +290,10 @@ autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
 
 autocmd BufReadPost nginx.conf setlocal filetype=nginx
+autocmd FileType python nnoremap <leader>y :0,$!yapf<cr>
+autocmd FileType lua nnoremap <leader>t :!busted .<cr>
+" auto wrap in diff mode
+autocmd FilterWritePre * if &diff | setlocal wrap< | setlocal filetype= | endif
 " automatically leave insert mode after 'updatetime' milliseconds of inaction
 au CursorHoldI * stopinsert
 " set 'updatetime' to 5 seconds when in insert mode
@@ -460,6 +465,7 @@ nnoremap <Leader>sa ggVG"
 
 nnoremap <C-up> :tabnew<cr>
 nnoremap <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+nnoremap <leader>tf :tabedit /tmp/
 nnoremap <C-left>   :tabfirst<CR>
 nnoremap <C-right>   :tablast<CR>
 nnoremap <C-Down> :tabedit
@@ -530,6 +536,10 @@ augroup railsCommand
     command! VS RVstylesheet
     command! VR RVinitalizer
     command! RT Rake
+augroup END
+
+augroup gitCommand
+    command! Gs Gstatus
 augroup END
 "}}}
 "==========================================
@@ -646,7 +656,7 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tommcdo/vim-fubitive'
 " Gitlab support for Gbrowse
 NeoBundle 'shumphrey/fugitive-gitlab.vim'
-let g:fugitive_gitlab_domains = ['https://git.corp.qihoo.net']
+let g:fugitive_gitlab_domains = ['https://hqgit01.intra.legendsec.com']
 "################### 显示增强 ###################"
 "状态栏增强展示
 NeoBundle 'bling/vim-airline'
@@ -779,6 +789,7 @@ NeoBundle 'scrooloose/nerdcommenter'
 let g:NERDCustomDelimiters = {
     \ 'c': { 'left': '//' },
 \ }
+let g:NERDTrimTrailingWhitespace = 1
 
 " define your textobj
 NeoBundle 'kana/vim-textobj-user'
@@ -802,13 +813,15 @@ let g:syntastic_mode_map = {'mode': 'active','passive_filetypes': ['java'] }
 
 " vim映射集锦
 NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'rafi/vim-tagabana'
+NeoBundle 'tpope/vim-surround'
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
-"NeoBundle 'mattn/emmet-vim'
-"let g:user_emmet_leader_key = '<leader>.'
-"let g:use_emmet_complete_tag = 1
-"NeoBundle 'othree/xml.vim'
+NeoBundle 'mattn/emmet-vim'
+let g:user_emmet_leader_key = '<leader>.'
+let g:use_emmet_complete_tag = 1
+NeoBundle 'othree/xml.vim'
 " [[ to previous open tag
 " ]] to next open tag
 " [] to previous close tag
@@ -836,12 +849,12 @@ NeoBundle 'vim-scripts/a.vim'
 "<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
 "<Leader>ihn cycles through matches
 
-"NeoBundle "kchmck/vim-coffee-script"
+"NeoBundle 'kchmck/vim-coffee-script'
 "autocmd BufWinEnter *.coffee set omnifunc=javascriptcomplete#CompleteJS
 
 " for css
 " 原作者不更新了。所以我自己fork了一份，改掉了bug
-"NeoBundle "spacewander/vim-coloresque"
+"NeoBundle 'spacewander/vim-coloresque'
 "NeoBundle 'hail2u/vim-css3-syntax'
 " for stylus
 "NeoBundle 'wavded/vim-stylus'
@@ -853,6 +866,9 @@ NeoBundle 'fatih/vim-go'
 autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go nnoremap <buffer>  <leader>jd :GoDef<cr>
+
+" for openresty
+NeoBundle 'spacewander/openresty-vim'
 
 " for erlang
 "NeoBundle 'jimenezrick/vimerl'
