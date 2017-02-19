@@ -3,3 +3,6 @@ README.md~
 bundle/*
 session/*
 .netrwhist
+backup/*
+swp/*
+undo/*

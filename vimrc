@@ -108,10 +108,12 @@ set nocompatible
 set autoread          " 文件修改之后自动载入。
 set shortmess=astI
 set mouse=a
+" 不要让 swapfile 污染当前目录
+set dir=~/.vim/swp
 " 备份,到另一个位置. 防止误删
 set backup
 set backupext=.bak
-set backupdir=~/bak/vimbk/
+set backupdir=~/.vim/backup/
 set cursorline              " 突出显示当前行
 set display=lastline
 "设置 退出vim后，内容显示在终端屏幕, 可以用于查看和复制
@@ -193,7 +195,7 @@ augroup END
 set undolevels=1000         " How many undos
 set undoreload=10000        " number of lines to save for undo
 set undofile                " keep a persistent backup file
-set undodir=~/bak/vimundo/
+set undodir=~/.vim/undo
 
 "显示当前的行号列号：
 set ruler
@@ -289,14 +291,18 @@ set whichwrap+=<,>,h,l
 autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
 
-autocmd BufReadPost nginx.conf setlocal filetype=nginx
 autocmd FileType python nnoremap <leader>y :0,$!yapf<cr>
-autocmd FileType lua nnoremap <leader>t :!busted .<cr>
+"autocmd FileType lua nnoremap <leader>t :!busted .<cr>
 " auto wrap in diff mode
 autocmd FilterWritePre * if &diff | setlocal wrap< | setlocal filetype= | endif
+
 " automatically leave insert mode after 'updatetime' milliseconds of inaction
 au CursorHoldI * stopinsert
-" set 'updatetime' to 5 seconds when in insert mode
+" automatically save file (after 'updatetime' milliseconds of inaction and in normal mode)
+" or leave current buffer)
+au CursorHold,BufLeave *  update
+" set 'updatetime' to 15 seconds when in insert mode
+" default updatetime is 4 seconds
 au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
 au InsertLeave * let &updatetime=updaterestore
 "}}}
@@ -360,15 +366,6 @@ endfunction
 
 " quick close Quickfix
 nnoremap <F10> :ccl<cr>
-
-function! CleanSwFile()
-    if expand('%:c')[0] == '.'
-        !rm %.sw*
-    else
-        !rm .%.sw*
-    endif
-endfunction
-nnoremap <s-F10> :call CleanSwFile()<cr>
 
 function! AutoRunInBuf(cmd)
     w
@@ -618,7 +615,7 @@ let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_switch_buffer = 'Et'
 noremap <leader>ru :CtrlPMRU<CR>
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux"
+set wildignore+=*/tmp/*,*.so,*.sw*,*.zip     " MacOSX/Linux"
 "let g:ctrlp_user_command =
             "\ ['.git', 'cd $(git rev-parse --show-toplevel) && git ls-files . -co --exclude-standard']
 let g:ctrlp_custom_ignore = {
