@@ -98,6 +98,7 @@ filetype on
 "针对不同的文件类型采用不同的缩进格式
 filetype indent on
 set nocin
+set cinkeys-=0#
 "允许插件
 filetype plugin on
 "启动自动补全
@@ -114,6 +115,8 @@ set dir=~/.vim/swp
 set backup
 set backupext=.bak
 set backupdir=~/.vim/backup/
+" crontab 类型的文件不进行备份，不然会报错
+autocmd FileType crontab setlocal nobackup nowritebackup
 set cursorline              " 突出显示当前行
 set display=lastline
 "设置 退出vim后，内容显示在终端屏幕, 可以用于查看和复制
@@ -212,8 +215,14 @@ set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\
 set laststatus=2
 "高亮第80列，就像一把尺子
 set cc=80
-autocmd Filetype md setlocal cc=
+autocmd Filetype markdown setlocal cc=160
+autocmd Filetype markdown setlocal textwidth=160
 autocmd Filetype text setlocal cc=
+
+" 显示空白字符（7.4+)
+set listchars=tab:>·,trail:~,extends:>,precedes:<
+autocmd FileType go set nolist
+set list
 "}}}
 ":) file encode, 文件编码,格式 {{{
 "==========================================
@@ -288,6 +297,8 @@ set magic
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
+"let s:path = expand('<sfile>:p:h')
+"execute 'setlocal dict+='.s:path.'/directives.txt'
 autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
 
@@ -296,6 +307,7 @@ autocmd FileType python nnoremap <leader>y :0,$!yapf<cr>
 " auto wrap in diff mode
 autocmd FilterWritePre * if &diff | setlocal wrap< | setlocal filetype= | endif
 
+set updatetime=15000
 " automatically leave insert mode after 'updatetime' milliseconds of inaction
 au CursorHoldI * stopinsert
 " automatically save file (after 'updatetime' milliseconds of inaction and in normal mode)
@@ -303,8 +315,8 @@ au CursorHoldI * stopinsert
 au CursorHold,BufLeave *  update
 " set 'updatetime' to 15 seconds when in insert mode
 " default updatetime is 4 seconds
-au InsertEnter * let updaterestore=&updatetime | set updatetime=15000
-au InsertLeave * let &updatetime=updaterestore
+au InsertEnter * set updatetime=15000
+"au InsertLeave * let &updatetime=updaterestore
 "}}}
 "==========================================
 ":) hot key  自定义快捷键 {{{
@@ -609,7 +621,7 @@ let g:tagbar_show_linenumbers = -1
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 
-"for file search ctrlp, 文件搜索
+"for file search ctrlp, 搜索文件
 NeoBundle 'kien/ctrlp.vim'
 let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
@@ -632,6 +644,7 @@ let g:ctrlp_use_caching = 1
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
+" 在文件内搜索
 NeoBundle 'dyng/ctrlsf.vim'
 nmap     <C-F>f <Plug>CtrlSFPrompt
 vmap     <C-F>f <Plug>CtrlSFVwordPath
@@ -648,7 +661,9 @@ NeoBundle 'unblevable/quick-scope'
 " 仅在按下下列键后才触发高亮，否则眼睛都要花了@_@
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
+" Git relatived plugin
 NeoBundle 'tpope/vim-fugitive'
+" Gbl git blame current buffer
 " BitBucket support for Gbrowse
 NeoBundle 'tommcdo/vim-fubitive'
 " Gitlab support for Gbrowse
@@ -667,10 +682,13 @@ let g:airline_right_sep = '◀'
 let g:airline_right_alt_sep = '❮'
 let g:airline_symbols.linenr = '¶'
 let g:airline_symbols.branch = '⎇'
-" For tmux
-"NeoBundle 'edkolev/tmuxline.vim'
 
 NeoBundle 'MattesGroeger/vim-bookmarks'
+" mm BookmarkToggle
+" ma BookmarkShowAll
+" mj BookmarkNext
+" mk BookmarkPrev
+" mx BookmarkClearAll
 
 "括号显示增强
 NeoBundle 'kien/rainbow_parentheses.vim'
@@ -764,6 +782,7 @@ let g:ycm_filetype_blacklist = {
             \ 'txt' : 1,
             \}
 let g:ycm_use_ultisnips_completer = 1
+let g:ycm_seed_identifiers_with_syntax = 1
 nnoremap <leader>bc :YcmDiags<CR>
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
 autocmd FileType python setlocal completeopt-=preview
@@ -772,11 +791,6 @@ autocmd FileType c setlocal completeopt-=preview
 autocmd FileType clojure setlocal completeopt-=preview
 autocmd FileType go setlocal completeopt-=preview
 autocmd FileType php setlocal completeopt-=preview
-
-"NeoBundle 'marijnh/tern_for_vim'
-"autocmd FileType javascript setlocal completeopt-=preview
-"autocmd FileType javascript nnoremap <leader>jd :TernDef<cr>
-"autocmd FileType javascript nnoremap <leader>jr :TernRefs<cr>
 
 "快速 加减注释
 "<leader>cc 加上注释
@@ -790,6 +804,9 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " define your textobj
 NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'kana/vim-textobj-indent'
+" dii delete lines with the same indent
+NeoBundle 'spacewander/vim-textobj-lua'
 
 NeoBundle 'scrooloose/syntastic'
 let g:syntastic_error_symbol = '✗'
@@ -810,8 +827,13 @@ let g:syntastic_mode_map = {'mode': 'active','passive_filetypes': ['java'] }
 
 " vim映射集锦
 NeoBundle 'tpope/vim-unimpaired'
+" [|]<space> to add blank line above/below
+" [|]p to paste above/below
+
+" modify ctags path for your project
 NeoBundle 'rafi/vim-tagabana'
-NeoBundle 'tpope/vim-surround'
+" modify surrounding characters for selecting words
+"NeoBundle 'tpope/vim-surround'
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
@@ -853,8 +875,6 @@ NeoBundle 'vim-scripts/a.vim'
 " 原作者不更新了。所以我自己fork了一份，改掉了bug
 "NeoBundle 'spacewander/vim-coloresque'
 "NeoBundle 'hail2u/vim-css3-syntax'
-" for stylus
-"NeoBundle 'wavded/vim-stylus'
 
 " for ruby
 "NeoBundle 'tpope/vim-rails'
@@ -867,8 +887,6 @@ autocmd BufWinEnter *.go nnoremap <buffer>  <leader>jd :GoDef<cr>
 " for openresty
 NeoBundle 'spacewander/openresty-vim'
 
-" for erlang
-"NeoBundle 'jimenezrick/vimerl'
 " for jinja2
 "NeoBundle 'Glench/Vim-Jinja2-Syntax'
 " for PHP
@@ -885,17 +903,33 @@ let g:gitgutter_circular_hunk = 1
   "nmap [c <Plug>GitGutterPrevHunk
   "nmap ]c <Plug>GitGutterNextHunk
 "To change the hunk-staging/reverting/previewing maps (defaults shown):
-  "nmap <Leader>hs <Plug>GitGutterStageHunk
-  "nmap <Leader>hr <Plug>GitGutterRevertHunk
+nnoremap <leader>uh :GitGutterUndoHunk<cr>
 
 " do not display the modify status
 let g:airline#extensions#hunks#enabled = 0
 
-NeoBundle 'tpope/vim-fugitive'
 " end turn on
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
+
+" textobj 的名字仅由小写组成
+" 如果 pattern 是一对正则表达式，需要把 select 拆开成 select-a 和 select-i 写
+call textobj#user#plugin('quotezh', {
+\   'code': {
+\     'pattern': ['“', '”'],
+\     'select-a': 'aS',
+\     'select-i': 'iS',
+\   },
+\ })
+call textobj#user#plugin('parenthesiszh', {
+\   'code': {
+\     'pattern': ['（', '）'],
+\     'select-a': 'aK',
+\     'select-i': 'iK',
+\   },
+\ })
+
 "========================== config for plugins end ======================================
 " settings for color schema
 colorscheme molokai
