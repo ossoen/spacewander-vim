@@ -135,6 +135,23 @@ set tm=500
 
 " 在切换buffer时自动写入
 set autowriteall
+
+if has("nvim")
+" append ~/.vim to the runtimepath of nvim
+set rtp^=$HOME/.vim
+autocmd BufEnter term://* startinsert
+tnoremap <C-[> <C-\><C-n>
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
+tnoremap <C-left> <C-\><C-n>:tabnext<cr>
+tnoremap <C-right> <C-\><C-n>:tablast<cr>
+
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
+endif
+
+"括号配对情况
 "}}}
 "==========================================
 ":) Show 展示/排版等界面格式设置 {{{
@@ -148,7 +165,6 @@ augroup specialFileWrap
     autocmd BufReadPost *.js setlocal wrap
 augroup END
 
-"括号配对情况
 set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
@@ -367,8 +383,8 @@ noremap 0 ^
 
 nnoremap <F4> :set wrap! wrap?<CR>
 "auto paste
-let &t_SI .= "\<Esc>[?2004h"
-let &t_EI .= "\<Esc>[?2004l"
+let &t_SI .= '\<Esc>[?2004h'
+let &t_EI .= '\<Esc>[?2004l'
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 function! XTermPasteBegin()
   set pastetoggle=<Esc>[201~
@@ -887,6 +903,8 @@ autocmd BufWinEnter *.go nnoremap <buffer>  <leader>jd :GoDef<cr>
 " for openresty
 NeoBundle 'spacewander/openresty-vim'
 
+" for erlang
+"NeoBundle 'jimenezrick/vimerl'
 " for jinja2
 "NeoBundle 'Glench/Vim-Jinja2-Syntax'
 " for PHP
