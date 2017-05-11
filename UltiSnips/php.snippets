@@ -9,12 +9,16 @@ snippet ab "abstract"
 abstract $0
 endsnippet
 
-snippet b "break;"
+snippet br "break;"
 break;
 endsnippet
 
 snippet c "continue"
 continue;
+endsnippet
+
+snippet is "isset"
+isset($0)
 endsnippet
 
 snippet C "const"
@@ -27,6 +31,10 @@ endsnippet
 
 snippet im "implements"
 implements ${1:Interface}
+endsnippet
+
+snippet a "array" w
+array $0
 endsnippet
 
 snippet t "true" w
@@ -70,7 +78,7 @@ throw new ${1:Exception}($0);
 endsnippet
 
 # block
-snippet cl "class"
+snippet cls "class"
 class ${1:ClassName}
 {
 	$0
@@ -212,23 +220,32 @@ try {
 endsnippet
 
 # function
-snippet a "assert"
-assert(${1:expr});
+snippet asp "array_splice"
+array_splice($0);
 endsnippet
 
-snippet apush "push an element to array"
+snippet asl "array_slice"
+array_slice($0);
+endsnippet
+
+snippet apu "push an element to array"
 array_push($${1:ary}, ${2:element});
 endsnippet
 
-snippet apop "pop an element out of array"
+snippet apo "pop an element out of array"
 array_push($${1:ary});
 endsnippet
+
 snippet d "define"
 define("${1:CONSTANT}", ${2:value});
 endsnippet
 
 snippet e "echo"
 echo $0;
+endsnippet
+
+snippet vd "var_dump"
+var_dump($0);
 endsnippet
 
 snippet pp "pretty print newline"

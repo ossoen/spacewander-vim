@@ -236,7 +236,7 @@ autocmd Filetype markdown setlocal textwidth=160
 autocmd Filetype text setlocal cc=
 
 " 显示空白字符（7.4+)
-set listchars=tab:>·,trail:~,extends:>,precedes:<
+set listchars=tab:>·,trail:·,extends:>,precedes:<
 autocmd FileType go set nolist
 set list
 "}}}
@@ -383,8 +383,8 @@ noremap 0 ^
 
 nnoremap <F4> :set wrap! wrap?<CR>
 "auto paste
-let &t_SI .= '\<Esc>[?2004h'
-let &t_EI .= '\<Esc>[?2004l'
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 function! XTermPasteBegin()
   set pastetoggle=<Esc>[201~
@@ -535,6 +535,10 @@ inoremap -[ [
 inoremap -' '
 inoremap -" "
 inoremap -` `
+
+" work like unimpaired's [|]<space>, but add space instead of newline
+nnoremap [z i<space><esc><right>
+nnoremap ]z a<space><esc><left>
 
 nnoremap <localleader>ca :!cat %<cr>
 
@@ -834,12 +838,11 @@ let g:syntastic_lua_checkers=['luacheck']
 let g:syntastic_lua_luacheck_args='--std ngx_lua+busted'
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']
-let g:syntastic_go_checkers=['govet']
 let g:syntastic_python_checkers=['pyflakes']
 highlight SyntasticErrorSign guifg=white guibg=black
 let g:syntastic_loc_list_height = 5
 "禁java检查。因为检查java时需要编译。
-let g:syntastic_mode_map = {'mode': 'active','passive_filetypes': ['java'] }
+let g:syntastic_mode_map = {'mode': 'active','passive_filetypes': ['java','go'] }
 
 " vim映射集锦
 NeoBundle 'tpope/vim-unimpaired'
@@ -908,7 +911,7 @@ NeoBundle 'spacewander/openresty-vim'
 " for jinja2
 "NeoBundle 'Glench/Vim-Jinja2-Syntax'
 " for PHP
-"NeoBundle 'StanAngeloff/php.vim'
+NeoBundle 'StanAngeloff/php.vim'
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'simnalamburt/vim-mundo'

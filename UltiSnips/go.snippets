@@ -1,15 +1,3 @@
-snippet #! "init a quick-run template"
-package ${1:main}
-
-import (
-	"fmt"
-)
-
-func main() {
-	$0
-}
-endsnippet
-
 snippet pa
 package ${1:main}
 
@@ -164,7 +152,7 @@ if ${1:exp} {
 } else if ${2:exp2} {
 	$0
 } else {
-	
+
 }
 endsnippet
 
@@ -199,13 +187,23 @@ snippet en "err != nil"
 err != nil
 endsnippet
 
-snippet ien "if err != nil"
+snippet ien "if err == nil"
+if err == nil {
+	$0
+}
+endsnippet
+
+snippet ine "if err != nil"
 if err != nil {
 	$0
 }
 endsnippet
 
 # use testify to test
+snippet an "assert nil"
+assert.Nil(t, ${1:actual})
+endsnippet
+
 snippet ae "assert equal"
 assert.Equal(t, ${1:expected}, ${2:actual})
 endsnippet
