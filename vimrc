@@ -232,7 +232,7 @@ set laststatus=2
 "高亮第80列，就像一把尺子
 set cc=80
 autocmd Filetype markdown setlocal cc=160
-autocmd Filetype markdown setlocal textwidth=160
+"autocmd Filetype markdown setlocal textwidth=160
 autocmd Filetype text setlocal cc=
 
 " 显示空白字符（7.4+)
@@ -332,6 +332,9 @@ au CursorHold,BufLeave *  update
 " set 'updatetime' to 15 seconds when in insert mode
 " default updatetime is 4 seconds
 au InsertEnter * set updatetime=15000
+if has("nvim")
+    autocmd CursorHold term://* startinsert
+endif
 "au InsertLeave * let &updatetime=updaterestore
 "}}}
 "==========================================
@@ -933,23 +936,6 @@ let g:airline#extensions#hunks#enabled = 0
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
-
-" textobj 的名字仅由小写组成
-" 如果 pattern 是一对正则表达式，需要把 select 拆开成 select-a 和 select-i 写
-call textobj#user#plugin('quotezh', {
-\   'code': {
-\     'pattern': ['“', '”'],
-\     'select-a': 'aS',
-\     'select-i': 'iS',
-\   },
-\ })
-call textobj#user#plugin('parenthesiszh', {
-\   'code': {
-\     'pattern': ['（', '）'],
-\     'select-a': 'aK',
-\     'select-i': 'iK',
-\   },
-\ })
 
 "========================== config for plugins end ======================================
 " settings for color schema

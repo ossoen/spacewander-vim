@@ -172,10 +172,15 @@ def ${1}():
 $1 = property(**$1())
 endsnippet
 
-snippet init "init"
+snippet _i "init"
 def __init__(self, ${1:args}):
     ${0}
 endsnippet
+
+snippet su "super"
+super(self.__class__, self).__init__($0)
+endsnippet
+
 
 ########### quick snippet
 snippet wi "with"
