@@ -11,7 +11,7 @@ func ${1}(${2}) ${3} {
 endsnippet
 
 snippet P
-fmt.Printf("%v\n", ${1:sth})
+println($0)
 endsnippet
 
 snippet pr "fmt.Println"
@@ -117,6 +117,18 @@ snippet v "var" w
 var ${1:v} ${2:t}
 endsnippet
 
+snippet V "var"
+var (
+	$0
+)
+endsnippet
+
+snippet C "const"
+const (
+	$0
+)
+endsnippet
+
 snippet sel "select"
 select {
 case $1:
@@ -168,8 +180,14 @@ snippet d "defer"
 defer $0
 endsnippet
 
-snippet n "nil"
+snippet n "nil" w
 nil
+endsnippet
+
+snippet /* "/* comment block */"
+/*
+$0
+*/
 endsnippet
 
 
@@ -187,13 +205,13 @@ snippet en "err != nil"
 err != nil
 endsnippet
 
-snippet ien "if err == nil"
+snippet ine "if err == nil"
 if err == nil {
 	$0
 }
 endsnippet
 
-snippet ine "if err != nil"
+snippet ien "if err != nil"
 if err != nil {
 	$0
 }
@@ -222,6 +240,12 @@ endsnippet
 
 snippet T "func Test"
 func Test${1:Func}(t *testing.T) {
+	$0
+}
+endsnippet
+
+snippet Ex "func Example"
+func Example${1:Func}() {
 	$0
 }
 endsnippet

@@ -136,6 +136,14 @@ set tm=500
 " 在切换buffer时自动写入
 set autowriteall
 
+" 启用 syntax omnifunc complete
+if has("autocmd") && exists("+omnifunc")
+    autocmd Filetype *
+                \   if &omnifunc == "" |
+                \       setlocal omnifunc=syntaxcomplete#Complete |
+                \   endif
+endif
+
 if has("nvim")
 " append ~/.vim to the runtimepath of nvim
 set rtp^=$HOME/.vim
@@ -232,7 +240,6 @@ set laststatus=2
 "高亮第80列，就像一把尺子
 set cc=80
 autocmd Filetype markdown setlocal cc=160
-"autocmd Filetype markdown setlocal textwidth=160
 autocmd Filetype text setlocal cc=
 
 " 显示空白字符（7.4+)
@@ -492,8 +499,10 @@ nnoremap U <C-r>
 nnoremap <Leader>sa ggVG"
 
 nnoremap <C-up> :tabnew<cr>
+nnoremap <leader>fe :e <c-r>=expand("%:p:h")<cr>/
 nnoremap <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-nnoremap <leader>tf :tabedit /tmp/
+nnoremap <leader>tf :tabedit $TMPDIR/
+au FileType go nnoremap <leader>tf :tabedit $GOPATH/src/
 nnoremap <C-left>   :tabfirst<CR>
 nnoremap <C-right>   :tablast<CR>
 nnoremap <C-Down> :tabedit
@@ -678,6 +687,8 @@ nnoremap <C-F>o :CtrlSFOpen<CR>
 function! g:CtrlSFAftermainWindowInit()
     setl wrap
 endfunction
+" For go practice
+let g:ctrlsf_ignore_dir = ['vendor']
 
 NeoBundle 'szw/vim-ctrlspace'
 NeoBundle 'unblevable/quick-scope'
@@ -806,6 +817,7 @@ let g:ycm_filetype_blacklist = {
             \}
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
 nnoremap <leader>bc :YcmDiags<CR>
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
 autocmd FileType python setlocal completeopt-=preview
@@ -838,14 +850,37 @@ let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_lua_checkers=['luacheck']
-let g:syntastic_lua_luacheck_args='--std ngx_lua+busted'
+let g:syntastic_lua_luacheck_args='--std ngx_lua+busted --ignore self'
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']
+"let g:syntastic_python_checkers=['pylint']
+"# Brain-dead errors regarding standard language features
+"#   W0142 = *args and **kwargs support
+"#   W0403 = Relative imports
+"#   W0703 = atching too general exception Exception
+"# Pointless whinging
+"#   R0201 = Method could be a function
+"#   W0212 = Accessing protected attribute of client class
+"#   W0613 = Unused argument
+"#   W0232 = Class has no __init__ method
+"#   R0903 = Too few public methods
+"#   C0301 = Line too long
+"#   R0913 = Too many arguments
+"#   C0103 = Invalid name
+"#   R0914 = Too many local variables
+"# PyLint's module importation is unreliable
+"#   F0401 = Unable to import module
+"#   W0402 = Uses of a deprecated module
+"# Buggy implementation
+"#   E1129 = not-context-manager
+"let g:syntastic_python_pylint_args=['--disable=C,R,W0142,W0403,W0703,W0212,W0232,F0401,W0402,E1129']
+"let g:syntastic_python_pylint_post_args = '--msg-template="{path}:{line}:{column}:{C}: [{symbol} {msg_id}] {msg}"'
 let g:syntastic_python_checkers=['pyflakes']
+let g:syntastic_go_checkers=['go']
 highlight SyntasticErrorSign guifg=white guibg=black
 let g:syntastic_loc_list_height = 5
 "禁java检查。因为检查java时需要编译。
-let g:syntastic_mode_map = {'mode': 'active','passive_filetypes': ['java','go'] }
+let g:syntastic_mode_map = {'mode': 'active','passive_filetypes': ['java'] }
 
 " vim映射集锦
 NeoBundle 'tpope/vim-unimpaired'
@@ -902,12 +937,16 @@ NeoBundle 'vim-scripts/a.vim'
 "NeoBundle 'tpope/vim-rails'
 " for Go
 NeoBundle 'fatih/vim-go'
+let g:go_fmt_options = '-s'
+let g:go_fmt_fail_silently = 1
 autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go nnoremap <buffer>  <leader>jd :GoDef<cr>
 
 " for openresty
 NeoBundle 'spacewander/openresty-vim'
+let g:lua_version = 5
+let g:lua_subversion = 1
 
 " for erlang
 "NeoBundle 'jimenezrick/vimerl'
