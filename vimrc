@@ -137,12 +137,12 @@ set tm=500
 set autowriteall
 
 " 启用 syntax omnifunc complete
-if has("autocmd") && exists("+omnifunc")
-    autocmd Filetype *
-                \   if &omnifunc == "" |
-                \       setlocal omnifunc=syntaxcomplete#Complete |
-                \   endif
-endif
+"if has("autocmd") && exists("+omnifunc")
+    "autocmd Filetype *
+                "\   if &omnifunc == "" |
+                "\       setlocal omnifunc=syntaxcomplete#Complete |
+                "\   endif
+"endif
 
 if has("nvim")
 " append ~/.vim to the runtimepath of nvim
@@ -237,8 +237,8 @@ set scrolloff=22
 set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
 " Always show the status line
 set laststatus=2
-"高亮第80列，就像一把尺子
-set cc=80
+"高亮第120列，就像一把尺子
+set cc=120
 autocmd Filetype markdown setlocal cc=160
 autocmd Filetype text setlocal cc=
 
@@ -298,7 +298,7 @@ autocmd FileType css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType stylus setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd FileType coffee setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-autocmd FileType yaml  setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType yaml  setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab ai
 "autocmd FileType c setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 "autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 
@@ -688,7 +688,7 @@ function! g:CtrlSFAftermainWindowInit()
     setl wrap
 endfunction
 " For go practice
-let g:ctrlsf_ignore_dir = ['vendor']
+let g:ctrlsf_ignore_dir = ['vendor', 'static', 'web_fullscreen_frontend', 'web', 'initdb']
 
 NeoBundle 'szw/vim-ctrlspace'
 NeoBundle 'unblevable/quick-scope'
@@ -798,6 +798,7 @@ let g:snips_author = "spacewander"
 let g:snips_author_email = "spacewanderlzx@gmail.com""
 
 NeoBundle 'Valloric/YouCompleteMe'
+let g:ycm_goto_buffer_command = 'new-tab'
 let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion=['<c-p>']
@@ -987,3 +988,4 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 "}}}
 "}}}
+set nofixendofline
