@@ -223,7 +223,7 @@ except ${1:OSError}:
 endsnippet
 
 
-############# pytest
+############# python test
 
 snippet wr
 with pytest.raises($1):
@@ -237,6 +237,22 @@ snippet ae "assert =="
 self.assertEqual(${1:expect}, ${0:actual})
 endsnippet
 
+snippet an "assert is None"
+self.assertIsNone($0)
+endsnippet
+
+snippet ann "assert is not None"
+self.assertIsNotNone($0)
+endsnippet
+
+snippet at "assert True"
+self.assertTrue($0)
+endsnippet
+
+snippet af "assert False"
+self.assertFalse($0)
+endsnippet
+
 ##### flask
 
 snippet rqf "request.form"
@@ -245,5 +261,15 @@ endsnippet
 
 snippet rdt "render_template"
 render_template('$1.html', $0)
+endsnippet
+
+##### other stuff
+
+snippet :p ":param xxx:"
+:param ${1:arg}: $0
+endsnippet
+
+snippet :r ":return:"
+:return: $0
 endsnippet
 

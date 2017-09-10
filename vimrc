@@ -71,18 +71,6 @@ augroup myFun
     "autocmd BufWritePost * :call AutoFormat()
 augroup END
 
-function! RunYapf()
-    let current_line = line('.')
-    normal! ggdG
-    exec "read! " . "yapf " . expand('%:p')
-    " delete the remained first line
-    0,1d
-    echo current_line
-    exec 'normal ' . current_line . 'gg'
-    w
-endfunction
-
-autocmd FileType python nnoremap <F3> :call RunYapf()<cr>
 nnoremap <F2> :call ToggleMouse()<cr>
 nnoremap <S-F6> :call AutoFormat()<cr>
 nnoremap <F6> :call DeleteTrailingWS()<cr>
@@ -325,20 +313,18 @@ set whichwrap+=<,>,h,l
 autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
 
-autocmd FileType python nnoremap <leader>y :0,$!yapf<cr>
-"autocmd FileType lua nnoremap <leader>t :!busted .<cr>
 " auto wrap in diff mode
 autocmd FilterWritePre * if &diff | setlocal wrap< | setlocal filetype= | endif
 
-set updatetime=15000
+set updatetime=30000
 " automatically leave insert mode after 'updatetime' milliseconds of inaction
 au CursorHoldI * stopinsert
 " automatically save file (after 'updatetime' milliseconds of inaction and in normal mode)
 " or leave current buffer)
 au CursorHold,BufLeave *  update
-" set 'updatetime' to 15 seconds when in insert mode
+" set 'updatetime' to 30 seconds when in insert mode
 " default updatetime is 4 seconds
-au InsertEnter * set updatetime=15000
+au InsertEnter * set updatetime=30000
 if has("nvim")
     autocmd CursorHold term://* startinsert
 endif
@@ -391,7 +377,6 @@ noremap L $
 " Remap VIM 0 to first non-blank character
 noremap 0 ^
 
-nnoremap <F4> :set wrap! wrap?<CR>
 "auto paste
 let &t_SI .= "\<Esc>[?2004h"
 let &t_EI .= "\<Esc>[?2004l"
@@ -697,12 +682,14 @@ let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 " Git relatived plugin
 NeoBundle 'tpope/vim-fugitive'
+
 " Gbl git blame current buffer
 " BitBucket support for Gbrowse
-NeoBundle 'tommcdo/vim-fubitive'
+"NeoBundle 'tommcdo/vim-fubitive'
+
 " Gitlab support for Gbrowse
-NeoBundle 'shumphrey/fugitive-gitlab.vim'
-let g:fugitive_gitlab_domains = ['https://hqgit01.intra.legendsec.com']
+"NeoBundle 'shumphrey/fugitive-gitlab.vim'
+"let g:fugitive_gitlab_domains = ['https://hqgit01.intra.legendsec.com']
 "################### 显示增强 ###################"
 "状态栏增强展示
 NeoBundle 'bling/vim-airline'
@@ -778,7 +765,7 @@ hi link EasyMotionTarget ErrorMsg
 hi link EasyMotionShade  Comment
 
 "%匹配成对的标签，跳转
-NeoBundle 'vim-scripts/matchit.zip'
+"NeoBundle 'vim-scripts/matchit.zip'
 
 "################### 补全及快速编辑 ###################"
 "快速插入代码片段
@@ -817,10 +804,9 @@ let g:ycm_filetype_blacklist = {
             \ 'txt' : 1,
             \}
 let g:ycm_use_ultisnips_completer = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
 nnoremap <leader>bc :YcmDiags<CR>
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
+nnoremap <F4> :YcmCompleter GoTo<CR>
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType cpp setlocal completeopt-=preview
 autocmd FileType c setlocal completeopt-=preview
@@ -851,7 +837,7 @@ let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_lua_checkers=['luacheck']
-let g:syntastic_lua_luacheck_args='--std ngx_lua+busted --ignore self'
+let g:syntastic_lua_luacheck_args='--std ngx_lua+busted --ignore self --ignore err'
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']
 "let g:syntastic_python_checkers=['pylint']
@@ -895,10 +881,10 @@ NeoBundle 'rafi/vim-tagabana'
 "################# 具体语言补全 ###############
 "FOR HTML
 " 著名的vim上的html简记法撰写插件，内容丰富而复杂，建议到官网上学习具体用法
-NeoBundle 'mattn/emmet-vim'
-let g:user_emmet_leader_key = '<leader>.'
-let g:use_emmet_complete_tag = 1
-NeoBundle 'othree/xml.vim'
+"NeoBundle 'mattn/emmet-vim'
+"let g:user_emmet_leader_key = '<leader>.'
+"let g:use_emmet_complete_tag = 1
+"NeoBundle 'othree/xml.vim'
 " [[ to previous open tag
 " ]] to next open tag
 " [] to previous close tag
@@ -943,6 +929,7 @@ let g:go_fmt_fail_silently = 1
 autocmd BufWinEnter *.go nnoremap <leader>t :wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go inoremap <leader>t <ESC>:wa<cr>:!go test<cr>
 autocmd BufWinEnter *.go nnoremap <buffer>  <leader>jd :GoDef<cr>
+autocmd BufWinEnter *.go nnoremap <buffer>  <F4> :GoDef<cr>
 
 " for openresty
 NeoBundle 'spacewander/openresty-vim'
@@ -954,7 +941,12 @@ let g:lua_subversion = 1
 " for jinja2
 "NeoBundle 'Glench/Vim-Jinja2-Syntax'
 " for PHP
-NeoBundle 'StanAngeloff/php.vim'
+"NeoBundle 'StanAngeloff/php.vim'
+
+NeoBundle 'google/yapf', { 'rtp': 'plugins/vim' }
+autocmd FileType python nnoremap <F3> :call yapf#YAPF()<cr>
+" use :YAPF to run yapf on visual selected block
+command! -range=% YAPF <line1>,<line2>call yapf#YAPF()
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'simnalamburt/vim-mundo'
