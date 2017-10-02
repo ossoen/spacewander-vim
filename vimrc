@@ -136,6 +136,9 @@ set tm=500
 " 在切换buffer时自动写入
 set autowriteall
 
+" 避免自动添加文末换行
+set nofixendofline
+
 if has("nvim")
 " append ~/.vim to the runtimepath of nvim
 set rtp^=$HOME/.vim
@@ -319,7 +322,7 @@ autocmd BufReadPost *.styl setlocal omnifunc=csscomplete#CompleteCSS
 autocmd BufReadPost *.scss setlocal omnifunc=csscomplete#CompleteCSS
 
 autocmd FileType python nnoremap <leader>y :0,$!yapf<cr>
-"autocmd FileType lua nnoremap <leader>t :!busted .<cr>
+autocmd FileType lua nnoremap <leader>rt :!busted .<cr>
 " auto wrap in diff mode
 autocmd FilterWritePre * if &diff | setlocal wrap< | setlocal filetype= | endif
 
@@ -694,7 +697,7 @@ NeoBundle 'shumphrey/fugitive-gitlab.vim'
 let g:fugitive_gitlab_domains = ['https://hqgit01.intra.legendsec.com']
 "################### 显示增强 ###################"
 "状态栏增强展示
-NeoBundle 'bling/vim-airline'
+NeoBundle 'vim-airline/vim-airline'
 let g:Powerline_symbols = 'unicode'
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -915,6 +918,8 @@ NeoBundle 'spacewander/openresty-vim'
 "NeoBundle 'Glench/Vim-Jinja2-Syntax'
 " for PHP
 NeoBundle 'StanAngeloff/php.vim'
+" for typescript
+NeoBundle 'HerringtonDarkholme/yats.vim'
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'simnalamburt/vim-mundo'
