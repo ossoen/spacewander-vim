@@ -230,6 +230,8 @@ set cc=120
 autocmd Filetype markdown setlocal cc=160
 autocmd Filetype text setlocal cc=
 
+set nofixendofline
+
 " 显示空白字符（7.4+)
 set listchars=tab:>·,trail:·,extends:>,precedes:<
 autocmd FileType go set nolist
@@ -491,8 +493,6 @@ au FileType go nnoremap <leader>tf :tabedit $GOPATH/src/
 nnoremap <C-left>   :tabfirst<CR>
 nnoremap <C-right>   :tablast<CR>
 nnoremap <C-Down> :tabedit
-" insert 'end' in current line
-inoremap <C-e> end
 
 nnoremap ec :e <c-r>=expand("%:p:h")<cr>/
 nnoremap et :tabedit <c-r>=expand("%:p:h")<cr>/
@@ -575,7 +575,6 @@ augroup END
 syntax enable
 syntax on
 
-"colorscheme solarized
 set background=dark
 set t_Co=256
 
@@ -733,9 +732,12 @@ let g:rbpt_colorpairs = [
             \ ]
 let g:rbpt_max = 40
 let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
 
-"主题 molokai
-NeoBundle 'tomasr/molokai'
+NeoBundle 'flazz/vim-colorschemes'
 let g:molokai_original = 1
 
 "自动补全单引号，双引号等
@@ -970,14 +972,23 @@ filetype plugin indent on
 NeoBundleCheck
 
 "========================== config for plugins end ======================================
-" settings for color schema
-colorscheme molokai
-"colorscheme desert
-" settings for kien/rainbow_parentheses.vim
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+let g:color_scheme = -1
+func! ColorSchemeChanage()
+    if strftime("%H") < 17
+        " 较亮的地方使用，比如早上用
+        if g:color_scheme != 0
+            let g:color_scheme = 0
+            colorscheme peaksea_lzx
+        endif
+    else
+        " 较暗的地方使用，比如在晚上用
+        if g:color_scheme != 1
+            let g:color_scheme = 1
+            colorscheme molokai
+        endif
+    endif
+endfunc
+call ColorSchemeChanage()
+autocmd CursorHold,CursorHoldI,WinEnter,WinLeave,FocusLost,FocusGained * nested call ColorSchemeChanage()
 "}}}
 "}}}
-set nofixendofline
