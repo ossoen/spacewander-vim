@@ -972,23 +972,6 @@ filetype plugin indent on
 NeoBundleCheck
 
 "========================== config for plugins end ======================================
-let g:color_scheme = -1
-func! ColorSchemeChanage()
-    if strftime("%H") < 17
-        " 较亮的地方使用，比如早上用
-        if g:color_scheme != 0
-            let g:color_scheme = 0
-            colorscheme peaksea_lzx
-        endif
-    else
-        " 较暗的地方使用，比如在晚上用
-        if g:color_scheme != 1
-            let g:color_scheme = 1
-            colorscheme molokai
-        endif
-    endif
-endfunc
-call ColorSchemeChanage()
-autocmd CursorHold,CursorHoldI,WinEnter,WinLeave,FocusLost,FocusGained * nested call ColorSchemeChanage()
+colorscheme molokai_lzx
 "}}}
 "}}}
