@@ -1,7 +1,7 @@
 "==========================================
 " vim:ft=vim
 " Author:  edited by spacewander currently
-" Version: 8.1
+" Version: 9
 " Email: spacewanderlzx@gmail.com
 " BlogPost:
 " ReadMe: README.md
@@ -293,8 +293,6 @@ autocmd FileType yaml  setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab a
 "autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 
 " set cursorcolumn line here
-"autocmd FileType coffee setlocal cursorcolumn
-"autocmd FileType python setlocal cursorcolumn
 set cursorcolumn
 
 " if this not work ,make sure .viminfo is writable for you
@@ -384,9 +382,9 @@ let &t_SI .= "\<Esc>[?2004h"
 let &t_EI .= "\<Esc>[?2004l"
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 function! XTermPasteBegin()
-  set pastetoggle=<Esc>[201~
-  set paste
-  return ""
+    set pastetoggle=<Esc>[201~
+    set paste
+    return ""
 endfunction
 
 " quick close Quickfix
@@ -476,6 +474,9 @@ function! FixSaveCoffee()
 endfunction
 au Filetype conf nnoremap <buffer> <leader>w :call FixSaveCoffee()<cr>
 au BufReadPost *.coffee set ft=coffee
+" After add "+x" perm, the typescript file will be treated as xml,
+" change it back here.
+au BufWritePost *.ts set ft=typescript
 
 nnoremap <leader>x :x<CR>
 inoremap <leader>w <ESC>:w<CR>
@@ -691,7 +692,7 @@ NeoBundle 'tpope/vim-fugitive'
 "let g:fugitive_gitlab_domains = ['https://hqgit01.intra.legendsec.com']
 "################### 显示增强 ###################"
 "状态栏增强展示
-NeoBundle 'bling/vim-airline'
+NeoBundle 'vim-airline/vim-airline'
 let g:Powerline_symbols = 'unicode'
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -792,6 +793,8 @@ let g:ycm_key_list_select_completion=['<c-n>']
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion=['<c-p>']
 let g:ycm_key_list_previous_completion = ['<Up>']
+" 如果当前存在补全菜单，输入C-Y退出补全，然后输入CR换行
+inoremap <expr> <CR> pumvisible() ? "\<C-Y><CR>" : "\<CR>"
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf2.py'
 nnoremap <leader>ey :execute ':vs '.g:ycm_global_ycm_extra_conf<CR>
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -840,6 +843,7 @@ let g:syntastic_javascript_jshint_exec='/usr/bin/jshint'
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_lua_checkers=['luacheck']
 let g:syntastic_lua_luacheck_args='--std ngx_lua+busted --ignore self --ignore err'
+let g:syntastic_bash_checkers=['shellcheck']
 let g:syntastic_shell_checkers=['shellcheck']
 let g:syntastic_coffee_checkers=['coffeelint']
 "let g:syntastic_python_checkers=['pylint']
@@ -866,6 +870,7 @@ let g:syntastic_coffee_checkers=['coffeelint']
 "let g:syntastic_python_pylint_post_args = '--msg-template="{path}:{line}:{column}:{C}: [{symbol} {msg_id}] {msg}"'
 let g:syntastic_python_checkers=['pyflakes']
 let g:syntastic_go_checkers=['go']
+let g:syntastic_typescript_checkers=['tsc']
 highlight SyntasticErrorSign guifg=white guibg=black
 let g:syntastic_loc_list_height = 5
 "禁java检查。因为检查java时需要编译。
@@ -878,6 +883,8 @@ NeoBundle 'tpope/vim-unimpaired'
 
 " modify ctags path for your project
 NeoBundle 'rafi/vim-tagabana'
+let g:tagabana_tags_dir = "~/.vim/tags"
+
 " modify surrounding characters for selecting words
 "NeoBundle 'tpope/vim-surround'
 "################# 具体语言补全 ###############
@@ -949,6 +956,8 @@ NeoBundle 'google/yapf', { 'rtp': 'plugins/vim' }
 autocmd FileType python nnoremap <F3> :call yapf#YAPF()<cr>
 " use :YAPF to run yapf on visual selected block
 command! -range=% YAPF <line1>,<line2>call yapf#YAPF()
+" for typescript
+NeoBundle 'HerringtonDarkholme/yats.vim'
 "################### 其他 ###################"
 "edit history, 可以查看回到某个历史状态
 NeoBundle 'simnalamburt/vim-mundo'

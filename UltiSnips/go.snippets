@@ -244,6 +244,12 @@ func Test${1:Func}(t *testing.T) {
 }
 endsnippet
 
+snippet TS "Test inside suite"
+func (suite *${1:Test}Suite) Test${2:Func}() {
+	$0
+}
+endsnippet
+
 snippet Ex "func Example"
 func Example${1:Func}() {
 	$0
